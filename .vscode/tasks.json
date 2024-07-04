@@ -1,0 +1,17 @@
+{
+  "tasks": [
+    {
+      "command": "sudo chmod u+x scripts/hard-install && scripts/hard-install",
+      "label": "hard-install",
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "command": "sudo chmod u+x scripts/setup && scripts/setup",
+      "label": "setup",
+      "problemMatcher": [],
+      "type": "shell"
+    }
+  ],
+  "version": "2.0.0"
+}

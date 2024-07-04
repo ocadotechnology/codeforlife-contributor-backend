@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+cd "${BASH_SOURCE%/*}/.."
+
+wget -O - https://raw.githubusercontent.com/ocadotechnology/codeforlife-workspace/main/scripts/backend/run | SERVICE_NAME=replace-me bash

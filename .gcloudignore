@@ -1,0 +1,13 @@
+/Pipfile
+/Pipfile.lock
+/manage.py
+/.devcontainer.json
+/.github
+/.venv
+/.vscode
+/.gitignore
+/codecov.yml
+/*.toml
+/*.code-*
+/*.md
+/scripts

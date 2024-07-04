@@ -1,0 +1,22 @@
+{
+  "folders": [
+    {
+      "name": "template-backend",
+      "path": "."
+    },
+    {
+      "name": "package-python",
+      "path": "../codeforlife-package-python"
+    },
+    {
+      "name": "package-javascript",
+      "path": "../codeforlife-package-javascript"
+    }
+  ],
+  "settings": {
+    "autoDocstring.customTemplatePath": ".vscode/extensions/autoDocstring/docstring.mustache",
+    "workbench.colorCustomizations": {
+      "editorRuler.foreground": "#008000"
+    }
+  }
+}

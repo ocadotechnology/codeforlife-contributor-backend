@@ -1,0 +1,29 @@
+[
+  {
+    "model": "api.fruit",
+    "pk": 1,
+    "fields": {
+      "name": "apple",
+      "is_citrus": false,
+      "expires_on": "2023-01-01"
+    }
+  },
+  {
+    "model": "api.fruit",
+    "pk": 2,
+    "fields": {
+      "name": "banana",
+      "is_citrus": false,
+      "expires_on": "2023-01-02"
+    }
+  },
+  {
+    "model": "api.fruit",
+    "pk": 3,
+    "fields": {
+      "name": "orange",
+      "is_citrus": true,
+      "expires_on": "2023-01-03"
+    }
+  }
+]

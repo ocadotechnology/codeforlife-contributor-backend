@@ -1,0 +1,18 @@
+# https://cloud.google.com/appengine/docs/standard/reference/app-yaml?tab=python
+
+runtime: REPLACE_IN_PIPELINE
+instance_class: F1
+service: REPLACE_IN_PIPELINE
+
+inbound_services:
+  - warmup
+
+env_variables:
+  DEBUG: "0"
+  DJANGO_SETTINGS_MODULE: "settings"
+  SECRET_KEY: "REPLACE_IN_PIPELINE"
+  SERVICE_NAME: "REPLACE_IN_PIPELINE"
+  SERVICE_PROTOCOL: "https"
+  SERVICE_DOMAIN: "codeforlife.education"
+  SERVICE_PORT: "443"
+  MAIL_ENABLED: "1"
