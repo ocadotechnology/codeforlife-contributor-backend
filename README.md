@@ -1,8 +1,7 @@
-# codeforlife-service-template
-
-[Frontend Docs](docs/frontend)
+# codeforlife-contributor-backend
 
 ## LICENCE
+
 In accordance with the [Terms of Use](https://www.codeforlife.education/terms#terms)
 of the Code for Life website, all copyright, trademarks, and other
 intellectual property rights in and relating to Code for Life (including all
