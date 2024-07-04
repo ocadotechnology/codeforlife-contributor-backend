@@ -45,10 +45,10 @@
     "source=./codeforlife-package-javascript,target=/workspace/codeforlife-package-javascript,type=bind,consistency=cached",
     "source=./codeforlife-package-python,target=/workspace/codeforlife-package-python,type=bind,consistency=cached"
   ],
-  "name": "template-backend",
+  "name": "contributor-backend",
   "postCreateCommand": "sudo chmod u+x scripts/setup && scripts/setup",
   "remoteUser": "root",
   "service": "base-service",
   "shutdownAction": "none",
-  "workspaceFolder": "/workspace/codeforlife-template-backend"
+  "workspaceFolder": "/workspace/codeforlife-contributor-backend"
 }
