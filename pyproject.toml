@@ -3,7 +3,7 @@ line-length = 80
 extend-exclude = ".*/migrations/.*py"
 
 [tool.pytest.ini_options]
-env = ["DJANGO_SETTINGS_MODULE=settings", "SERVICE_NAME=replace-me"]
+env = ["DJANGO_SETTINGS_MODULE=settings", "SERVICE_NAME=contributor"]
 
 [tool.mypy]
 plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]

@@ -27,7 +27,7 @@
       ],
       "django": true,
       "env": {
-        "SERVICE_NAME": "replace-me"
+        "SERVICE_NAME": "contributor"
       },
       "justMyCode": false,
       "name": "Django Server",
