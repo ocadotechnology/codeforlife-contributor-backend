@@ -4,7 +4,15 @@ Created on 05/07/2024 at 16:18:48(+01:00).
 
 """
 
+import typing as t
+
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+if t.TYPE_CHECKING:
+    from django_stubs_ext.db.models import TypedModelMeta
+else:
+    TypedModelMeta = object
 
 class Contributor(models.Model):
     """ A contributor that contributes to a repo"""
