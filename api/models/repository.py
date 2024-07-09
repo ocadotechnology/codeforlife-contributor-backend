@@ -17,20 +17,18 @@ else:
 
 
 class Repository(models.Model):
-    """ A repository to contribute to"""
+    """A repository to contribute to"""
+
     id = models.IntegerField(primary_key=True)
     contributor = models.ForeignKey(Contributor, on_delete=models.CASCADE)
-    NAME_CHOICES = [
-        ("portal", "portal"),
-        ("rr", "rr")
-    ]
+    NAME_CHOICES = [("portal", "portal"), ("rr", "rr")]
     name = models.TextField(choices=NAME_CHOICES)
     points = models.IntegerField(default=0)
 
     class Meta(TypedModelMeta):
         verbose_name = _("repository")
         verbose_name_plural = _("repositories")
-    
+
     class Meta:
         unique_together = ["contributor", "name"]
 

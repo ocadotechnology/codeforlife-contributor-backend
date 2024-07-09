@@ -15,7 +15,8 @@ else:
 
 
 class Contributor(models.Model):
-    """ A contributor that contributes to a repo"""
+    """A contributor that contributes to a repo"""
+
     id = models.IntegerField(primary_key=True)
     email = models.TextField()
     name = models.TextField()
@@ -29,4 +30,3 @@ class Contributor(models.Model):
 
     def __str__(self):
         return self.name
-    

@@ -13,11 +13,11 @@ class TestContributor(ModelTestCase[Contributor]):
 
     def setUp(self):
         self.contributor = Contributor.objects.get(pk=111111)
-    
+
     def test_str(self):
         """Parsing a contributor object instance to string returns its name."""
         assert str(self.contributor) == self.contributor.name
-    
+
     def test_fields(self):
-        """ Check if """
+        """Check if"""
         assert self.contributor.email == "contributor1@gmail.com"
