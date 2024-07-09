@@ -11,7 +11,8 @@ from .repository import Repository
 
 
 class TestAgreementSignature(ModelTestCase[AgreementSignature]):
-    """ Test the AgreementSignature Model"""
+    """Test the AgreementSignature Model"""
+
     fixtures = ["agreement_signatures"]
 
     def setUp(self):

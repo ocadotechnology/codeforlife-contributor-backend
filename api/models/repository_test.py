@@ -11,7 +11,8 @@ from .repository import Repository
 
 
 class TestRepository(ModelTestCase[Repository]):
-    """ Test the Repository Model"""
+    """Test the Repository Model"""
+
     fixtures = ["repositories"]
 
     def setUp(self):

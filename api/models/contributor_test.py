@@ -9,7 +9,8 @@ from .contributor import Contributor
 
 
 class TestContributor(ModelTestCase[Contributor]):
-    """ Test the Contributor Model """
+    """Test the Contributor Model"""
+
     fixtures = ["contributors"]
 
     def setUp(self):
