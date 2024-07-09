@@ -26,11 +26,9 @@ class Repository(models.Model):
     points = models.IntegerField(default=0)
 
     class Meta(TypedModelMeta):
+        unique_together = ["contributor", "name"]
         verbose_name = _("repository")
         verbose_name_plural = _("repositories")
-
-    class Meta:
-        unique_together = ["contributor", "name"]
 
     def __str__(self):
         return self.name

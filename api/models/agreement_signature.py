@@ -23,10 +23,8 @@ class AgreementSignature(models.Model):
     agreement_id = models.CharField(max_length=40)
     signed_at = models.DateTimeField()
 
-    class Meta:
-        unique_together = ["contributor", "agreement_id"]
-
     class Meta(TypedModelMeta):
+        unique_together = ["contributor", "agreement_id"]
         verbose_name = _("agreement_signature")
         verbose_name_plural = _("agreement_signatures")
 
