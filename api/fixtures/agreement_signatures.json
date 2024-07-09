@@ -5,7 +5,7 @@
     "fields": {
       "contributor": 111111,
       "agreement_id": "g3d3d3s8dgd3vc37",
-      "signed_at": "2023-01-01"
+      "signed_at": "2024-01-02T12:00:00Z"
     }
   },
   {
@@ -14,7 +14,7 @@
     "fields": {
       "contributor": 222222,
       "agreement_id": "g3d3d3s8dgd3vc37",
-      "signed_at": "2023-01-01"
+      "signed_at": "2024-01-02T12:00:00Z"
     }
   },
   {
@@ -23,7 +23,7 @@
     "fields": {
       "contributor": 333333,
       "agreement_id": "g3d3d3s8dgd3vc37",
-      "signed_at": "2023-01-01"
+      "signed_at": "2024-01-02T12:00:00Z"
     }
   }
 ]
