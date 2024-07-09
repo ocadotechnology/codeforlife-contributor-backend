@@ -25,10 +25,10 @@ class Repository(models.Model):
     name = models.TextField(choices=NAME_CHOICES)
     points = models.IntegerField(default=0)
 
-    class Meta(TypedModelMeta):
+    class Meta:
         unique_together = ["contributor", "name"]
-        verbose_name = _("repository")
-        verbose_name_plural = _("repositories")
+        verbose_name = "repository"
+        verbose_name_plural = "repositories"
 
     def __str__(self):
         return self.name

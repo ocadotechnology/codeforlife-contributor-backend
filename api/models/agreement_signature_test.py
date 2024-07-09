@@ -14,15 +14,19 @@ from .contributor import Contributor
 class TestAgreementSignature(ModelTestCase[AgreementSignature]):
     """Test the AgreementSignature Model"""
 
-    fixtures = ["agreement_signatures"]
+    fixtures = ["agreement_signatures", "contributors"]
 
     def setUp(self):
-        self.agreement_signature = Contributor.objects.get(pk=1)
+        self.agreement_signature = AgreementSignature.objects.get(pk=1)
 
     # def test_str(self):
     #     """Parsing a contributor object instance to returns its name."""
-    #     pass
+    #     commit_id = self.agreement_signature.agreement_id[:7]
+    #     # time = self.agreement_signature.signed_at
+    #     # contributor = self.agreement_signature.contributor.name
+    #     # cont = f"Contributor {contributor} signed"
+    #     # repo = f"{commit_id} at {time}"
+    #     assert commit_id in str(self.agreement_signature)
 
-    # def test_fields(self):
-    #     """Check if"""
-    #     pass
+    # def test_str(self):
+    #     assert str(self.agreement_signature) == self.agreement_signature.agreement_id

@@ -23,12 +23,15 @@ class AgreementSignature(models.Model):
     agreement_id = models.CharField(max_length=40)
     signed_at = models.DateTimeField()
 
-    class Meta(TypedModelMeta):
+    class Meta:
         unique_together = ["contributor", "agreement_id"]
-        verbose_name = _("agreement_signature")
-        verbose_name_plural = _("agreement_signatures")
+        verbose_name = "agreement_signature"
+        verbose_name_plural = "agreement_signatures"
 
     def __str__(self):
         cont = f"Contributor {self.contributor} signed"
         repo = f"{self.agreement_id[:7]} at {self.signed_at}"
         return f"{cont} {repo}"
+
+    # def __str__(self):
+    #     return self.agreement_id
