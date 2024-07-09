@@ -7,6 +7,7 @@ from codeforlife.tests import ModelTestCase
 
 from .contributor import Contributor
 
+
 class TestContributor(ModelTestCase[Contributor]):
     fixtures = ["contributors"]
 
