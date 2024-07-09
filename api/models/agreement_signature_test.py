@@ -6,7 +6,8 @@ Created on 09/07/2024 at 11:43:42(+01:00).
 from codeforlife.tests import ModelTestCase
 
 from .agreement_signature import AgreementSignature
-from .contributor import Contributor
+
+# from .contributor import Contributor
 
 # from .repository import Repository
 
@@ -29,4 +30,5 @@ class TestAgreementSignature(ModelTestCase[AgreementSignature]):
     #     assert commit_id in str(self.agreement_signature)
 
     # def test_str(self):
-    #     assert str(self.agreement_signature) == self.agreement_signature.agreement_id
+    #     assert str(self.agreement_signature) ==
+    # self.agreement_signature.agreement_id
