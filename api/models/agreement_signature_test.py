@@ -11,15 +11,16 @@ from .repository import Repository
 
 
 class TestAgreementSignature(ModelTestCase[AgreementSignature]):
+    """ Test the AgreementSignature Model"""
     fixtures = ["agreement_signatures"]
 
     def setUp(self):
-        pass
+        self.agreement_signature = Contributor.objects.get(pk=1)
 
-    def test_str(self):
-        """Parsing a contributor object instance to string returns its name."""
-        pass
+    # def test_str(self):
+    #     """Parsing a contributor object instance to string returns its name."""
+    #     pass
 
-    def test_fields(self):
-        """Check if"""
-        pass
+    # def test_fields(self):
+    #     """Check if"""
+    #     pass
