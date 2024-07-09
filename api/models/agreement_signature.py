@@ -27,5 +27,6 @@ class AgreementSignature(models.Model):
         unique_together = ["contributor", "agreement_id"]
     
     def __str__(self):
-        return f"Contributor {self.contributor} signed 
-            {self.agreement_id[:7]} at {self.signed_at}"
+        cont = f"Contributor {self.contributor} signed"
+        repo = f"{self.agreement_id[:7]} at {self.signed_at}"
+        return f"{cont} {repo}"

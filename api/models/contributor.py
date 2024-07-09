@@ -23,6 +23,10 @@ class Contributor(models.Model):
     html_url = models.TextField()
     avatar_url = models.TextField()
 
+    class Meta(TypedModelMeta):
+        verbose_name = _("contributor")
+        verbose_name_plural = _("contributors")
+
     def __str__(self):
         return self.name
     
