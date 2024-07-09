@@ -8,10 +8,11 @@ import typing as t
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from .contributor import Contributor
 
 if t.TYPE_CHECKING:
     from django_stubs_ext.db.models import TypedModelMeta
+
+    from .contributor import Contributor
 else:
     TypedModelMeta = object
 
@@ -19,17 +20,15 @@ class Repository(models.Model):
     """ A repository to contribute to"""
     id = models.IntegerField(primary_key=True)
     contributor = models.ForeignKey(Contributor, on_delete=models.CASCADE)
-    name_choices = [
+    NAME_CHOICES = [
         ("portal", "portal"),
         ("rr", "rr")
     ]
-    name = models.TextField(choices=name_choices)
+    name = models.TextField(choices=NAME_CHOICES)
     points = models.IntegerField(default=0)
+    
+    class Meta:
+        unique_together = ["contributor", "name"]
 
     def __str__(self):
         return self.name
-    
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["contributor", "name"], name='unique_contributor_repo')
-        ]
