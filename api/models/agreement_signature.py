@@ -1,21 +1,18 @@
 """
 © Ocado Group
 Created on 08/07/2024 at 10:48:44(+01:00).
-
 """
 
 import typing as t
 
 from django.db import models
+from .contributor import Contributor
 from django.utils.translation import gettext_lazy as _
 
 if t.TYPE_CHECKING:
     from django_stubs_ext.db.models import TypedModelMeta
-
-    from .contributor import Contributor
 else:
     TypedModelMeta = object
-
 
 class AgreementSignature(models.Model):
     """ Signature of a contributor signing the agreement """
@@ -25,6 +22,10 @@ class AgreementSignature(models.Model):
     
     class Meta:
         unique_together = ["contributor", "agreement_id"]
+    
+    class Meta(TypedModelMeta):
+        verbose_name = _("agreement_signature")
+        verbose_name_plural = _("agreement_signatures")
     
     def __str__(self):
         cont = f"Contributor {self.contributor} signed"
