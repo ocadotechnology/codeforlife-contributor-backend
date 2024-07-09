@@ -1,0 +1,29 @@
+[
+  {
+    "model": "api.agreement_signature",
+    "pk": 1,
+    "fields": {
+      "contributor": 111111,
+      "agreement_id": "g3d3d3s8dgd3vc37",
+      "signed_at": "2023-01-01"
+    }
+  },
+  {
+    "model": "api.agreement_signature",
+    "pk": 2,
+    "fields": {
+      "contributor": 222222,
+      "agreement_id": "g3d3d3s8dgd3vc37",
+      "signed_at": "2023-01-01"
+    }
+  },
+  {
+    "model": "api.agreement_signature",
+    "pk": 3,
+    "fields": {
+      "contributor": 333333,
+      "agreement_id": "g3d3d3s8dgd3vc37",
+      "signed_at": "2023-01-01"
+    }
+  }
+]

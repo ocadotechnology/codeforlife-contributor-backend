@@ -1,0 +1,29 @@
+[
+  {
+    "model": "api.repository",
+    "pk": 111,
+    "fields": {
+      "contributor": 111111,
+      "name": "rr",
+      "points": 10
+    }
+  },
+  {
+    "model": "api.repository",
+    "pk": 222,
+    "fields": {
+      "contributor": 222222,
+      "name": "rr",
+      "points": 20
+    }
+  },
+  {
+    "model": "api.repository",
+    "pk": 333,
+    "fields": {
+      "contributor": 333333,
+      "name": "rr",
+      "points": 30
+    }
+  }
+]
