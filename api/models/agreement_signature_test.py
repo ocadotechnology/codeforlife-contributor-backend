@@ -7,6 +7,7 @@ from codeforlife.tests import ModelTestCase
 
 from .agreement_signature import AgreementSignature
 from .contributor import Contributor
+
 # from .repository import Repository
 
 
