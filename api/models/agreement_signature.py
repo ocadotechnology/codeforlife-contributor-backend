@@ -3,17 +3,9 @@
 Created on 08/07/2024 at 10:48:44(+01:00).
 """
 
-import typing as t
-
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 
 from .contributor import Contributor
-
-if t.TYPE_CHECKING:
-    from django_stubs_ext.db.models import TypedModelMeta
-else:
-    TypedModelMeta = object
 
 
 class AgreementSignature(models.Model):
