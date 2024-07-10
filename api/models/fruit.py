@@ -9,7 +9,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 if t.TYPE_CHECKING:
-    from django_stubs_ext.db.models import TypedModelMeta
+    from django_stubs_ext.db.models import TypedModelMeta # pragma: no cover
 else:
     TypedModelMeta = object
 
