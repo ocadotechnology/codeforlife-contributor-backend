@@ -1,6 +1,6 @@
 [
   {
-    "model": "api.agreement_signature",
+    "model": "api.agreementsignature",
     "pk": 1,
     "fields": {
       "contributor": 111111,
@@ -9,7 +9,7 @@
     }
   },
   {
-    "model": "api.agreement_signature",
+    "model": "api.agreementsignature",
     "pk": 2,
     "fields": {
       "contributor": 222222,
@@ -18,7 +18,7 @@
     }
   },
   {
-    "model": "api.agreement_signature",
+    "model": "api.agreementsignature",
     "pk": 3,
     "fields": {
       "contributor": 333333,
