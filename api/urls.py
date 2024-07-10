@@ -19,13 +19,13 @@ Including another URLconf
 from codeforlife.urls import get_urlpatterns
 from rest_framework.routers import DefaultRouter
 
-from .views import FruitViewSet
+# from .views import FruitViewSet
 
 router = DefaultRouter()
-router.register(
-    "fruits",
-    FruitViewSet,
-    basename="fruit",
-)
+# router.register(
+#     "fruits",
+#     FruitViewSet,
+#     basename="fruit",
+# )
 
 urlpatterns = get_urlpatterns(router.urls)
