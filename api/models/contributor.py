@@ -18,7 +18,7 @@ class Contributor(models.Model):
     """A contributor that contributes to a repo"""
 
     id = models.IntegerField(primary_key=True)
-    email = models.TextField()
+    email = models.EmailField()
     name = models.TextField()
     location = models.TextField()
     html_url = models.TextField()
@@ -29,4 +29,4 @@ class Contributor(models.Model):
         verbose_name_plural = _("contributors")
 
     def __str__(self):
-        return self.name
+        return f"{self.name} <{self.email}>"

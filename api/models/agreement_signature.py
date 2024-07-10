@@ -19,7 +19,9 @@ else:
 class AgreementSignature(models.Model):
     """Signature of a contributor signing the agreement"""
 
+    contributor: int
     contributor = models.ForeignKey(Contributor, on_delete=models.CASCADE)
+
     agreement_id = models.CharField(max_length=40)
     signed_at = models.DateTimeField()
 

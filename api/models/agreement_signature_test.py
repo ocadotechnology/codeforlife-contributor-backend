@@ -17,7 +17,7 @@ class TestAgreementSignature(ModelTestCase[AgreementSignature]):
 
     def setUp(self):
         self.agreement_signature = AgreementSignature.objects.get(pk=1)
-        self.contributor1 = Contributor.objects.get(pk=111111)
+        self.contributor1 = Contributor.objects.get(pk=1)
 
     def test_str(self):
         """Parsing a contributor object instance to returns its name."""
@@ -40,13 +40,13 @@ class TestAgreementSignature(ModelTestCase[AgreementSignature]):
         )
         AgreementSignature.objects.create(
             contributor=new_contributor,
-            agreement_id="g3d3d3s8dg2342c37",
+            agreement_id="pyu66uehr8dgd43vc37232fef0898df3f3f31fga",
             signed_at="2024-01-02T12:00:00Z",
         )
 
         with self.assertRaises(IntegrityError):
             AgreementSignature.objects.create(
-                contributor=self.contributor1,
-                agreement_id="g3d3d3s8dgd3vc37",
+                contributor=new_contributor,
+                agreement_id="pyu66uehr8dgd43vc37232fef0898df3f3f31fga",
                 signed_at="2024-01-02T12:00:00Z",
             )

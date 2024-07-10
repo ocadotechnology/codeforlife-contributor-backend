@@ -14,15 +14,15 @@ class TestContributor(ModelTestCase[Contributor]):
     fixtures = ["contributors"]
 
     def setUp(self):
-        self.contributor1 = Contributor.objects.get(pk=111111)
-        self.contributor2 = Contributor.objects.get(pk=222222)
-        self.contributor3 = Contributor.objects.get(pk=333333)
+        self.contributor1 = Contributor.objects.get(pk=1)
+        self.contributor2 = Contributor.objects.get(pk=2)
+        self.contributor3 = Contributor.objects.get(pk=3)
 
     def test_str(self):
         """Parsing a contributor object instance to returns its name."""
-        assert str(self.contributor1) == self.contributor1.name
-        assert str(self.contributor2) == self.contributor2.name
-        assert str(self.contributor3) == self.contributor3.name
+        name = self.contributor1.name
+        email = self.contributor1.email
+        assert str(self.contributor1) == f"{name} <{email}>"
 
     def test_fields(self):
         """Check the correct fields"""

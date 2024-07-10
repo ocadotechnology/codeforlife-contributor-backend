@@ -19,16 +19,16 @@ else:
 class Repository(models.Model):
     """A repository to contribute to"""
 
-    id = models.IntegerField(primary_key=True)
+    contributor_id: int
     contributor = models.ForeignKey(Contributor, on_delete=models.CASCADE)
-    NAME_CHOICES = [("portal", "portal"), ("rr", "rr")]
-    name = models.TextField(choices=NAME_CHOICES)
+
+    gh_id = models.IntegerField(_("GitHub ID"))
     points = models.IntegerField(default=0)
 
     class Meta(TypedModelMeta):
-        unique_together = ["contributor", "name"]
+        unique_together = ["contributor", "gh_id"]
         verbose_name = _("repository")
         verbose_name_plural = _("repositories")
 
     def __str__(self):
-        return self.name
+        return f"{self.contributor}: {self.gh_id}"
