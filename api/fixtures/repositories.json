@@ -1,29 +1,30 @@
 [
   {
     "model": "api.repository",
-    "pk": 111,
+    "pk": 1,
     "fields": {
-      "contributor": 111111,
-      "name": "rr",
-      "points": 10
+      "contributor": 1,
+      "points": 10,
+      "gh_id": "10274252"
     }
   },
   {
     "model": "api.repository",
-    "pk": 222,
+    "pk": 2,
     "fields": {
-      "contributor": 222222,
-      "name": "rr",
-      "points": 20
+      "contributor": 2,
+      "points": 20,
+      "gh_id": "102097552"
+      
     }
   },
   {
     "model": "api.repository",
-    "pk": 333,
+    "pk": 3,
     "fields": {
-      "contributor": 333333,
-      "name": "rr",
-      "points": 30
+      "contributor": 3,
+      "points": 30,
+      "gh_id": "890732552"
     }
   }
 ]
