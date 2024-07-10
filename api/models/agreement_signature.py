@@ -24,6 +24,3 @@ class AgreementSignature(models.Model):
         cont = f"Contributor {self.contributor} signed"
         repo = f"{self.agreement_id[:7]} at {self.signed_at}"
         return f"{cont} {repo}"
-
-    # def __str__(self):
-    #     return self.agreement_id
