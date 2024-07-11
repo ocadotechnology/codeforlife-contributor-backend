@@ -18,11 +18,11 @@ class Contributor(models.Model):
     """A contributor that contributes to a repo"""
 
     id = models.IntegerField(primary_key=True)
-    email = models.EmailField()
-    name = models.TextField()
-    location = models.TextField()
-    html_url = models.TextField()
-    avatar_url = models.TextField()
+    email = models.EmailField(_("email"))
+    name = models.TextField(_("name"))
+    location = models.TextField(_("location"))
+    html_url = models.TextField(_("html url"))
+    avatar_url = models.TextField(_("avatar url"))
 
     class Meta(TypedModelMeta):
         verbose_name = _("contributor")

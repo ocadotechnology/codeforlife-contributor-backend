@@ -22,13 +22,13 @@ class AgreementSignature(models.Model):
     contributor_id: int
     contributor = models.ForeignKey(Contributor, on_delete=models.CASCADE)
 
-    agreement_id = models.CharField(max_length=40)
-    signed_at = models.DateTimeField()
+    agreement_id = models.CharField(_("agreement id"), max_length=40)
+    signed_at = models.DateTimeField(_("signed at"))
 
     class Meta(TypedModelMeta):
         unique_together = ["contributor", "agreement_id"]
-        verbose_name = _("agreement_signature")
-        verbose_name_plural = _("agreement_signatures")
+        verbose_name = _("agreement signature")
+        verbose_name_plural = _("agreement signatures")
 
     def __str__(self):
         cont = f"Contributor {self.contributor} signed"

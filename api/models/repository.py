@@ -23,7 +23,7 @@ class Repository(models.Model):
     contributor = models.ForeignKey(Contributor, on_delete=models.CASCADE)
 
     gh_id = models.IntegerField(_("GitHub ID"))
-    points = models.IntegerField(default=0)
+    points = models.IntegerField(_("points"), default=0)
 
     class Meta(TypedModelMeta):
         unique_together = ["contributor", "gh_id"]
