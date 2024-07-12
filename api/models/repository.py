@@ -17,13 +17,20 @@ else:
 
 
 class Repository(models.Model):
-    """A repository to contribute to"""
+    """A repository that a contributor has contributed to."""
 
     contributor_id: int
     contributor = models.ForeignKey(Contributor, on_delete=models.CASCADE)
 
-    gh_id = models.IntegerField(_("GitHub ID"))
-    points = models.IntegerField(_("points"), default=0)
+    gh_id = models.IntegerField(
+        _("GitHub ID"),
+        help_text=_("Github ID of the repo a contributor has contributed to."),
+    )
+    points = models.IntegerField(
+        _("points"),
+        default=0,
+        help_text=_("Story points the contributor closed for this repository."),
+    )
 
     class Meta(TypedModelMeta):
         unique_together = ["contributor", "gh_id"]
@@ -31,4 +38,4 @@ class Repository(models.Model):
         verbose_name_plural = _("repositories")
 
     def __str__(self):
-        return f"{self.contributor}: {self.gh_id}"
+        return f"{self.contributor.pk}:{self.gh_id}"
