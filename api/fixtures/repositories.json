@@ -1,0 +1,30 @@
+[
+  {
+    "model": "api.repository",
+    "pk": 1,
+    "fields": {
+      "contributor": 1,
+      "points": 10,
+      "gh_id": "10274252"
+    }
+  },
+  {
+    "model": "api.repository",
+    "pk": 2,
+    "fields": {
+      "contributor": 2,
+      "points": 20,
+      "gh_id": "102097552"
+      
+    }
+  },
+  {
+    "model": "api.repository",
+    "pk": 3,
+    "fields": {
+      "contributor": 3,
+      "points": 30,
+      "gh_id": "890732552"
+    }
+  }
+]
