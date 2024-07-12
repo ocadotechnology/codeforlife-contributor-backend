@@ -8,5 +8,7 @@ class ContributorSerializer(ModelSerializer[User, Contributor]):
     """Contributor class"""
 
     class Meta:
+        """Specify fields for the serializer"""
+
         model = Contributor
         fields = "__all__"

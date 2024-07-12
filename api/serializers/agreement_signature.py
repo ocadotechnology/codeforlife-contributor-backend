@@ -5,8 +5,10 @@ from ..models import AgreementSignature
 
 
 class AgreementSignatureSerializer(ModelSerializer[User, AgreementSignature]):
-    """ """
+    """Agreement serializer"""
 
     class Meta:
+        """Specify fields for the serializer"""
+
         model = AgreementSignature
         fields = "__all__"
