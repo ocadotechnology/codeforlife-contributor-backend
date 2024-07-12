@@ -9,10 +9,8 @@ from ..models import Contributor
 
 
 class ContributorSerializer(ModelSerializer[User, Contributor]):
-    """Contributor class"""
+    """Contributor serializer class"""
 
     class Meta:
-        """Specify fields for the serializer"""
-
         model = Contributor
         fields = "__all__"
