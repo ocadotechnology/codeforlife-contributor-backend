@@ -19,7 +19,7 @@ from rest_framework import status
 from ..models import AgreementSignature, Contributor
 
 
-class CheckAgreementSignatureViewSet(ModelViewSet):
+class CheckAgreementViewSet(ModelViewSet):
     """
     An endpoint to check if a contributor has signed latest agreement,
     return OKAY if he has otherwise return the latest commit ID.
