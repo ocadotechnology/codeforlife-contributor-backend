@@ -25,6 +25,7 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
     return OKAY if he has otherwise return the latest commit ID.
     """
 
+    http_method_names = ["get", "post"]
     queryset = AgreementSignature.objects.all()
     permission_classes = [AllowAny]
     serializer_class = AgreementSignatureSerializer
@@ -32,15 +33,15 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
     @action(
         detail=False,
         methods=["get"],
-        url_path="check-signed/(?P<contributor_id>.+)",
+        url_path="check-signed/(?P<contributor_pk>.+)",
     )
-    def check_signed(self, request, **url_params: str):
+    def check_signed(self, _, **url_params: str):
         """
         Get the latest commit id and compare with contributor's
         agreement signature.
         """
         # Repo information
-        github_id = url_params["contributor_id"]
+        github_pk = url_params["contributor_pk"]
         owner = settings.OWNER
         repo = settings.REPO_NAME
         file_name = settings.FILE_NAME
@@ -63,7 +64,7 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
 
         # Retrieve contributor
         try:
-            contributor = Contributor.objects.get(id=github_id)
+            contributor = Contributor.objects.get(pk=github_pk)
         except Contributor.DoesNotExist:
             return Response(
                 data={"outcome: ": "Contributor does not exist"},

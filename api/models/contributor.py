@@ -17,6 +17,7 @@ else:
 class Contributor(models.Model):
     """A contributor that contributes to a repo"""
 
+    pk: int
     id = models.IntegerField(
         primary_key=True, help_text=_("The contributor's GitHub user-ID.")
     )
