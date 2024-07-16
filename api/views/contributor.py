@@ -11,8 +11,12 @@ from ..models import Contributor
 from ..serializers import ContributorSerializer
 
 
-# pylint: disable-next=missing-class-docstring,too-many-ancestors
+# pylint: disable-next=too-many-ancestors
 class ContributorViewSet(ModelViewSet[User, Contributor]):
+    """
+    List, create, update, delete Contributors on the view.
+    """
+
     permission_classes = [AllowAny]
     serializer_class = ContributorSerializer
     queryset = Contributor.objects.all()

@@ -18,13 +18,13 @@ from ..models import AgreementSignature, Contributor
 from ..serializers import AgreementSignatureSerializer
 
 
+# pylint: disable-next=too-many-ancestors
 class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
     """
     An endpoint to check if a contributor has signed latest agreement,
     return OKAY if he has otherwise return the latest commit ID.
     """
 
-    # http_method_names = ["get"]
     queryset = AgreementSignature.objects.all()
     permission_classes = [AllowAny]
     serializer_class = AgreementSignatureSerializer
@@ -40,7 +40,7 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
         agreement signature.
         """
         # Repo information
-        github_id = url_params["contributor_id"]  # Use id=1 for testing
+        github_id = url_params["contributor_id"]
         owner = settings.OWNER
         repo = settings.REPO_NAME
         file_name = settings.FILE_NAME
