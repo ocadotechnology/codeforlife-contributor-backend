@@ -19,6 +19,15 @@ Including another URLconf
 from codeforlife.urls import get_urlpatterns
 from rest_framework.routers import DefaultRouter
 
+from .views import CheckAgreementViewSet
+
 router = DefaultRouter()
+
+router.register(
+    "check-agreement",
+    CheckAgreementViewSet,
+    basename="CheckAgreementViewSet",
+)
+
 
 urlpatterns = get_urlpatterns(router.urls)

@@ -6,11 +6,9 @@ Created on 15/07/2024 at 12:52:50(+01:00).
 from typing import Dict
 
 import requests
-
-# from codeforlife.request import Request
+from codeforlife.permissions import AllowAny
 from codeforlife.response import Response
-
-# from codeforlife.user.models import User
+from codeforlife.user.models import User
 from codeforlife.views import ModelViewSet
 
 # from django.http import HttpResponse
@@ -18,8 +16,10 @@ from rest_framework import status
 
 from ..models import AgreementSignature, Contributor
 
+# from rest_framework.views import APIView
 
-class CheckAgreementViewSet(ModelViewSet):
+
+class CheckAgreementViewSet(ModelViewSet[User, Contributor]):
     """
     An endpoint to check if a contributor has signed latest agreement,
     return OKAY if he has otherwise return the latest commit ID.
@@ -67,4 +67,7 @@ class CheckAgreementViewSet(ModelViewSet):
         if latest_commit_id == latest_signature.agreement_id:
             return Response(status=status.HTTP_200_OK)
 
-        return Response(status=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS)
+        return Response(
+            data={"latest_commit_id: ": latest_commit_id},
+            status=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
+        )
