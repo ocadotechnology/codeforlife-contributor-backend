@@ -13,4 +13,4 @@ class ContributorSerializer(ModelSerializer[User, Contributor]):
 
     class Meta:
         model = Contributor
-        fields = "__all__"
+        fields = ["id", "email", "name", "location", "html_url", "avatar_url"]

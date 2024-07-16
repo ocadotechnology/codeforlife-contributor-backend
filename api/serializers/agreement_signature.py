@@ -14,4 +14,4 @@ class AgreementSignatureSerializer(ModelSerializer[User, AgreementSignature]):
 
     class Meta:
         model = AgreementSignature
-        fields = "__all__"
+        fields = ["id", "contributor", "agreement_id", "signed_at"]
