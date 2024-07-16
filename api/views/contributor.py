@@ -17,6 +17,7 @@ class ContributorViewSet(ModelViewSet[User, Contributor]):
     List, create, update, delete Contributors on the view.
     """
 
+    http_method_names = ["get", "post"]
     permission_classes = [AllowAny]
     serializer_class = ContributorSerializer
     queryset = Contributor.objects.all()

@@ -17,3 +17,31 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
     basename = "contributor"
     model_view_set_class = ContributorViewSet
     fixtures = ["contributors"]
+
+    def setUp(self):
+        self.contributor1 = Contributor.objects.get(pk=1)
+        self.contributor2 = Contributor.objects.get(pk=2)
+        self.contributor3 = Contributor.objects.get(pk=3)
+
+    def test_list(self):
+        """Check list of all contributors."""
+        self.client.list(
+            models=[self.contributor1, self.contributor2, self.contributor3]
+        )
+
+    def test_retrieve(self):
+        """Can retrieve a single contributor."""
+        self.client.retrieve(model=self.contributor1)
+
+    def test_create(self):
+        """Can create a contributor."""
+        self.client.create(
+            data={
+                "id": 100,
+                "email": "contributor1@gmail.com",
+                "name": "Test Contributor",
+                "location": "Hatfield",
+                "html_url": "https://github.com/contributortest",
+                "avatar_url": "https://contributortest.github.io/",
+            }
+        )
