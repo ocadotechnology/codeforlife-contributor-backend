@@ -5,54 +5,110 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Contributor',
+            name="Contributor",
             fields=[
-                ('id', models.IntegerField(help_text="The contributor's GitHub user-ID.", primary_key=True, serialize=False)),
-                ('email', models.EmailField(max_length=254, verbose_name='email')),
-                ('name', models.TextField(verbose_name='name')),
-                ('location', models.TextField(verbose_name='location')),
-                ('html_url', models.TextField(verbose_name='html url')),
-                ('avatar_url', models.TextField(verbose_name='avatar url')),
+                (
+                    "id",
+                    models.IntegerField(
+                        help_text="The contributor's GitHub user-ID.",
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(max_length=254, verbose_name="email"),
+                ),
+                ("name", models.TextField(verbose_name="name")),
+                ("location", models.TextField(verbose_name="location")),
+                ("html_url", models.TextField(verbose_name="html url")),
+                ("avatar_url", models.TextField(verbose_name="avatar url")),
             ],
             options={
-                'verbose_name': 'contributor',
-                'verbose_name_plural': 'contributors',
+                "verbose_name": "contributor",
+                "verbose_name_plural": "contributors",
             },
         ),
         migrations.CreateModel(
-            name='Repository',
+            name="Repository",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('gh_id', models.IntegerField(help_text='Github ID of the repo a contributor has contributed to.', verbose_name='GitHub ID')),
-                ('points', models.IntegerField(default=0, help_text='Story points the contributor closed for this repository.', verbose_name='points')),
-                ('contributor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.contributor')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "gh_id",
+                    models.IntegerField(
+                        help_text="Github ID of the repo a contributor has contributed to.",
+                        verbose_name="GitHub ID",
+                    ),
+                ),
+                (
+                    "points",
+                    models.IntegerField(
+                        default=0,
+                        help_text="Story points the contributor closed for this repository.",
+                        verbose_name="points",
+                    ),
+                ),
+                (
+                    "contributor",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="api.contributor",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'repository',
-                'verbose_name_plural': 'repositories',
-                'unique_together': {('contributor', 'gh_id')},
+                "verbose_name": "repository",
+                "verbose_name_plural": "repositories",
+                "unique_together": {("contributor", "gh_id")},
             },
         ),
         migrations.CreateModel(
-            name='AgreementSignature',
+            name="AgreementSignature",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('agreement_id', models.CharField(help_text='Commit ID of the contribution agreement in workspace.', max_length=40, verbose_name='agreement id')),
-                ('signed_at', models.DateTimeField(verbose_name='signed at')),
-                ('contributor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.contributor')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "agreement_id",
+                    models.CharField(
+                        help_text="Commit ID of the contribution agreement in workspace.",
+                        max_length=40,
+                        verbose_name="agreement id",
+                    ),
+                ),
+                ("signed_at", models.DateTimeField(verbose_name="signed at")),
+                (
+                    "contributor",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="api.contributor",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'agreement signature',
-                'verbose_name_plural': 'agreement signatures',
-                'unique_together': {('contributor', 'agreement_id')},
+                "verbose_name": "agreement signature",
+                "verbose_name_plural": "agreement signatures",
+                "unique_together": {("contributor", "agreement_id")},
             },
         ),
     ]
