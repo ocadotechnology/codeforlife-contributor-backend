@@ -4,8 +4,8 @@
     "pk": 1,
     "fields": {
       "contributor": 1,
-      "points": 10,
-      "gh_id": "10274252"
+      "gh_id": 10274252,
+      "points": 10
     }
   },
   {
@@ -13,9 +13,8 @@
     "pk": 2,
     "fields": {
       "contributor": 2,
-      "points": 20,
-      "gh_id": "102097552"
-      
+      "gh_id": 102097552,
+      "points": 20
     }
   },
   {
@@ -23,8 +22,8 @@
     "pk": 3,
     "fields": {
       "contributor": 3,
-      "points": 30,
-      "gh_id": "890732552"
+      "gh_id": 890732552,
+      "points": 30
     }
   }
 ]

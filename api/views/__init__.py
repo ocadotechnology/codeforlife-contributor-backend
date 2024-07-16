@@ -3,4 +3,5 @@
 Created on 02/07/2024 at 11:59:45(+01:00).
 """
 
-from .check_agreement import CheckAgreementViewSet
+from .agreement_signature import AgreementSignatureViewSet
+from .contributor import ContributorViewSet

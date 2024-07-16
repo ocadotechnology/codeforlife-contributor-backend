@@ -9,34 +9,41 @@ import requests
 from codeforlife.permissions import AllowAny
 from codeforlife.response import Response
 from codeforlife.user.models import User
-from codeforlife.views import ModelViewSet
-
-# from django.http import HttpResponse
+from codeforlife.views import ModelViewSet, action
 from rest_framework import status
 
+import settings
+
 from ..models import AgreementSignature, Contributor
+from ..serializers import AgreementSignatureSerializer
 
-# from rest_framework.views import APIView
 
-
-class CheckAgreementViewSet(ModelViewSet[User, Contributor]):
+class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
     """
     An endpoint to check if a contributor has signed latest agreement,
     return OKAY if he has otherwise return the latest commit ID.
     """
 
+    # http_method_names = ["get"]
+    queryset = AgreementSignature.objects.all()
     permission_classes = [AllowAny]
+    serializer_class = AgreementSignatureSerializer
 
-    def get(self, request):
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path="check-signed/(?P<contributor_id>.+)",
+    )
+    def check_signed(self, request, **url_params: str):
         """
         Get the latest commit id and compare with contributor's
         agreement signature.
         """
         # Repo information
-        github_id = 118008817  # TODO: Change later
-        owner = "ocadotechnology"
-        repo = "codeforlife-workshop"
-        file_name = "CONTRIBUTING.md"
+        github_id = url_params["contributor_id"]  # Use id=1 for testing
+        owner = settings.OWNER
+        repo = settings.REPO_NAME
+        file_name = settings.FILE_NAME
 
         params: Dict[str, str]
         params = {"path": file_name, "per_page": 1}
@@ -55,19 +62,29 @@ class CheckAgreementViewSet(ModelViewSet[User, Contributor]):
             )
 
         # Retrieve contributor
-        contributor = Contributor.objects.get(id=github_id)
-        if not contributor:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        try:
+            contributor = Contributor.objects.get(id=github_id)
+        except Contributor.DoesNotExist:
+            return Response(
+                data={"outcome: ": "Contributor does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
         # Retrieve signature agreement IDs
         signatures = AgreementSignature.objects.filter(contributor=contributor)
-        latest_signature = signatures.order_by("-signed_by").first()
+        latest_signature = signatures.order_by("-signed_at").first()
         if not latest_signature:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                data={"outcome: ": "No Agreement Signatures found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
         # Compare agreement IDs
         if latest_commit_id == latest_signature.agreement_id:
-            return Response(status=status.HTTP_200_OK)
+            return Response(
+                data={"Outcome:": "Successful"},
+                status=status.HTTP_200_OK,
+            )
 
         return Response(
             data={"latest_commit_id: ": latest_commit_id},

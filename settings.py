@@ -18,6 +18,11 @@ from pathlib import Path
 # pylint: disable-next=wildcard-import,unused-wildcard-import
 from codeforlife.settings import *
 
+# Repo information
+OWNER = "ocadotechnology"  # cspell:disable-line
+REPO_NAME = "codeforlife-workspace"
+FILE_NAME = "CONTRIBUTING.md"
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
 
