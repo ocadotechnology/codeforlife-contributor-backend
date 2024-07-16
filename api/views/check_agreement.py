@@ -25,6 +25,8 @@ class CheckAgreementViewSet(ModelViewSet[User, Contributor]):
     return OKAY if he has otherwise return the latest commit ID.
     """
 
+    permission_classes = [AllowAny]
+
     def get(self, request):
         """
         Get the latest commit id and compare with contributor's
