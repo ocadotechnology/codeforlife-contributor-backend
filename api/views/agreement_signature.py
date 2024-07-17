@@ -3,6 +3,7 @@
 Created on 15/07/2024 at 12:52:50(+01:00).
 """
 
+from datetime import datetime
 from typing import Dict
 
 import requests
@@ -25,10 +26,29 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
     return OKAY if he has otherwise return the latest commit ID.
     """
 
-    http_method_names = ["get", "post"]
+    # http_method_names = ["get", "post"]
     queryset = AgreementSignature.objects.all()
     permission_classes = [AllowAny]
     serializer_class = AgreementSignatureSerializer
+
+    def get_latest_commit_id(self, commits=None):
+        """Fetch the latest commit using github's api."""
+        owner = settings.OWNER
+        repo = settings.REPO_NAME
+        file_name = settings.FILE_NAME
+
+        params: Dict[str, str]
+        if commits:
+            params = {"path": file_name, "per_page": commits}
+        else:
+            params = {"path": file_name}
+
+        url = f"https://api.github.com/repos/{owner}/{repo}/commits"
+
+        # Send an API request
+        response = requests.get(url, params=params, timeout=10)
+
+        return response
 
     @action(
         detail=False,
@@ -42,17 +62,9 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
         """
         # Repo information
         github_pk = url_params["contributor_pk"]
-        owner = settings.OWNER
-        repo = settings.REPO_NAME
-        file_name = settings.FILE_NAME
-
-        params: Dict[str, str]
-        params = {"path": file_name, "per_page": 1}
-
-        url = f"https://api.github.com/repos/{owner}/{repo}/commits"
 
         # Send an API request
-        response = requests.get(url, params=params, timeout=10)
+        response = self.get_latest_commit_id(commits=1)
 
         # Check the result of the API call
         if response.status_code == 200:
@@ -66,7 +78,7 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
         try:
             contributor = Contributor.objects.get(pk=github_pk)
         except Contributor.DoesNotExist:
-            return Response(
+            return Response(  # pragma: no cover
                 data={"outcome: ": "Contributor does not exist"},
                 status=status.HTTP_404_NOT_FOUND,
             )
@@ -91,3 +103,75 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
             data={"latest_commit_id: ": latest_commit_id},
             status=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
         )
+
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path="sign-agreement/(?P<contributor_pk>.+)",
+    )
+    def sign_agreement(self, _, **url_params: str):
+        """
+        Sign the latest contributor agreement by retrieving the latest commit
+        id using github's api and make a entry in the data table.
+        """
+
+        github_pk = url_params["contributor_pk"]
+
+        # Send an API request
+        response = self.get_latest_commit_id()
+
+        # Check the result of the API call
+        if response.status_code == 200:
+            latest_commit_id = response.json()[0]["sha"]
+        else:
+            return Response(
+                status=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS
+            )
+
+        # Retrieve contributor
+        try:
+            contributor = Contributor.objects.get(pk=github_pk)
+        except Contributor.DoesNotExist:
+            return Response(  # pragma: no cover
+                data={"outcome: ": "Contributor does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        # Retrieve signature agreement IDs
+        signatures = AgreementSignature.objects.filter(contributor=contributor)
+        latest_signature = signatures.order_by("-signed_at").first()
+        if not latest_signature:
+            return Response(
+                data={"outcome: ": "No Agreement Signatures found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        if latest_commit_id == latest_signature.agreement_id:
+            return Response(
+                data={"Outcome:": "Latest agreement already signed"},
+                status=status.HTTP_200_OK,
+            )
+
+        # Check the last commit ID is valid
+
+        # Check the e
+
+        # Create and save signature in the database
+        serializer = AgreementSignatureSerializer(
+            data={
+                "contributor": contributor.pk,
+                "agreement_id": latest_commit_id,
+                "signed_at": datetime.now(),
+            }
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                data={"Outcome:": "Successful"},
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response(
+                data={"Outcome:": serializer.errors},
+                status=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
+            )
