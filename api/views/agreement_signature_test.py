@@ -61,7 +61,7 @@ class TestAgreementSignatureViewSet(
 
     def test_not_signed(self):
         """
-        Can check if user has NOT signed the ANY contribution agreement.
+        Can check if user has NOT signed ANY contribution agreement.
         """
         self.client.get(
             self.reverse_action(
@@ -73,7 +73,8 @@ class TestAgreementSignatureViewSet(
 
     def test_not_latest_agreement(self):
         """
-        Can check if user has NOT signed the ANY contribution agreement.
+        Can check if user has signed an contribution agreement
+        but it is not the latest one.
         """
         self.client.get(
             self.reverse_action(
@@ -81,4 +82,16 @@ class TestAgreementSignatureViewSet(
                 kwargs={"contributor_pk": 2},
             ),
             status_code_assertion=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
+        )
+
+    def test_no_contributor(self):
+        """
+        Can check if user is not a contributor at all.
+        """
+        self.client.get(
+            self.reverse_action(
+                "check_signed",
+                kwargs={"contributor_pk": 190},
+            ),
+            status_code_assertion=status.HTTP_404_NOT_FOUND,
         )
