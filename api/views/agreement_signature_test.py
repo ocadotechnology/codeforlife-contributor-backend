@@ -37,11 +37,11 @@ class TestAgreementSignatureViewSet(
         self.client.retrieve(model=self.agreement1)
 
     def test_create(self):
-        """Can create a contributor."""
+        """Can create a contributor signature."""
         self.client.create(
             data={
-                "contributor": 1,
-                "agreement_id": "231242113549a620472842fee1ddadfd13cd86",
+                "contributor": 4,
+                "agreement_id": "4e694741a4501f224435c6adf23dd6f0122ccbf4",
                 "signed_at": "2024-01-02T12:00:00Z",
             }
         )
