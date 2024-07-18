@@ -31,5 +31,16 @@
       "html_url": "https://github.com/contributor3",
       "avatar_url": "https://contributor3.github.io/gravatar-url-generator/#/"
     }
+  },
+  {
+    "model": "api.contributor",
+    "pk": 4,
+    "fields": {
+      "email": "contributor4@gmail.com",
+      "name": "contributor4",
+      "location": "Hatfield",
+      "html_url": "https://github.com/contributor4",
+      "avatar_url": "https://contributor4.github.io/gravatar-url-generator/#/"
+    }
   }
 ]
