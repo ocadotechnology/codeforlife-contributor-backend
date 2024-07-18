@@ -30,17 +30,14 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
     permission_classes = [AllowAny]
     serializer_class = AgreementSignatureSerializer
 
-    def get_latest_commit_id(self, commits=None):
+    def get_latest_commit_id(self, commits):
         """Fetch the latest commit using github's api."""
         owner = settings.OWNER
         repo = settings.REPO_NAME
         file_name = settings.FILE_NAME
 
         params: Dict[str, str]
-        if commits:
-            params = {"path": file_name, "per_page": commits}
-        else:
-            params = {"path": file_name}
+        params = {"path": file_name, "per_page": commits}
 
         url = f"https://api.github.com/repos/{owner}/{repo}/commits"
 
@@ -66,18 +63,13 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
         response = self.get_latest_commit_id(commits=1)
 
         # Check the result of the API call
-        if response.status_code == 200:
-            latest_commit_id = response.json()[0]["sha"]
-        else:
-            return Response(
-                status=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS
-            )
+        latest_commit_id = response.json()[0]["sha"]
 
         # Retrieve contributor
         try:
             contributor = Contributor.objects.get(pk=github_pk)
         except Contributor.DoesNotExist:
-            return Response(  # pragma: no cover
+            return Response(
                 data={"outcome: ": "Contributor does not exist"},
                 status=status.HTTP_404_NOT_FOUND,
             )
