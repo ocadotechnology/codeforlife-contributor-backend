@@ -17,7 +17,7 @@ class TestAgreementSignatureViewSet(
 ):
     """Testing agreement signature view set."""
 
-    basename = "agreement"
+    basename = "agreement-signature"
     model_view_set_class = AgreementSignatureViewSet
     fixtures = ["agreement_signatures", "contributors"]
 

@@ -33,20 +33,42 @@ class AgreementSignatureSerializer(ModelSerializer[User, AgreementSignature]):
             )
         return value
 
-    def check_agreement_version(self, value: str):
+    def get_agreement_commit(self, ref: str):
         """
-        Get the status of a commit using GitHub's API.
+        Get a commit for the agreement using GitHub's API
+
+        https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#
+        get-a-commit
+
+        Args:
+            ref: The SHA for the commit.
+
+        Raises:
+            ValidationError: If the commit does not exist for the agreement.
+
+        Returns:
+            The commit's data.
         """
         # Repo Information
         owner = settings.OWNER
         repo = settings.REPO_NAME
         file_name = settings.FILE_NAME
-        url = f"https://api.github.com/repos/{owner}/{repo}/commits/{value}"
+        url = f"https://api.github.com/repos/{owner}/{repo}/commits/{ref}"
 
         # Send an API request
-        params = {"path": file_name}
-        response = requests.get(url, params=params, timeout=10)
-        return response
+        response = requests.get(url, timeout=10)
+        if not response.ok:
+            raise serializers.ValidationError(
+                "Invalid commit ID", code="invalid_commit_id"
+            )
+        response_json = response.json()
+
+        for file in response_json.get("files", []):
+            if file["filename"] == file_name:
+                return response_json
+        raise serializers.ValidationError(
+            "Invalid commit ID", code="invalid_commit_id"
+        )
 
     def validate(self, attrs):
         """
@@ -55,33 +77,25 @@ class AgreementSignatureSerializer(ModelSerializer[User, AgreementSignature]):
 
         # Check validity of the new agreement_ID
         if "agreement_id" in attrs:
-            response = self.check_agreement_version(value=attrs["agreement_id"])
-            if response.status_code != 200:
-                raise serializers.ValidationError(
-                    "Invalid commit ID", code="invalid_commit_id"
-                )
-            new_agreement_version = response.json()["commit"]["committer"][
-                "date"
-            ]
+            commit = self.get_agreement_commit(attrs["agreement_id"])
+            new_agreement_version = commit["commit"]["committer"]["date"]
 
             # Check if contributor has signed a contribution in the past
             if "contributor" in attrs:
-                contributor = attrs["contributor"]
-                prev_signatures = AgreementSignature.objects.filter(
-                    contributor=contributor
+                last_signature = (
+                    AgreementSignature.objects.filter(
+                        contributor=attrs["contributor"]
+                    )
+                    .order_by("-signed_at")
+                    .first()
                 )
-                last_signature = prev_signatures.order_by("-signed_at").first()
                 if not last_signature:
                     return attrs
 
-                response = self.check_agreement_version(
-                    value=last_signature.agreement_id
-                )
+                commit = self.get_agreement_commit(last_signature.agreement_id)
 
                 # Compare the two versions agreement ID.
-                old_agreement_version = response.json()["commit"]["committer"][
-                    "date"
-                ]
+                old_agreement_version = commit["commit"]["committer"]["date"]
                 if new_agreement_version <= old_agreement_version:
                     raise serializers.ValidationError(
                         "You tried to sign an older version of the agreement.",

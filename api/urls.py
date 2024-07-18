@@ -24,9 +24,9 @@ from .views import AgreementSignatureViewSet, ContributorViewSet
 router = DefaultRouter()
 
 router.register(
-    "agreements",
+    "agreement-signatures",
     AgreementSignatureViewSet,
-    basename="agreement",
+    basename="agreement-signature",
 )
 
 router.register(
