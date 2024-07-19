@@ -51,9 +51,18 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
         url = f"https://api.github.com/repos/{settings.OWNER}/{settings.REPO_NAME}/commits"
 
         # Send an API request
-        response = requests.get(url, params=params, timeout=10)
+        response = requests.get(
+            url,
+            headers={
+                "X-GitHub-Api-Version": "2022-11-28",
+            },
+            params=params,
+            timeout=10,
+        )
         if not response.ok:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )  # pragma: no cover
 
         # Get the commit id from json data
         latest_commit_id = response.json()[0]["sha"]

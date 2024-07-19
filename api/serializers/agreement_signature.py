@@ -52,11 +52,14 @@ class AgreementSignatureSerializer(ModelSerializer[User, AgreementSignature]):
         # pylint: disable=line-too-long
         url = f"https://api.github.com/repos/{settings.OWNER}/{settings.REPO_NAME}/commits/{ref}"
 
-        # Set api version
-        # header: t.Dict[str, str] = {"X-GitHub-Api-Version:": "2022-11-28"}
-
         # Send an API request
-        response = requests.get(url, timeout=10)
+        response = requests.get(
+            url,
+            headers={
+                "X-GitHub-Api-Version": "2022-11-28",
+            },
+            timeout=10,
+        )
         if not response.ok:
             raise serializers.ValidationError(
                 "Invalid commit ID", code="invalid_commit_id"
