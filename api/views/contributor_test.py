@@ -45,7 +45,3 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                 "avatar_url": "https://contributortest.github.io/",
             }
         )
-
-    # def test_delete(self):
-    #     """ Can delete a contributor. """
-    #     self.client.delete()

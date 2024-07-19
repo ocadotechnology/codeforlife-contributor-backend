@@ -45,6 +45,17 @@ class TestAgreementSignatureSerializer(
             error_code="invalid_commit_id",
         )
 
+    def test_validate__agreement_not_in_files(self):
+        """Can check if Agreement not in commit files"""
+        self.assert_validate(
+            attrs={
+                "contributor": 1,
+                "agreement_id": "be894d07641a174b9000c177b92b82bd357d2e63",
+                "signed_at": "2024-02-02T12:00:00Z",
+            },
+            error_code="agreement_not_in_files",
+        )
+
     def test_validate__old_version(self):
         """Can check if contributor tried to sign an older version."""
         self.assert_validate(

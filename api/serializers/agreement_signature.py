@@ -49,11 +49,8 @@ class AgreementSignatureSerializer(ModelSerializer[User, AgreementSignature]):
         Returns:
             The commit's data.
         """
-        # Repo Information
-        owner = settings.OWNER
-        repo = settings.REPO_NAME
-        file_name = settings.FILE_NAME
-        url = f"https://api.github.com/repos/{owner}/{repo}/commits/{ref}"
+        # pylint: disable=line-too-long
+        url = f"https://api.github.com/repos/{settings.OWNER}/{settings.REPO_NAME}/commits/{ref}"
 
         # Send an API request
         response = requests.get(url, timeout=10)
@@ -64,10 +61,10 @@ class AgreementSignatureSerializer(ModelSerializer[User, AgreementSignature]):
         response_json = response.json()
 
         for file in response_json.get("files", []):
-            if file["filename"] == file_name:
+            if file["filename"] == settings.FILE_NAME:
                 return response_json
         raise serializers.ValidationError(
-            "Invalid commit ID", code="invalid_commit_id"
+            "Agreement not in commit files", code="agreement_not_in_files"
         )
 
     def validate(self, attrs):

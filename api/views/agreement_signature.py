@@ -3,7 +3,7 @@
 Created on 15/07/2024 at 12:52:50(+01:00).
 """
 
-from typing import Dict
+import typing as t
 
 import requests
 from codeforlife.permissions import AllowAny
@@ -14,38 +14,26 @@ from rest_framework import status
 
 import settings
 
-from ..models import AgreementSignature, Contributor
+from ..models import AgreementSignature
 from ..serializers import AgreementSignatureSerializer
 
 
-# pylint: disable-next=too-many-ancestors
+# pylint: disable-next=missing-docstring,too-many-ancestors
 class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
-    """
-    An endpoint to check if a contributor has signed latest agreement,
-    return OKAY if he has otherwise return the latest commit ID.
-    """
-
-    # http_method_names = ["get", "post"]
-    queryset = AgreementSignature.objects.all()
+    http_method_names = ["get", "post"]
     permission_classes = [AllowAny]
     serializer_class = AgreementSignatureSerializer
 
-    def get_latest_commit_id(self, commits):
-        """Fetch the latest commit using github's api."""
-        owner = settings.OWNER
-        repo = settings.REPO_NAME
-        file_name = settings.FILE_NAME
+    def get_queryset(self):
+        queryset = AgreementSignature.objects.all()
+        if "contributor_pk" in self.kwargs:
+            queryset = queryset.filter(
+                contributor=self.kwargs["contributor_pk"]
+            )
 
-        params: Dict[str, str]
-        params = {"path": file_name, "per_page": commits}
+        return queryset
 
-        url = f"https://api.github.com/repos/{owner}/{repo}/commits"
-
-        # Send an API request
-        response = requests.get(url, params=params, timeout=10)
-
-        return response
-
+    # pylint: disable-next=unused-argument
     @action(
         detail=False,
         methods=["get"],
@@ -56,26 +44,22 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
         Get the latest commit id and compare with contributor's
         agreement signature.
         """
-        # Repo information
-        github_pk = url_params["contributor_pk"]
+        # Send an API request
+        params: t.Dict[str, str] = {"path": settings.FILE_NAME, "per_page": 1}
+
+        # pylint: disable=line-too-long
+        url = f"https://api.github.com/repos/{settings.OWNER}/{settings.REPO_NAME}/commits"
 
         # Send an API request
-        response = self.get_latest_commit_id(commits=1)
+        response = requests.get(url, params=params, timeout=10)
+        if not response.ok:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        # Check the result of the API call
+        # Get the commit id from json data
         latest_commit_id = response.json()[0]["sha"]
 
-        # Retrieve contributor
-        try:
-            contributor = Contributor.objects.get(pk=github_pk)
-        except Contributor.DoesNotExist:
-            return Response(
-                data={"outcome: ": "Contributor does not exist"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
         # Retrieve signature agreement IDs
-        signatures = AgreementSignature.objects.filter(contributor=contributor)
+        signatures = self.get_queryset()
         latest_signature = signatures.order_by("-signed_at").first()
         if not latest_signature:
             return Response(
@@ -85,10 +69,7 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
 
         # Compare agreement IDs
         if latest_commit_id == latest_signature.agreement_id:
-            return Response(
-                data={"Outcome:": "Successful"},
-                status=status.HTTP_200_OK,
-            )
+            return Response()
 
         return Response(
             data={"latest_commit_id: ": latest_commit_id},
