@@ -8,6 +8,7 @@ import typing as t
 import requests
 from codeforlife.permissions import AllowAny
 from codeforlife.response import Response
+from codeforlife.types import DataDict
 from codeforlife.user.models import User
 from codeforlife.views import ModelViewSet, action
 from rest_framework import status
@@ -18,7 +19,7 @@ from ..models import AgreementSignature
 from ..serializers import AgreementSignatureSerializer
 
 
-# pylint: disable-next=missing-docstring,too-many-ancestors
+# pylint: disable-next=missing-class-docstring,too-many-ancestors
 class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
     http_method_names = ["get", "post"]
     permission_classes = [AllowAny]
@@ -30,6 +31,8 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
             queryset = queryset.filter(
                 contributor=self.kwargs["contributor_pk"]
             )
+        if self.action == "check_signed":
+            queryset = queryset.order_by("signed_at")
 
         return queryset
 
@@ -40,50 +43,34 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
     )
     # pylint: disable=unused-argument
     def check_signed(self, _, **url_params: str):
-        """
-        Get the latest commit id and compare with contributor's
-        agreement signature.
-        """
-        # Send an API request
-        params: t.Dict[str, str] = {"path": settings.FILE_NAME, "per_page": 1}
-
-        # pylint: disable=line-too-long
-        url = f"https://api.github.com/repos/{settings.OWNER}/{settings.REPO_NAME}/commits"
-
-        # Send an API request
+        """Check if a contributor has signed the latest agreement."""
+        # Get latest agreement commit.
         response = requests.get(
-            url,
+            # pylint: disable-next=line-too-long
+            url=f"https://api.github.com/repos/{settings.OWNER}/{settings.REPO_NAME}/commits",
             headers={
                 "X-GitHub-Api-Version": "2022-11-28",
             },
-            params=params,
+            params=t.cast(
+                DataDict, {"path": settings.FILE_NAME, "per_page": 1}
+            ),
             timeout=10,
         )
         if not response.ok:
-            return Response(
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )  # pragma: no cover
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        # Get the commit id from json data
         latest_commit_id = response.json()[0]["sha"]
 
-        # Retrieve signature agreement IDs
-        signatures = self.get_queryset()
-        latest_signature = signatures.order_by("-signed_at").first()
-        if not latest_signature:
+        last_signature = self.get_queryset().last()
+        if not last_signature:
             return Response(
-                data={"outcome: ": "No Agreement Signatures found."},
+                data={"latest_commit_id": latest_commit_id},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
-        # Compare agreement IDs
-        if latest_commit_id == latest_signature.agreement_id:
-            return Response(
-                data={"Outcome:": "Successful"},
-                status=status.HTTP_200_OK,
-            )
+        if latest_commit_id == last_signature.agreement_id:
+            return Response()
 
         return Response(
-            data={"latest_commit_id: ": latest_commit_id},
+            data={"latest_commit_id": latest_commit_id},
             status=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
         )
