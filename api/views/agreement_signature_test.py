@@ -41,9 +41,9 @@ class TestAgreementSignatureViewSet(
         self.client.create(
             data={
                 "contributor": 4,
-                "agreement_id": "4e694741a4501f224435c6adf23dd6f0122ccbf4",
+                "agreement_id": "81efd9e68f161104071f7bef7f9256e4840c1af7",
                 "signed_at": "2024-01-02T12:00:00Z",
-            }
+            },
         )
 
     def test_check_signed(self):

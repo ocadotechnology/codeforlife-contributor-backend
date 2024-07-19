@@ -33,12 +33,12 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
 
         return queryset
 
-    # pylint: disable-next=unused-argument
     @action(
         detail=False,
         methods=["get"],
         url_path="check-signed/(?P<contributor_pk>.+)",
     )
+    # pylint: disable=unused-argument
     def check_signed(self, _, **url_params: str):
         """
         Get the latest commit id and compare with contributor's
@@ -69,7 +69,10 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
 
         # Compare agreement IDs
         if latest_commit_id == latest_signature.agreement_id:
-            return Response()
+            return Response(
+                data={"Outcome:": "Successful"},
+                status=status.HTTP_200_OK,
+            )
 
         return Response(
             data={"latest_commit_id: ": latest_commit_id},
