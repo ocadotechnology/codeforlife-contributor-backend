@@ -6,7 +6,7 @@ Created on 16/07/2024 at 14:59:49(+01:00).
 import json
 import typing as t
 from datetime import timedelta
-from unittest.mock import call, patch
+from unittest.mock import patch
 
 import requests
 from codeforlife.tests import ModelViewSetTestCase
@@ -30,7 +30,9 @@ class TestAgreementSignatureViewSet(
     fixtures = ["agreement_signatures", "contributors"]
 
     def setUp(self):
-        self.contributor = Contributor.objects.get(pk=1)
+        self.contributor1 = Contributor.objects.get(pk=1)
+        self.contributor2 = Contributor.objects.get(pk=2)
+        self.contributor3 = Contributor.objects.get(pk=3)
         self.agreement1 = AgreementSignature.objects.get(pk=1)
         self.agreement2 = AgreementSignature.objects.get(pk=2)
         self.agreement3 = AgreementSignature.objects.get(pk=3)
@@ -41,20 +43,20 @@ class TestAgreementSignatureViewSet(
         """Includes all of a contributor's agreement-signatures."""
         self.assert_get_queryset(
             values=AgreementSignature.objects.filter(
-                contributor=self.contributor
+                contributor=self.contributor1
             ),
             action="retrieve",
-            kwargs={"contributor_pk": self.contributor.pk},
+            kwargs={"contributor_pk": self.contributor1.pk},
         )
 
     def test_get_queryset__list(self):
         """Includes all of a contributor's agreement-signatures."""
         self.assert_get_queryset(
             values=AgreementSignature.objects.filter(
-                contributor=self.contributor
+                contributor=self.contributor1
             ),
             action="list",
-            kwargs={"contributor_pk": self.contributor.pk},
+            kwargs={"contributor_pk": self.contributor1.pk},
         )
 
     def test_get_queryset__check_signed(self):
@@ -64,10 +66,10 @@ class TestAgreementSignatureViewSet(
         """
         self.assert_get_queryset(
             values=AgreementSignature.objects.filter(
-                contributor=self.contributor
+                contributor=self.contributor1
             ).order_by("signed_at"),
             action="check_signed",
-            kwargs={"contributor_pk": self.contributor.pk},
+            kwargs={"contributor_pk": self.contributor1.pk},
         )
 
     # test: actions
@@ -108,7 +110,7 @@ class TestAgreementSignatureViewSet(
             self.client.get(
                 self.reverse_action(
                     "check_signed",
-                    kwargs={"contributor_pk": 1},
+                    kwargs={"contributor_pk": self.contributor1.pk},
                 ),
                 status_code_assertion=status.HTTP_200_OK,
             )
@@ -127,7 +129,6 @@ class TestAgreementSignatureViewSet(
         """
         API cannot process the get request.
         """
-        agreement_id = "76241fa5e96ce9a620472842fee1ddadfd13cd86"
         response = requests.Response()
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         with patch.object(
@@ -136,7 +137,7 @@ class TestAgreementSignatureViewSet(
             self.client.get(
                 self.reverse_action(
                     "check_signed",
-                    kwargs={"contributor_pk": 3},
+                    kwargs={"contributor_pk": self.contributor3.pk},
                 ),
                 status_code_assertion=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
@@ -167,7 +168,7 @@ class TestAgreementSignatureViewSet(
             self.client.get(
                 self.reverse_action(
                     "check_signed",
-                    kwargs={"contributor_pk": 3},
+                    kwargs={"contributor_pk": self.contributor3.pk},
                 ),
                 status_code_assertion=status.HTTP_404_NOT_FOUND,
             )
@@ -198,7 +199,7 @@ class TestAgreementSignatureViewSet(
             self.client.get(
                 self.reverse_action(
                     "check_signed",
-                    kwargs={"contributor_pk": 2},
+                    kwargs={"contributor_pk": self.contributor2.pk},
                 ),
                 # pylint: disable-next=line-too-long
                 status_code_assertion=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
