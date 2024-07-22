@@ -4,13 +4,10 @@ Created on 16/07/2024 at 14:59:49(+01:00).
 """
 
 import json
-import typing as t
-from datetime import timedelta
 from unittest.mock import patch
 
 import requests
 from codeforlife.tests import ModelViewSetTestCase
-from codeforlife.types import DataDict
 from codeforlife.user.models import User
 from django.utils import timezone
 from rest_framework import status
