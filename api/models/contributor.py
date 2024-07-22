@@ -41,7 +41,9 @@ class Contributor(models.Model):
         import agreement_signature
 
         return (
-            agreement_signature.AgreementSignature.objects.filter(contributor=self)
+            agreement_signature.AgreementSignature.objects.filter(
+                contributor=self
+            )
             .order_by("signed_at")
             .last()
         )
