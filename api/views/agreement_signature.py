@@ -48,9 +48,7 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
         response = requests.get(
             # pylint: disable-next=line-too-long
             url=f"https://api.github.com/repos/{settings.OWNER}/{settings.REPO_NAME}/commits",
-            headers={
-                "X-GitHub-Api-Version": "2022-11-28",
-            },
+            headers={"X-GitHub-Api-Version": "2022-11-28"},
             params=t.cast(
                 DataDict, {"path": settings.FILE_NAME, "per_page": 1}
             ),
