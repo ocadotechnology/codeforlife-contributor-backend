@@ -47,10 +47,10 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
         # Get latest agreement commit.
         response = requests.get(
             # pylint: disable-next=line-too-long
-            url=f"https://api.github.com/repos/{settings.OWNER}/{settings.REPO_NAME}/commits",
+            url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits",
             headers={"X-GitHub-Api-Version": "2022-11-28"},
             params=t.cast(
-                DataDict, {"path": settings.FILE_NAME, "per_page": 1}
+                DataDict, {"path": settings.GH_FILE, "per_page": 1}
             ),
             timeout=10,
         )

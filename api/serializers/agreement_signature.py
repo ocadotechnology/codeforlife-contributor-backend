@@ -53,7 +53,7 @@ class AgreementSignatureSerializer(ModelSerializer[User, AgreementSignature]):
         # Send an API request
         response = requests.get(
             # pylint: disable-next=line-too-long
-            url=f"https://api.github.com/repos/{settings.OWNER}/{settings.REPO_NAME}/commits/{ref}",
+            url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits/{ref}",
             headers={"X-GitHub-Api-Version": "2022-11-28"},
             timeout=5,
         )
@@ -64,7 +64,7 @@ class AgreementSignatureSerializer(ModelSerializer[User, AgreementSignature]):
 
         response_json = response.json()
         for file in response_json.get("files", []):
-            if file["filename"] == settings.FILE_NAME:
+            if file["filename"] == settings.GH_FILE:
                 return response_json
 
         raise serializers.ValidationError(

@@ -50,14 +50,14 @@ class TestAgreementSignatureSerializer(
                 attrs={
                     "contributor": self.contributor,
                     "agreement_id": agreement_id,
-                    "signed_at": "2024-02-02T12:00:00Z",
+                    "signed_at": timezone.now() - timedelta(days=1),
                 },
                 error_code="invalid_commit_id",
             )
 
             requests_get.assert_called_once_with(
                 # pylint: disable-next=line-too-long
-                url=f"https://api.github.com/repos/{settings.OWNER}/{settings.REPO_NAME}/commits/{agreement_id}",
+                url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits/{agreement_id}",
                 headers={"X-GitHub-Api-Version": "2022-11-28"},
                 timeout=5,
             )
@@ -79,14 +79,14 @@ class TestAgreementSignatureSerializer(
                 attrs={
                     "contributor": self.contributor,
                     "agreement_id": agreement_id,
-                    "signed_at": "2024-02-02T12:00:00Z",
+                    "signed_at": timezone.now() - timedelta(days=1),
                 },
                 error_code="agreement_not_in_files",
             )
 
             requests_get.assert_called_once_with(
                 # pylint: disable-next=line-too-long
-                url=f"https://api.github.com/repos/{settings.OWNER}/{settings.REPO_NAME}/commits/{agreement_id}",
+                url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits/{agreement_id}",
                 headers={"X-GitHub-Api-Version": "2022-11-28"},
                 timeout=5,
             )
@@ -103,7 +103,7 @@ class TestAgreementSignatureSerializer(
         # pylint: disable-next=protected-access
         current_response._content = json.dumps(
             {
-                "files": [{"filename": settings.FILE_NAME}],
+                "files": [{"filename": settings.GH_FILE}],
                 "commit": {"author": {"date": str(now - timedelta(days=1))}},
             }
         ).encode("utf-8")
@@ -114,7 +114,7 @@ class TestAgreementSignatureSerializer(
         # pylint: disable-next=protected-access
         last_response._content = json.dumps(
             {
-                "files": [{"filename": settings.FILE_NAME}],
+                "files": [{"filename": settings.GH_FILE}],
                 "commit": {"author": {"date": str(now)}},
             }
         ).encode("utf-8")
@@ -129,7 +129,7 @@ class TestAgreementSignatureSerializer(
                 attrs={
                     "contributor": self.contributor,
                     "agreement_id": agreement_id,
-                    "signed_at": "2024-06-02T12:00:00Z",
+                    "signed_at": timezone.now() - timedelta(days=1),
                 },
                 error_code="old_version",
             )
@@ -138,13 +138,13 @@ class TestAgreementSignatureSerializer(
                 [
                     call(
                         # pylint: disable-next=line-too-long
-                        url=f"https://api.github.com/repos/{settings.OWNER}/{settings.REPO_NAME}/commits/{agreement_id}",
+                        url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits/{agreement_id}",
                         headers={"X-GitHub-Api-Version": "2022-11-28"},
                         timeout=5,
                     ),
                     call(
                         # pylint: disable-next=line-too-long
-                        url=f"https://api.github.com/repos/{settings.OWNER}/{settings.REPO_NAME}/commits/{last_agreement_signature.agreement_id}",
+                        url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits/{last_agreement_signature.agreement_id}",
                         headers={"X-GitHub-Api-Version": "2022-11-28"},
                         timeout=5,
                     ),
