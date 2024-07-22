@@ -5,6 +5,7 @@ Created on 08/07/2024 at 10:48:44(+01:00).
 
 import typing as t
 
+from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -26,6 +27,7 @@ class AgreementSignature(models.Model):
         _("agreement id"),
         max_length=40,
         help_text=_("Commit ID of the contribution agreement in workspace."),
+        validators=[MinLengthValidator(40)],
     )
     signed_at = models.DateTimeField(_("signed at"))
 

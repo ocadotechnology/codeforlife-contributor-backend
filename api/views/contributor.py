@@ -11,7 +11,7 @@ from ..models import Contributor
 from ..serializers import ContributorSerializer
 
 
-# pylint: disable-next=missing-docstring,too-many-ancestors
+# pylint: disable-next=missing-class-docstring,too-many-ancestors
 class ContributorViewSet(ModelViewSet[User, Contributor]):
     http_method_names = ["get", "post"]
     permission_classes = [AllowAny]

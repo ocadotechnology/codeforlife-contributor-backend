@@ -13,27 +13,29 @@ from rest_framework import serializers
 
 import settings
 
-from ..models import AgreementSignature
+from ..models import AgreementSignature, Contributor
+
+# pylint: disable=missing-class-docstring
+# pylint: disable=missing-function-docstring
+# pylint: disable=too-many-ancestors
 
 # pylint: disable-next=missing-function-docstring,too-many-ancestors
 
 
 class AgreementSignatureSerializer(ModelSerializer[User, AgreementSignature]):
-    """Agreement serializer class"""
-
     class Meta:
         model = AgreementSignature
         fields = ["id", "contributor", "agreement_id", "signed_at"]
 
     def validate_signed_at(self, value: datetime):
-        """Validate the time in not in future."""
         if value > timezone.now():
             raise serializers.ValidationError(
                 "Cannot sign in the future", code="signed_in_future"
             )
+
         return value
 
-    def get_agreement_commit(self, ref: str):
+    def _get_agreement_commit(self, ref: str):
         """
         Get a commit for the agreement using GitHub's API
 
@@ -49,59 +51,49 @@ class AgreementSignatureSerializer(ModelSerializer[User, AgreementSignature]):
         Returns:
             The commit's data.
         """
-        # pylint: disable=line-too-long
-        url = f"https://api.github.com/repos/{settings.OWNER}/{settings.REPO_NAME}/commits/{ref}"
 
         # Send an API request
         response = requests.get(
-            url,
-            headers={
-                "X-GitHub-Api-Version": "2022-11-28",
-            },
-            timeout=10,
+            # pylint: disable-next=line-too-long
+            url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits/{ref}",
+            headers={"X-GitHub-Api-Version": "2022-11-28"},
+            timeout=5,
         )
         if not response.ok:
             raise serializers.ValidationError(
                 "Invalid commit ID", code="invalid_commit_id"
             )
-        response_json = response.json()
 
+        response_json = response.json()
         for file in response_json.get("files", []):
-            if file["filename"] == settings.FILE_NAME:
+            if file["filename"] == settings.GH_FILE:
                 return response_json
+
         raise serializers.ValidationError(
             "Agreement not in commit files", code="agreement_not_in_files"
         )
 
     def validate(self, attrs):
-        """
-        Validate the new agreement is the new version not the older version.
-        """
+        contributor: Contributor = attrs["contributor"]
+        agreement_id: str = attrs["agreement_id"]
 
         # Check validity of the new agreement_ID
-        if "agreement_id" in attrs:
-            commit = self.get_agreement_commit(attrs["agreement_id"])
-            new_agreement_version = commit["commit"]["committer"]["date"]
+        commit = self._get_agreement_commit(agreement_id)
 
-            # Check if contributor has signed a contribution in the past
-            if "contributor" in attrs:
-                last_signature = (
-                    AgreementSignature.objects.filter(
-                        contributor=attrs["contributor"]
-                    )
-                    .order_by("-signed_at")
-                    .first()
+        # Check if contributor has signed a contribution in the past
+        last_agreement_signature = contributor.last_agreement_signature
+        if last_agreement_signature:
+            last_commit = self._get_agreement_commit(
+                last_agreement_signature.agreement_id
+            )
+
+            if (
+                commit["commit"]["author"]["date"]
+                <= last_commit["commit"]["author"]["date"]
+            ):
+                raise serializers.ValidationError(
+                    "You tried to sign an older version of the agreement.",
+                    code="old_version",
                 )
-                if not last_signature:
-                    return attrs
 
-                commit = self.get_agreement_commit(last_signature.agreement_id)
-
-                # Compare the two versions agreement ID.
-                old_agreement_version = commit["commit"]["committer"]["date"]
-                if new_agreement_version <= old_agreement_version:
-                    raise serializers.ValidationError(
-                        "You tried to sign an older version of the agreement.",
-                        code="old_version",
-                    )
         return attrs
