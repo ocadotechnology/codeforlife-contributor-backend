@@ -50,7 +50,7 @@ class TestAgreementSignatureSerializer(
                 attrs={
                     "contributor": self.contributor,
                     "agreement_id": agreement_id,
-                    "signed_at": timezone.now() - timedelta(days=1),
+                    "signed_at": timezone.now(),
                 },
                 error_code="invalid_commit_id",
             )
@@ -79,7 +79,7 @@ class TestAgreementSignatureSerializer(
                 attrs={
                     "contributor": self.contributor,
                     "agreement_id": agreement_id,
-                    "signed_at": timezone.now() - timedelta(days=1),
+                    "signed_at": timezone.now(),
                 },
                 error_code="agreement_not_in_files",
             )
@@ -129,7 +129,7 @@ class TestAgreementSignatureSerializer(
                 attrs={
                     "contributor": self.contributor,
                     "agreement_id": agreement_id,
-                    "signed_at": timezone.now() - timedelta(days=1),
+                    "signed_at": now - timedelta(days=1),
                 },
                 error_code="old_version",
             )

@@ -34,8 +34,6 @@ class TestAgreementSignatureViewSet(
         self.contributor2 = Contributor.objects.get(pk=2)
         self.contributor3 = Contributor.objects.get(pk=3)
         self.agreement1 = AgreementSignature.objects.get(pk=1)
-        self.agreement2 = AgreementSignature.objects.get(pk=2)
-        self.agreement3 = AgreementSignature.objects.get(pk=3)
 
     # test: get queryset
 
@@ -80,9 +78,7 @@ class TestAgreementSignatureViewSet(
 
     def test_list(self):
         """Check list of all agreement signatures."""
-        self.client.list(
-            models=[self.agreement1, self.agreement2, self.agreement3]
-        )
+        self.client.list(models=list(AgreementSignature.objects.all()))
 
     def test_create(self):
         """Can create a contributor signature."""
@@ -90,20 +86,20 @@ class TestAgreementSignatureViewSet(
             data={
                 "contributor": 4,
                 "agreement_id": "81efd9e68f161104071f7bef7f9256e4840c1af7",
-                "signed_at": timezone.now() - timedelta(days=1),
+                "signed_at": timezone.now(),
             },
         )
 
     def test_check_signed__signed(self):
-        """
-        Contributor has signed the latest agreement.
-        """
+        """Contributor has signed the latest agreement."""
         agreement_id = "76241fa5e96ce9a620472842fee1ddadfd13cd86"
+
         response = requests.Response()
         response.status_code = status.HTTP_200_OK
         response.encoding = "utf-8"
         # pylint: disable-next=protected-access
         response._content = json.dumps([{"sha": agreement_id}]).encode("utf-8")
+
         with patch.object(
             requests, "get", return_value=response
         ) as requests_get:
@@ -111,26 +107,22 @@ class TestAgreementSignatureViewSet(
                 self.reverse_action(
                     "check_signed",
                     kwargs={"contributor_pk": self.contributor1.pk},
-                ),
-                status_code_assertion=status.HTTP_200_OK,
+                )
             )
 
             requests_get.assert_called_once_with(
                 # pylint: disable-next=line-too-long
                 url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits",
                 headers={"X-GitHub-Api-Version": "2022-11-28"},
-                params=t.cast(
-                    DataDict, {"path": settings.GH_FILE, "per_page": 1}
-                ),
+                params={"path": settings.GH_FILE, "per_page": 1},
                 timeout=5,
             )
 
     def test_check_signed__no_response(self):
-        """
-        API cannot process the get request.
-        """
+        """API cannot process the get request."""
         response = requests.Response()
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
         with patch.object(
             requests, "get", return_value=response
         ) as requests_get:
@@ -146,26 +138,24 @@ class TestAgreementSignatureViewSet(
                 # pylint: disable-next=line-too-long
                 url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits",
                 headers={"X-GitHub-Api-Version": "2022-11-28"},
-                params=t.cast(
-                    DataDict, {"path": settings.GH_FILE, "per_page": 1}
-                ),
+                params={"path": settings.GH_FILE, "per_page": 1},
                 timeout=5,
             )
 
     def test_check_signed__not_signed(self):
-        """
-        Can check if user has NOT signed ANY contribution agreement.
-        """
+        """Can check if user has NOT signed ANY contribution agreement."""
         agreement_id = "76241fa5e96ce9a620472842fee1ddadfd13cd86"
+
         response = requests.Response()
         response.status_code = status.HTTP_200_OK
         response.encoding = "utf-8"
         # pylint: disable-next=protected-access
         response._content = json.dumps([{"sha": agreement_id}]).encode("utf-8")
+
         with patch.object(
             requests, "get", return_value=response
         ) as requests_get:
-            self.client.get(
+            response = self.client.get(
                 self.reverse_action(
                     "check_signed",
                     kwargs={"contributor_pk": self.contributor3.pk},
@@ -173,13 +163,13 @@ class TestAgreementSignatureViewSet(
                 status_code_assertion=status.HTTP_404_NOT_FOUND,
             )
 
+            assert agreement_id in response.json().values()
+
             requests_get.assert_called_once_with(
                 # pylint: disable-next=line-too-long
                 url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits",
                 headers={"X-GitHub-Api-Version": "2022-11-28"},
-                params=t.cast(
-                    DataDict, {"path": settings.GH_FILE, "per_page": 1}
-                ),
+                params={"path": settings.GH_FILE, "per_page": 1},
                 timeout=5,
             )
 
@@ -188,15 +178,17 @@ class TestAgreementSignatureViewSet(
         Contributor has signed an agreement but it is not the latest one.
         """
         agreement_id = "76241fa5e96ce9a620472842fee1ddadfd13cd86"
+
         response = requests.Response()
         response.status_code = status.HTTP_200_OK
         response.encoding = "utf-8"
         # pylint: disable-next=protected-access
         response._content = json.dumps([{"sha": agreement_id}]).encode("utf-8")
+
         with patch.object(
             requests, "get", return_value=response
         ) as requests_get:
-            self.client.get(
+            response = self.client.get(
                 self.reverse_action(
                     "check_signed",
                     kwargs={"contributor_pk": self.contributor2.pk},
@@ -205,12 +197,12 @@ class TestAgreementSignatureViewSet(
                 status_code_assertion=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
             )
 
+            assert agreement_id in response.json().values()
+
             requests_get.assert_called_once_with(
                 # pylint: disable-next=line-too-long
                 url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits",
                 headers={"X-GitHub-Api-Version": "2022-11-28"},
-                params=t.cast(
-                    DataDict, {"path": settings.GH_FILE, "per_page": 1}
-                ),
+                params={"path": settings.GH_FILE, "per_page": 1},
                 timeout=5,
             )

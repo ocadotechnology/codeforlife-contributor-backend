@@ -20,8 +20,6 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
 
     def setUp(self):
         self.contributor1 = Contributor.objects.get(pk=1)
-        self.contributor2 = Contributor.objects.get(pk=2)
-        self.contributor3 = Contributor.objects.get(pk=3)
 
     def test_list(self):
         """Check list of all contributors."""

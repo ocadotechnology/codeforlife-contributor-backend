@@ -37,7 +37,7 @@ class Contributor(models.Model):
     @property
     def last_agreement_signature(self):
         """The last agreement that this contributor signed."""
-        # pylint: disable-next=import-outside-toplevel, cyclic-import
+        # pylint: disable-next=import-outside-toplevel,cyclic-import
         from .agreement_signature import AgreementSignature
 
         return (
