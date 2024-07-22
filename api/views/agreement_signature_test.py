@@ -160,7 +160,7 @@ class TestAgreementSignatureViewSet(
                 status_code_assertion=status.HTTP_404_NOT_FOUND,
             )
 
-            assert agreement_id in response.json().values()
+            assert agreement_id == response.json()["latest_commit_id"]
 
             requests_get.assert_called_once_with(
                 # pylint: disable-next=line-too-long
@@ -194,7 +194,7 @@ class TestAgreementSignatureViewSet(
                 status_code_assertion=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
             )
 
-            assert agreement_id in response.json().values()
+            assert agreement_id == response.json()["latest_commit_id"]
 
             requests_get.assert_called_once_with(
                 # pylint: disable-next=line-too-long
