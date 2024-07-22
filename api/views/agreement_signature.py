@@ -50,7 +50,7 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
             url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits",
             headers={"X-GitHub-Api-Version": "2022-11-28"},
             params=t.cast(DataDict, {"path": settings.GH_FILE, "per_page": 1}),
-            timeout=10,
+            timeout=5,
         )
         if not response.ok:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
