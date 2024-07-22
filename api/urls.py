@@ -19,6 +19,21 @@ Including another URLconf
 from codeforlife.urls import get_urlpatterns
 from rest_framework.routers import DefaultRouter
 
+from .views import AgreementSignatureViewSet, ContributorViewSet
+
 router = DefaultRouter()
+
+router.register(
+    "agreement-signatures",
+    AgreementSignatureViewSet,
+    basename="agreement-signature",
+)
+
+router.register(
+    "contributors",
+    ContributorViewSet,
+    basename="contributor",
+)
+
 
 urlpatterns = get_urlpatterns(router.urls)

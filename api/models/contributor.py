@@ -17,6 +17,7 @@ else:
 class Contributor(models.Model):
     """A contributor that contributes to a repo"""
 
+    pk: int
     id = models.IntegerField(
         primary_key=True, help_text=_("The contributor's GitHub user-ID.")
     )
@@ -32,3 +33,15 @@ class Contributor(models.Model):
 
     def __str__(self):
         return f"{self.name} <{self.email}>"
+
+    @property
+    def last_agreement_signature(self):
+        """The last agreement that this contributor signed."""
+        # pylint: disable-next=import-outside-toplevel,cyclic-import
+        from .agreement_signature import AgreementSignature
+
+        return (
+            AgreementSignature.objects.filter(contributor=self)
+            .order_by("signed_at")
+            .last()
+        )
