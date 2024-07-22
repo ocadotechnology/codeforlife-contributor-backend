@@ -41,7 +41,7 @@ class AgreementSignatureViewSet(ModelViewSet[User, AgreementSignature]):
         methods=["get"],
         url_path="check-signed/(?P<contributor_pk>.+)",
     )
-    # pylint: disable=unused-argument
+    # pylint: disable-next=unused-argument
     def check_signed(self, _, **url_params: str):
         """Check if a contributor has signed the latest agreement."""
         # Get latest agreement commit.
