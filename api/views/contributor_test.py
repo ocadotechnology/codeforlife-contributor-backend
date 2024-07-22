@@ -25,9 +25,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
 
     def test_list(self):
         """Check list of all contributors."""
-        self.client.list(
-            models=list(Contributor.objects.all())
-        )
+        self.client.list(models=list(Contributor.objects.all()))
 
     def test_retrieve(self):
         """Can retrieve a single contributor."""
