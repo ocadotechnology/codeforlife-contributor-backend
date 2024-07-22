@@ -37,13 +37,11 @@ class Contributor(models.Model):
     @property
     def last_agreement_signature(self):
         """The last agreement that this contributor signed."""
-        # pylint: disable-next=import-outside-toplevel
-        import agreement_signature
+        # pylint: disable-next=import-outside-toplevel, cyclic-import
+        from .agreement_signature import AgreementSignature
 
         return (
-            agreement_signature.AgreementSignature.objects.filter(
-                contributor=self
-            )
+            AgreementSignature.objects.filter(contributor=self)
             .order_by("signed_at")
             .last()
         )
