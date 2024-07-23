@@ -23,7 +23,7 @@ class Contributor(models.Model):
     )
     email = models.EmailField(_("email"))
     name = models.TextField(_("name"))
-    location = models.TextField(_("location"))
+    location = models.TextField(_("location"), null=True)
     html_url = models.TextField(_("html url"))
     avatar_url = models.TextField(_("avatar url"))
 

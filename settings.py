@@ -13,15 +13,22 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # pylint: disable-next=wildcard-import,unused-wildcard-import
 from codeforlife.settings import *
+from dotenv import load_dotenv
 
 # Github
 GH_ORG = "ocadotechnology"
-GH_REPO =  "codeforlife-workspace"
+GH_REPO = "codeforlife-workspace"
 GH_FILE = "CONTRIBUTING.md"
+
+# 0Auth
+load_dotenv()
+GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
+GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
