@@ -27,6 +27,11 @@ class ContributorViewSet(ModelViewSet[User, Contributor]):
     @action(detail=False, methods=["get"])
     def log_into_github(self, request: Request):
         """Users can login using their existing github account"""
+        # Get code from login request
+        code = request.GET.get("code")
+        if not code:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         # Get user access Token
         access_token_request = requests.post(
             url="https://github.com/login/oauth/access_token",
@@ -68,7 +73,7 @@ class ContributorViewSet(ModelViewSet[User, Contributor]):
                 status=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
             )
 
-        # Check if user is already a contributor
+        # Check if user is already a contributor (TODO: Update user info)
         gh_id = user_data["id"]
         if Contributor.objects.filter(pk=gh_id):
             return Response(status=status.HTTP_409_CONFLICT)
