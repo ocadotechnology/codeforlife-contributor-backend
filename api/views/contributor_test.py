@@ -107,6 +107,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                     "log_into_github",
                 ),
                 {"code": code},
+                # pylint: disable-next=line-too-long
                 status_code_assertion=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
             )
 
@@ -150,6 +151,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                         "log_into_github",
                     ),
                     {"code": code},
+                    # pylint: disable-next=line-too-long
                     status_code_assertion=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
                 )
 
@@ -330,6 +332,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                         "log_into_github",
                     ),
                     {"code": code},
+                    # pylint: disable-next=line-too-long
                     status_code_assertion=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
                 )
 
