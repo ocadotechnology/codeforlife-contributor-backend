@@ -19,7 +19,7 @@ from ..serializers import ContributorSerializer
 
 # pylint: disable-next=missing-class-docstring,too-many-ancestors
 class ContributorViewSet(ModelViewSet[User, Contributor]):
-    http_method_names = ["get", "post"]
+    http_method_names = ["get", "post", "delete"]
     permission_classes = [AllowAny]
     serializer_class = ContributorSerializer
     queryset = Contributor.objects.all()
@@ -28,8 +28,7 @@ class ContributorViewSet(ModelViewSet[User, Contributor]):
     def log_into_github(self, request: Request):
         """Users can login using their existing github account"""
         # Get code from login request
-        code = request.GET.get("code")
-        if not code:
+        if not request.GET.get("code"):
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Get user access Token
@@ -43,6 +42,7 @@ class ContributorViewSet(ModelViewSet[User, Contributor]):
             },
             timeout=5,
         )
+
         if not access_token_request.ok:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         auth_data = access_token_request.json()
@@ -73,7 +73,7 @@ class ContributorViewSet(ModelViewSet[User, Contributor]):
                 status=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
             )
 
-        # Check if user is already a contributor (TODO: Update user info)
+        # Check if user is already a contributor
         gh_id = user_data["id"]
         contributor_data = {
             "id": gh_id,
@@ -83,7 +83,9 @@ class ContributorViewSet(ModelViewSet[User, Contributor]):
             "html_url": user_data["html_url"],
             "avatar_url": user_data["avatar_url"],
         }
+
         try:
+            # Update an existing contributor
             contributor = Contributor.objects.get(pk=gh_id)
             serializer = ContributorSerializer(
                 contributor, data=contributor_data

@@ -51,19 +51,16 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
 
     def test_log_into_github__no_code(self):
         """Login API call does not return a code."""
-        code = ""
         self.client.get(
             self.reverse_action(
                 "log_into_github",
             ),
-            {"code": code},
+            {"code": ""},
             status_code_assertion=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
     def test_log_into_github__no_access_token(self):
-        """POST API call did not return an access token"""
-        code = "3e074f3e12656707cf7f"
-
+        """0Auth API call did not return an access token"""
         response = requests.Response()
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
@@ -74,7 +71,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                 self.reverse_action(
                     "log_into_github",
                 ),
-                {"code": code},
+                {"code": "3e074f3e12656707cf7f"},
                 status_code_assertion=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
@@ -84,15 +81,13 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                 params={
                     "client_id": settings.GITHUB_CLIENT_ID,
                     "client_secret": settings.GITHUB_CLIENT_SECRET,
-                    "code": code,
+                    "code": "3e074f3e12656707cf7f",
                 },
                 timeout=5,
             )
 
     def test_log_into_github__code_expired(self):
-        """POST API call failed due to expired code."""
-        code = "3e074f3e12656707cf7f"
-
+        """Access token was not generated due to expired code."""
         response = requests.Response()
         response.status_code = status.HTTP_200_OK
         response.encoding = "utf-8"
@@ -106,7 +101,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                 self.reverse_action(
                     "log_into_github",
                 ),
-                {"code": code},
+                {"code": "3e074f3e12656707cf7f"},
                 # pylint: disable-next=line-too-long
                 status_code_assertion=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
             )
@@ -117,15 +112,13 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                 params={
                     "client_id": settings.GITHUB_CLIENT_ID,
                     "client_secret": settings.GITHUB_CLIENT_SECRET,
-                    "code": code,
+                    "code": "3e074f3e12656707cf7f",
                 },
                 timeout=5,
             )
 
     def test_log_into_github__null_email(self):
-        """User must have their email public on github"""
-        code = "3e074f3e12656707cf7f"
-
+        """Users must have their email as PUBLIC on github"""
         response_post = requests.Response()
         response_post.status_code = status.HTTP_200_OK
         response_post.encoding = "utf-8"
@@ -150,7 +143,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                     self.reverse_action(
                         "log_into_github",
                     ),
-                    {"code": code},
+                    {"code": "3e074f3e12656707cf7f"},
                     # pylint: disable-next=line-too-long
                     status_code_assertion=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
                 )
@@ -161,7 +154,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                     params={
                         "client_id": settings.GITHUB_CLIENT_ID,
                         "client_secret": settings.GITHUB_CLIENT_SECRET,
-                        "code": code,
+                        "code": "3e074f3e12656707cf7f",
                     },
                     timeout=5,
                 )
@@ -175,10 +168,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                 )
 
     def test_log_into_github__existing_contributor(self):
-        """User already exists as a contributor"""
-        # TODO: update the user info
-        code = "3e074f3e12656707cf7f"
-
+        """User already logged-in in the past and exists as a contributor"""
         response_post = requests.Response()
         response_post.status_code = status.HTTP_200_OK
         response_post.encoding = "utf-8"
@@ -212,7 +202,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                     self.reverse_action(
                         "log_into_github",
                     ),
-                    {"code": code},
+                    {"code": "3e074f3e12656707cf7f"},
                     status_code_assertion=status.HTTP_200_OK,
                 )
 
@@ -222,7 +212,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                     params={
                         "client_id": settings.GITHUB_CLIENT_ID,
                         "client_secret": settings.GITHUB_CLIENT_SECRET,
-                        "code": code,
+                        "code": "3e074f3e12656707cf7f",
                     },
                     timeout=5,
                 )
@@ -236,9 +226,10 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                 )
 
     def test_log_into_github__new_contributor(self):
-        """Add user to the contributor data table"""
-        code = "3e074f3e12656707cf7f"
-
+        """
+        User is logging-in for the first time and will be added
+        to the contributor data table
+        """
         response_post = requests.Response()
         response_post.status_code = status.HTTP_200_OK
         response_post.encoding = "utf-8"
@@ -272,7 +263,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                     self.reverse_action(
                         "log_into_github",
                     ),
-                    {"code": code},
+                    {"code": "3e074f3e12656707cf7f"},
                 )
 
                 requests_post.assert_called_once_with(
@@ -281,7 +272,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                     params={
                         "client_id": settings.GITHUB_CLIENT_ID,
                         "client_secret": settings.GITHUB_CLIENT_SECRET,
-                        "code": code,
+                        "code": "3e074f3e12656707cf7f",
                     },
                     timeout=5,
                 )
@@ -295,9 +286,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                 )
 
     def test_log_into_github__invalid_serializer(self):
-        """User data from Github is not in the valid format."""
-        code = "3e074f3e12656707cf7f"
-
+        """User data retrieved from Github is not in the valid format."""
         response_post = requests.Response()
         response_post.status_code = status.HTTP_200_OK
         response_post.encoding = "utf-8"
@@ -331,7 +320,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                     self.reverse_action(
                         "log_into_github",
                     ),
-                    {"code": code},
+                    {"code": "3e074f3e12656707cf7f"},
                     # pylint: disable-next=line-too-long
                     status_code_assertion=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
                 )
@@ -342,7 +331,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                     params={
                         "client_id": settings.GITHUB_CLIENT_ID,
                         "client_secret": settings.GITHUB_CLIENT_SECRET,
-                        "code": code,
+                        "code": "3e074f3e12656707cf7f",
                     },
                     timeout=5,
                 )
