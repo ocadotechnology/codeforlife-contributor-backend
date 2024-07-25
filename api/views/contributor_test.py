@@ -211,7 +211,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                         "log_into_github",
                     ),
                     {"code": code},
-                    status_code_assertion=status.HTTP_409_CONFLICT,
+                    status_code_assertion=status.HTTP_200_OK,
                 )
 
                 requests_post.assert_called_once_with(

@@ -75,11 +75,7 @@ class ContributorViewSet(ModelViewSet[User, Contributor]):
 
         # Check if user is already a contributor (TODO: Update user info)
         gh_id = user_data["id"]
-        if Contributor.objects.filter(pk=gh_id):
-            return Response(status=status.HTTP_409_CONFLICT)
-
-        # Create a new contributor
-        data = {
+        contributor_data = {
             "id": gh_id,
             "email": user_data["email"],
             "name": user_data["name"],
@@ -87,8 +83,15 @@ class ContributorViewSet(ModelViewSet[User, Contributor]):
             "html_url": user_data["html_url"],
             "avatar_url": user_data["avatar_url"],
         }
+        try:
+            contributor = Contributor.objects.get(pk=gh_id)
+            serializer = ContributorSerializer(
+                contributor, data=contributor_data
+            )
+        except Contributor.DoesNotExist:
+            # Create a new contributor
+            serializer = ContributorSerializer(data=contributor_data)
 
-        serializer = ContributorSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_200_OK)
