@@ -18,7 +18,7 @@ from ..serializers import ContributorSerializer
 
 # pylint: disable-next=missing-class-docstring,too-many-ancestors
 class ContributorViewSet(ModelViewSet[User, Contributor]):
-    http_method_names = ["get", "post"]  # "post"
+    http_method_names = ["get"]  # "post"
     permission_classes = [AllowAny]
     serializer_class = ContributorSerializer
     queryset = Contributor.objects.all()
@@ -66,42 +66,17 @@ class ContributorViewSet(ModelViewSet[User, Contributor]):
             url="https://api.github.com/user",
             headers={
                 "Accept": "application/json",
+                # pylint: disable-next=line-too-long
                 "Authorization": f"{auth_data['token_type']} {auth_data['access_token']}",
             },
             timeout=5,
         )
 
-        user_data = response.json()
-        if not user_data["email"]:
-            return Response(
-                data="Email null",
-                status=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
-            )
-
-        # Check if user is already a contributor
-        gh_id = user_data["id"]
-        contributor_data = {
-            "id": gh_id,
-            "email": user_data["email"],
-            "name": user_data["name"],
-            "location": user_data["location"],
-            "html_url": user_data["html_url"],
-            "avatar_url": user_data["avatar_url"],
-        }
-
-        try:
-            # Update an existing contributor
-            contributor = Contributor.objects.get(pk=gh_id)
-            serializer = ContributorSerializer(
-                contributor, data=contributor_data
-            )
-        except Contributor.DoesNotExist:
-            # Create a new contributor
-            serializer = ContributorSerializer(data=contributor_data)
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_200_OK)
+        serializer = self.get_serializer(data=response.json())
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
         return Response(
-            status=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
+            serializer.data,
+            status=status.HTTP_201_CREATED,
+            headers=self.get_success_headers(serializer.data),
         )
