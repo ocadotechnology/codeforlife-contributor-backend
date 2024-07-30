@@ -15,13 +15,10 @@ import settings
 
 from ..models import AgreementSignature, Contributor
 
+
 # pylint: disable=missing-class-docstring
 # pylint: disable=missing-function-docstring
 # pylint: disable=too-many-ancestors
-
-# pylint: disable-next=missing-function-docstring,too-many-ancestors
-
-
 class AgreementSignatureSerializer(ModelSerializer[User, AgreementSignature]):
     class Meta:
         model = AgreementSignature

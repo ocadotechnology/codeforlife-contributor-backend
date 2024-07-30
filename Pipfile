@@ -30,7 +30,6 @@ codeforlife = {ref = "v0.18.0", git = "https://github.com/ocadotechnology/codefo
 codeforlife = {ref = "v0.18.0", git = "https://github.com/ocadotechnology/codeforlife-package-python.git", extras = ["dev"]}
 # codeforlife = {file = "../codeforlife-package-python", editable = true, extras = ["dev"]}
 # 🚫 Don't add [dev-packages] below that are inherited from the CFL package.
-python-dotenv = "==1.0.1"
 
 [requires]
 python_version = "3.8"

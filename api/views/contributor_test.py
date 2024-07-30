@@ -9,9 +9,8 @@ from unittest.mock import patch
 import requests
 from codeforlife.tests import ModelViewSetTestCase
 from codeforlife.user.models import User
+from django.conf import settings
 from rest_framework import status
-
-import settings
 
 from ..models import Contributor
 from .contributor import ContributorViewSet
@@ -92,7 +91,9 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
         response.status_code = status.HTTP_200_OK
         response.encoding = "utf-8"
         # pylint: disable-next=protected-access
-        response._content = json.dumps({}).encode("utf-8")
+        response._content = json.dumps({"error": "bad request."}).encode(
+            "utf-8"
+        )
 
         with patch.object(
             requests, "post", return_value=response

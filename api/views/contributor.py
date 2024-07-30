@@ -9,9 +9,8 @@ from codeforlife.request import Request
 from codeforlife.response import Response
 from codeforlife.user.models import User
 from codeforlife.views import ModelViewSet, action
+from django.conf import settings
 from rest_framework import status
-
-import settings
 
 from ..models import Contributor
 from ..serializers import ContributorSerializer
@@ -19,54 +18,60 @@ from ..serializers import ContributorSerializer
 
 # pylint: disable-next=missing-class-docstring,too-many-ancestors
 class ContributorViewSet(ModelViewSet[User, Contributor]):
-    http_method_names = ["get", "post", "delete"]
+    http_method_names = ["get", "post"]  # "post"
     permission_classes = [AllowAny]
     serializer_class = ContributorSerializer
     queryset = Contributor.objects.all()
 
+    # TODO: delete custom action and override default create action.
     @action(detail=False, methods=["get"])
     def log_into_github(self, request: Request):
-        """Users can login using their existing github account"""
+        """
+        Creates a new contributor or updates an existing contributor.
+        This requires users to authorize us to read their GitHub account.
+
+        https://docs.github.com/en/apps/creating-github-apps/
+        writing-code-for-a-github-app/building-a-login
+        -with-github-button-with-a-github-app
+        """
         # Get code from login request
-        if not request.GET.get("code"):
+        code = request.GET.get("code")
+        if not code:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Get user access Token
-        access_token_request = requests.post(
+        response = requests.post(
             url="https://github.com/login/oauth/access_token",
             headers={"Accept": "application/json"},
             params={
                 "client_id": settings.GITHUB_CLIENT_ID,
                 "client_secret": settings.GITHUB_CLIENT_SECRET,
-                "code": request.GET.get("code"),
+                "code": code,
             },
             timeout=5,
         )
 
-        if not access_token_request.ok:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        auth_data = access_token_request.json()
+        if not response.ok:
+            return Response(status=response.status_code)
+        auth_data = response.json()
 
         # Code expired
-        if "access_token" not in auth_data:
+        if "error" in auth_data:
             return Response(
-                status=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS
+                status=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
             )
 
-        access_token = auth_data["access_token"]
-        token_type = auth_data["token_type"]
-
         # Get user's information
-        user_data_request = requests.get(
+        response = requests.get(
             url="https://api.github.com/user",
             headers={
                 "Accept": "application/json",
-                "Authorization": f"{token_type} {access_token}",
+                "Authorization": f"{auth_data['token_type']} {auth_data['access_token']}",
             },
             timeout=5,
         )
 
-        user_data = user_data_request.json()
+        user_data = response.json()
         if not user_data["email"]:
             return Response(
                 data="Email null",

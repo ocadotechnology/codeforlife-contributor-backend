@@ -166,6 +166,3 @@ cython_debug/
 
 # Django
 static/
-
-# 0Auth app
-.env

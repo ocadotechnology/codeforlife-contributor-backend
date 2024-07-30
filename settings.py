@@ -18,17 +18,13 @@ from pathlib import Path
 
 # pylint: disable-next=wildcard-import,unused-wildcard-import
 from codeforlife.settings import *
-from dotenv import load_dotenv
 
 # Github
 GH_ORG = "ocadotechnology"
 GH_REPO = "codeforlife-workspace"
 GH_FILE = "CONTRIBUTING.md"
-
-# 0Auth
-load_dotenv()
-GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
-GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
+GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID", "replace-me")
+GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET", "replace-me")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
