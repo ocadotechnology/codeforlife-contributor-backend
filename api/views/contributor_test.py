@@ -38,11 +38,25 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
     def test_log_into_github__no_code(self):
         """Login API call does not return a code."""
         self.client.get(
-            self.reverse_action(
-                "log_into_github",
-            ),
-            {"code": ""},
+            self.reverse_action("log_into_github"),
+            data={"code": ""},
             status_code_assertion=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+    def verify_api_call(self, request, url):
+        """API call is correctly executed."""
+        request.assert_called_once_with(
+            url=url,
+            headers={
+                "Accept": "application/json",
+                "X-GitHub-Api-Version": "2022-11-28",
+            },
+            params={
+                "client_id": settings.GH_CLIENT_ID,
+                "client_secret": settings.GH_CLIENT_SECRET,
+                "code": "3e074f3e12656707cf7f",
+            },
+            timeout=5,
         )
 
     def test_log_into_github__no_access_token(self):
@@ -54,22 +68,13 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
             requests, "post", return_value=response
         ) as requests_post:
             self.client.get(
-                self.reverse_action(
-                    "log_into_github",
-                ),
-                {"code": "3e074f3e12656707cf7f"},
+                self.reverse_action("log_into_github"),
+                data={"code": "3e074f3e12656707cf7f"},
                 status_code_assertion=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
-            requests_post.assert_called_once_with(
-                url="https://github.com/login/oauth/access_token",
-                headers={"Accept": "application/json"},
-                params={
-                    "client_id": settings.GITHUB_CLIENT_ID,
-                    "client_secret": settings.GITHUB_CLIENT_SECRET,
-                    "code": "3e074f3e12656707cf7f",
-                },
-                timeout=5,
+            self.verify_api_call(
+                requests_post, "https://github.com/login/oauth/access_token"
             )
 
     def test_log_into_github__code_expired(self):
@@ -89,20 +94,13 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                 self.reverse_action(
                     "log_into_github",
                 ),
-                {"code": "3e074f3e12656707cf7f"},
+                data={"code": "3e074f3e12656707cf7f"},
                 # pylint: disable-next=line-too-long
                 status_code_assertion=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
             )
 
-            requests_post.assert_called_once_with(
-                url="https://github.com/login/oauth/access_token",
-                headers={"Accept": "application/json"},
-                params={
-                    "client_id": settings.GITHUB_CLIENT_ID,
-                    "client_secret": settings.GITHUB_CLIENT_SECRET,
-                    "code": "3e074f3e12656707cf7f",
-                },
-                timeout=5,
+            self.verify_api_call(
+                requests_post, "https://github.com/login/oauth/access_token"
             )
 
     def test_log_into_github__existing_contributor(self):
@@ -140,25 +138,20 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                     self.reverse_action(
                         "log_into_github",
                     ),
-                    {"code": "3e074f3e12656707cf7f"},
+                    data={"code": "3e074f3e12656707cf7f"},
                     status_code_assertion=status.HTTP_201_CREATED,
                 )
 
-                requests_post.assert_called_once_with(
-                    url="https://github.com/login/oauth/access_token",
-                    headers={"Accept": "application/json"},
-                    params={
-                        "client_id": settings.GITHUB_CLIENT_ID,
-                        "client_secret": settings.GITHUB_CLIENT_SECRET,
-                        "code": "3e074f3e12656707cf7f",
-                    },
-                    timeout=5,
+                self.verify_api_call(
+                    requests_post, "https://github.com/login/oauth/access_token"
                 )
+
                 requests_get.assert_called_once_with(
                     url="https://api.github.com/user",
                     headers={
                         "Accept": "application/json",
                         "Authorization": "Bearer 123254",
+                        "X-GitHub-Api-Version": "2022-11-28",
                     },
                     timeout=5,
                 )
@@ -201,24 +194,19 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                     self.reverse_action(
                         "log_into_github",
                     ),
-                    {"code": "3e074f3e12656707cf7f"},
+                    data={"code": "3e074f3e12656707cf7f"},
                 )
 
-                requests_post.assert_called_once_with(
-                    url="https://github.com/login/oauth/access_token",
-                    headers={"Accept": "application/json"},
-                    params={
-                        "client_id": settings.GITHUB_CLIENT_ID,
-                        "client_secret": settings.GITHUB_CLIENT_SECRET,
-                        "code": "3e074f3e12656707cf7f",
-                    },
-                    timeout=5,
+                self.verify_api_call(
+                    requests_post, "https://github.com/login/oauth/access_token"
                 )
+
                 requests_get.assert_called_once_with(
                     url="https://api.github.com/user",
                     headers={
                         "Accept": "application/json",
                         "Authorization": "Bearer 123254",
+                        "X-GitHub-Api-Version": "2022-11-28",
                     },
                     timeout=5,
                 )

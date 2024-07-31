@@ -2,7 +2,8 @@
 © Ocado Group
 Created on 12/07/2024 at 14:07:59(+01:00).
 """
-from typing import Any, Dict
+
+import typing as t
 
 from codeforlife.serializers import ModelSerializer
 from codeforlife.user.models import User
@@ -15,12 +16,14 @@ class ContributorSerializer(ModelSerializer[User, Contributor]):
     class Meta:
         model = Contributor
         fields = ["id", "email", "name", "location", "html_url", "avatar_url"]
-        extra_kwargs: Dict[str, Dict[str, Any]] = {"id": {"validators": []}}
+        extra_kwargs: t.Dict[str, t.Dict[str, t.Any]] = {
+            "id": {"validators": []}
+        }
 
     def create(self, validated_data):
         try:
             # Update an existing contributor
-            contributor = Contributor.objects.get(pk=validated_data["id"])
+            contributor = Contributor.objects.get(id=validated_data["id"])
             contributor.email = validated_data["email"]
             contributor.name = validated_data["name"]
             contributor.location = validated_data["location"]
@@ -38,13 +41,6 @@ class ContributorSerializer(ModelSerializer[User, Contributor]):
             )
         except Contributor.DoesNotExist:
             # Create a new contributor
-            contributor = Contributor.objects.create(
-                id=validated_data["id"],
-                email=validated_data["email"],
-                name=validated_data["name"],
-                location=validated_data["location"],
-                html_url=validated_data["html_url"],
-                avatar_url=validated_data["avatar_url"],
-            )
+            contributor = Contributor.objects.create(**validated_data)
 
         return contributor
