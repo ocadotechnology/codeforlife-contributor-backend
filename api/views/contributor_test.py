@@ -44,6 +44,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
         )
 
     def _assert_request_github_access_token(self, request: Mock, code: str):
+        """Retrieve the use access token in exchange for the code."""
         request.assert_called_once_with(
             url="https://github.com/login/oauth/access_token",
             headers={"Accept": "application/json"},
@@ -56,6 +57,7 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
         )
 
     def _assert_request_github_user(self, request: Mock, auth: str):
+        """Retrieve user data using the access token."""
         request.assert_called_once_with(
             url="https://api.github.com/user",
             headers={
