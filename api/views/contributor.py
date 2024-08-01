@@ -42,10 +42,7 @@ class ContributorViewSet(ModelViewSet[User, Contributor]):
         # Get user access Token
         response = requests.post(
             url="https://github.com/login/oauth/access_token",
-            headers={
-                "Accept": "application/json",
-                "X-GitHub-Api-Version": "2022-11-28",
-            },
+            headers={"Accept": "application/json"},
             params={
                 "client_id": settings.GH_CLIENT_ID,
                 "client_secret": settings.GH_CLIENT_SECRET,

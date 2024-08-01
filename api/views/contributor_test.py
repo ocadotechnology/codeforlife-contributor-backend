@@ -4,7 +4,7 @@ Created on 16/07/2024 at 14:54:09(+01:00).
 """
 
 import json
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import requests
 from codeforlife.tests import ModelViewSetTestCase
@@ -43,24 +43,33 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
             status_code_assertion=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
-    def verify_api_call(self, request, url):
-        """API call is correctly executed."""
+    def _assert_request_github_access_token(self, request: Mock, code: str):
         request.assert_called_once_with(
-            url=url,
-            headers={
-                "Accept": "application/json",
-                "X-GitHub-Api-Version": "2022-11-28",
-            },
+            url="https://github.com/login/oauth/access_token",
+            headers={"Accept": "application/json"},
             params={
                 "client_id": settings.GH_CLIENT_ID,
                 "client_secret": settings.GH_CLIENT_SECRET,
-                "code": "3e074f3e12656707cf7f",
+                "code": code,
+            },
+            timeout=5,
+        )
+
+    def _assert_request_github_user(self, request: Mock, auth: str):
+        request.assert_called_once_with(
+            url="https://api.github.com/user",
+            headers={
+                "Accept": "application/json",
+                "Authorization": auth,
+                "X-GitHub-Api-Version": "2022-11-28",
             },
             timeout=5,
         )
 
     def test_log_into_github__no_access_token(self):
         """0Auth API call did not return an access token"""
+        code = "3e074f3e12656707cf7f"
+
         response = requests.Response()
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
@@ -69,16 +78,16 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
         ) as requests_post:
             self.client.get(
                 self.reverse_action("log_into_github"),
-                data={"code": "3e074f3e12656707cf7f"},
+                data={"code": code},
                 status_code_assertion=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
-            self.verify_api_call(
-                requests_post, "https://github.com/login/oauth/access_token"
-            )
+            self._assert_request_github_access_token(requests_post, code)
 
     def test_log_into_github__code_expired(self):
         """Access token was not generated due to expired code."""
+        code = "3e074f3e12656707cf7f"
+
         response = requests.Response()
         response.status_code = status.HTTP_200_OK
         response.encoding = "utf-8"
@@ -94,17 +103,17 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                 self.reverse_action(
                     "log_into_github",
                 ),
-                data={"code": "3e074f3e12656707cf7f"},
+                data={"code": code},
                 # pylint: disable-next=line-too-long
                 status_code_assertion=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS,
             )
 
-            self.verify_api_call(
-                requests_post, "https://github.com/login/oauth/access_token"
-            )
+            self._assert_request_github_access_token(requests_post, code)
 
     def test_log_into_github__existing_contributor(self):
         """User already logged-in in the past and exists as a contributor"""
+        code = "3e074f3e12656707cf7f"
+
         response_post = requests.Response()
         response_post.status_code = status.HTTP_200_OK
         response_post.encoding = "utf-8"
@@ -138,29 +147,20 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                     self.reverse_action(
                         "log_into_github",
                     ),
-                    data={"code": "3e074f3e12656707cf7f"},
+                    data={"code": code},
                     status_code_assertion=status.HTTP_201_CREATED,
                 )
 
-                self.verify_api_call(
-                    requests_post, "https://github.com/login/oauth/access_token"
-                )
-
-                requests_get.assert_called_once_with(
-                    url="https://api.github.com/user",
-                    headers={
-                        "Accept": "application/json",
-                        "Authorization": "Bearer 123254",
-                        "X-GitHub-Api-Version": "2022-11-28",
-                    },
-                    timeout=5,
-                )
+                self._assert_request_github_access_token(requests_post, code)
+                self._assert_request_github_user(requests_get, "Bearer 123254")
 
     def test_log_into_github__new_contributor(self):
         """
         User is logging-in for the first time and will be added
         to the contributor data table
         """
+        code = "3e074f3e12656707cf7f"
+
         response_post = requests.Response()
         response_post.status_code = status.HTTP_200_OK
         response_post.encoding = "utf-8"
@@ -194,19 +194,8 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
                     self.reverse_action(
                         "log_into_github",
                     ),
-                    data={"code": "3e074f3e12656707cf7f"},
+                    data={"code": code},
                 )
 
-                self.verify_api_call(
-                    requests_post, "https://github.com/login/oauth/access_token"
-                )
-
-                requests_get.assert_called_once_with(
-                    url="https://api.github.com/user",
-                    headers={
-                        "Accept": "application/json",
-                        "Authorization": "Bearer 123254",
-                        "X-GitHub-Api-Version": "2022-11-28",
-                    },
-                    timeout=5,
-                )
+                self._assert_request_github_access_token(requests_post, code)
+                self._assert_request_github_user(requests_get, "Bearer 123254")
