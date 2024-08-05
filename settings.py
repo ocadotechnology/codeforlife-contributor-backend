@@ -13,6 +13,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # pylint: disable-next=wildcard-import,unused-wildcard-import
@@ -20,8 +21,10 @@ from codeforlife.settings import *
 
 # Github
 GH_ORG = "ocadotechnology"
-GH_REPO =  "codeforlife-workspace"
+GH_REPO = "codeforlife-workspace"
 GH_FILE = "CONTRIBUTING.md"
+GH_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID", "replace-me")
+GH_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET", "replace-me")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
