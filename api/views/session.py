@@ -3,8 +3,12 @@
 Created on 05/08/2024 at 17:23:01(+01:00).
 """
 import json
+import typing as t
+from urllib.parse import quote_plus
 
 from codeforlife.request import HttpRequest
+from django.conf import settings
+from django.contrib.auth import login
 from django.contrib.auth.views import LoginView as _LoginView
 from django.http import JsonResponse
 from rest_framework import status
@@ -18,10 +22,7 @@ class LoginView(_LoginView):
     request: HttpRequest
 
     def get_form_class(self):
-        form = self.kwargs["form"]
-        if form == "login-with-github":
-            return GitHubLoginForm
-        raise NameError(f'Unsupported form: "{form}".')
+        return GitHubLoginForm
 
     def get_form_kwargs(self):
         form_kwargs = super().get_form_kwargs()
@@ -29,8 +30,44 @@ class LoginView(_LoginView):
 
         return form_kwargs
 
-    # def form_valid(self, form: GitHubLoginForm):
-    #     pass
+    def form_valid(self, form: GitHubLoginForm):  # type: ignore
+        contributor = form.contributor
+
+        self.request.session.clear_expired(contributor_id=contributor.id)
+
+        login(self.request, contributor)
+
+        self.request.session.save()
+
+        # Get session metadata.
+        session_metadata = {"contributor_id": contributor.id}
+
+        # Return session metadata in response and a non-HTTP-only cookie.
+        response = JsonResponse(session_metadata)
+        response.set_cookie(
+            key=settings.SESSION_METADATA_COOKIE_NAME,
+            value=quote_plus(
+                json.dumps(
+                    session_metadata,
+                    separators=(",", ":"),
+                    indent=None,
+                )
+            ),
+            max_age=(
+                None
+                if settings.SESSION_EXPIRE_AT_BROWSER_CLOSE
+                else settings.SESSION_COOKIE_AGE
+            ),
+            secure=settings.SESSION_COOKIE_SECURE,
+            samesite=t.cast(
+                t.Optional[t.Literal["Lax", "Strict", "None", False]],
+                settings.SESSION_COOKIE_SAMESITE,
+            ),
+            domain=settings.SESSION_COOKIE_DOMAIN,
+            httponly=False,
+        )
+
+        return response
 
     def form_invalid(self, form: GitHubLoginForm):  # type: ignore
         return JsonResponse(form.errors, status=status.HTTP_400_BAD_REQUEST)

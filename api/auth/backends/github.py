@@ -12,10 +12,10 @@ from django.contrib.auth.backends import BaseBackend
 from ...models import Contributor
 
 
-class GithubBackend:
+class GithubBackend(BaseBackend):
     """Authenticate a user using the code returned by github's callback url."""
 
-    def authenticate(
+    def authenticate(  # type: ignore[override]
         self,
         request: t.Optional[HttpRequest],
         code: t.Optional[str] = None,

@@ -26,6 +26,10 @@ GH_FILE = "CONTRIBUTING.md"
 GH_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID", "replace-me")
 GH_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET", "replace-me")
 
+AUTHENTICATION_BACKENDS = ["api.auth.backends.GithubBackend"]
+
+SESSION_ENGINE = "api.models.session"
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
 

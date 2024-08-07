@@ -17,9 +17,10 @@ Including another URLconf
 """
 
 from codeforlife.urls import get_urlpatterns
+from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from .views import AgreementSignatureViewSet, ContributorViewSet
+from .views import AgreementSignatureViewSet, ContributorViewSet, LoginView
 
 router = DefaultRouter()
 
@@ -35,5 +36,11 @@ router.register(
     basename="contributor",
 )
 
-
-urlpatterns = get_urlpatterns(router.urls)
+urlpatterns = [
+    path(
+        "session/login/",
+        LoginView.as_view(),
+        name="session-login",
+    ),
+    *get_urlpatterns(router.urls),
+]
