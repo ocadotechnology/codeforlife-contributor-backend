@@ -20,15 +20,23 @@ class TestLoginView(TestCase):
         self.client = APIClient()
 
     def test_login__invalid_code(self):
-        """Login a user as an existing github user."""
+        """Provided code must be valid and not expired."""
         self.client.post(
             reverse("session-login"),
             data={"code": "7f06468085765cdc1578"},
             format="json",
         )
 
-    def test_login(self):
+    def test_login__form_errors(self):
         """Login a user as an existing github user."""
+        self.client.post(
+            reverse("session-login"),
+            data={"code": ""},
+            format="json",
+        )
+
+    def test_login(self):
+        """User can login with their existing github account."""
         code = "7f06468085765cdc1578"
 
         response_post = requests.Response()

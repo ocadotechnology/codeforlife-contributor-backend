@@ -27,6 +27,16 @@ class GitHubLoginForm(forms.Form):
         return "The code returned was invalid or expired."
 
     def clean(self):
+        """Authenticates a contributor.
+
+        Raises:
+            ValidationError: If there are form errors.
+            ValidationError: If the contributor's credentials were incorrect.
+            ValidationError: If the contributor's instance is incorrect.
+
+        Returns:
+            The cleaned form data.
+        """
         if self.errors:
             raise ValidationError(
                 "Found form errors. Skipping authentication.",

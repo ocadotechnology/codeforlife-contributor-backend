@@ -33,9 +33,10 @@ class LoginView(_LoginView):
     def form_valid(self, form: GitHubLoginForm):  # type: ignore
         contributor = form.contributor
 
-        self.request.session.clear_expired(contributor_id=contributor.pk)
+        # pylint: disable-next=line-too-long
+        self.request.session.clear_expired(contributor_id=contributor.pk)  # type: ignore
 
-        login(self.request, contributor)
+        login(self.request, contributor)  # type: ignore
 
         self.request.session.save()
 
