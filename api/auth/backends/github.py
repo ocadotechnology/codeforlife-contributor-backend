@@ -56,17 +56,23 @@ class GithubBackend(BaseBackend):
             timeout=5,
         )
 
-        contributor_data = response.json()
-        contributor, created = Contributor.objects.get_or_create(
-            id=contributor_data["id"],
-            defaults={
-                "email": contributor_data["email"],
-                "name": contributor_data["name"],
-                "location": contributor_data["location"],
-                "html_url": contributor_data["html_url"],
-                "avatar_url": contributor_data["avatar_url"],
-            },
-        )
+        # if not response.ok:
+        #     return None
+
+        try:
+            contributor_data = response.json()
+            contributor, created = Contributor.objects.get_or_create(
+                id=contributor_data["id"],
+                defaults={
+                    "email": contributor_data["email"],
+                    "name": contributor_data["name"],
+                    "location": contributor_data["location"],
+                    "html_url": contributor_data["html_url"],
+                    "avatar_url": contributor_data["avatar_url"],
+                },
+            )
+        except KeyError:
+            return None
 
         return contributor if contributor or created else None
 
