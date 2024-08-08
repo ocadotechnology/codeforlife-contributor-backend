@@ -10,6 +10,7 @@ from django.conf import settings
 from django.contrib.auth.backends import BaseBackend
 
 from ...models import Contributor
+from ...serializers import ContributorSerializer
 
 
 class GithubBackend(BaseBackend):
@@ -56,24 +57,24 @@ class GithubBackend(BaseBackend):
             timeout=5,
         )
 
-        # if not response.ok:
-        #     return None
-
         try:
             contributor_data = response.json()
-            contributor = Contributor.objects.create(
-                id=contributor_data["id"],
-                email=contributor_data["email"],
-                name=contributor_data["name"],
-                location=contributor_data["location"],
-                html_url=contributor_data["html_url"],
-                avatar_url=contributor_data["avatar_url"],
+            serializer = ContributorSerializer(
+                data={
+                    "id": contributor_data["id"],
+                    "email": contributor_data["email"],
+                    "name": contributor_data["name"],
+                    "location": contributor_data["location"],
+                    "html_url": contributor_data["html_url"],
+                    "avatar_url": contributor_data["avatar_url"],
+                }
             )
-
+            if serializer.is_valid():
+                return serializer.save()
         except KeyError:
             return None
 
-        return contributor if contributor else None
+        return None
 
     def get_user(self, user_id: int):
         try:
