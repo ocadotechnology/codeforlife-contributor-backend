@@ -198,10 +198,7 @@ class TestLoginView(TestCase):
                 self._assert_request_github_user(requests_get, "Bearer 123254")
 
     def test_login__invalid_contributor_data(self):
-        """
-        Login a returning user with their existing github account and
-        sync any updated information for this contributor.
-        """
+        """User data returned by github is not in the correct format."""
 
         code = "7f06468085765cdc1578"
 
