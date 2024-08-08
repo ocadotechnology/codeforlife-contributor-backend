@@ -33,7 +33,7 @@ class LoginView(_LoginView):
     def form_valid(self, form: GitHubLoginForm):  # type: ignore
         contributor = form.contributor
 
-        self.request.session.clear_expired(contributor_id=contributor.id)
+        self.request.session.clear_expired(contributor_id=contributor.pk)
 
         login(self.request, contributor)
 
