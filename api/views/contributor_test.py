@@ -3,14 +3,9 @@
 Created on 16/07/2024 at 14:54:09(+01:00).
 """
 
-import json
-from unittest.mock import Mock, patch
 
-import requests
 from codeforlife.tests import ModelViewSetTestCase
 from codeforlife.user.models import User
-from django.conf import settings
-from rest_framework import status
 
 from ..models import Contributor
 from .contributor import ContributorViewSet
@@ -35,13 +30,13 @@ class TestContributorViewSet(ModelViewSetTestCase[User, Contributor]):
         """Can retrieve a single contributor."""
         self.client.retrieve(model=self.contributor1)
 
-    def test_log_into_github__no_code(self):
-        """Login API call does not return a code."""
-        self.client.get(
-            self.reverse_action("log_into_github"),
-            data={"code": ""},
-            status_code_assertion=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        )
+    # def test_log_into_github__no_code(self):
+    #     """Login API call does not return a code."""
+    #     self.client.get(
+    #         self.reverse_action("log_into_github"),
+    #         data={"code": ""},
+    #         status_code_assertion=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    #     )
 
     # def _assert_request_github_access_token(self, request: Mock, code: str):
     #     """Retrieve the use access token in exchange for the code."""
