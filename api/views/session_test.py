@@ -16,6 +16,8 @@ from rest_framework.test import APIClient
 
 # pylint: disable-next=missing-class-docstring,too-many-ancestors
 class TestLoginView(TestCase):
+    fixtures = ["contributors"]
+
     def setUp(self):
         self.client = APIClient()
 
