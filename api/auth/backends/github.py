@@ -61,20 +61,19 @@ class GithubBackend(BaseBackend):
 
         try:
             contributor_data = response.json()
-            contributor, created = Contributor.objects.get_or_create(
+            contributor = Contributor.objects.create(
                 id=contributor_data["id"],
-                defaults={
-                    "email": contributor_data["email"],
-                    "name": contributor_data["name"],
-                    "location": contributor_data["location"],
-                    "html_url": contributor_data["html_url"],
-                    "avatar_url": contributor_data["avatar_url"],
-                },
+                email=contributor_data["email"],
+                name=contributor_data["name"],
+                location=contributor_data["location"],
+                html_url=contributor_data["html_url"],
+                avatar_url=contributor_data["avatar_url"],
             )
+
         except KeyError:
             return None
 
-        return contributor if contributor or created else None
+        return contributor if contributor else None
 
     def get_user(self, user_id: int):
         try:
