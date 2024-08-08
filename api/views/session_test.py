@@ -19,7 +19,7 @@ class TestLoginView(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-    def test_login__(self):
+    def test_login__invalid_code(self):
         """Login a user as an existing github user."""
         self.client.post(
             reverse("session-login"),
