@@ -62,17 +62,9 @@ class GitHubBackend(BaseBackend):
         contributor_data = response.json()
 
         try:
-            contributor, created = Contributor.objects.get_or_create(
-                id=contributor_data["id"],
-                defaults={
-                    "email": contributor_data["email"],
-                    "name": contributor_data["name"],
-                    "location": contributor_data["location"],
-                    "html_url": contributor_data["html_url"],
-                    "avatar_url": contributor_data["avatar_url"],
-                },
-            )
-            return contributor if contributor or created else None
+            return Contributor.objects.get_or_create(
+                id=contributor_data["id"], defaults=contributor_data
+            )[0]
         # pylint: disable-next=bare-except
         except:
             return None
