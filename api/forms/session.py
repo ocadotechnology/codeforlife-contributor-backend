@@ -22,10 +22,6 @@ class GitHubLoginForm(forms.Form):
         self.request = request
         super().__init__(*args, **kwargs)
 
-    # pylint: disable-next=missing-function-docstring
-    def get_invalid_login_error_message(self):
-        return "The code returned was invalid or expired."
-
     def clean(self):
         """Authenticates a contributor.
 
@@ -50,7 +46,7 @@ class GitHubLoginForm(forms.Form):
         )
         if contributor is None:
             raise ValidationError(
-                self.get_invalid_login_error_message(),
+                "The code returned was invalid or expired.",
                 code="invalid_login",
             )
 

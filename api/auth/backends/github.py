@@ -10,10 +10,9 @@ from django.conf import settings
 from django.contrib.auth.backends import BaseBackend
 
 from ...models import Contributor
-from ...serializers import ContributorSerializer
 
 
-class GithubBackend(BaseBackend):
+class GitHubBackend(BaseBackend):
     """Authenticate a user using the code returned by github's callback url."""
 
     def authenticate(  # type: ignore[override]
@@ -57,27 +56,30 @@ class GithubBackend(BaseBackend):
             timeout=5,
         )
 
+        if not response.ok:
+            return None
+
+        contributor_data = response.json()
+
         try:
-            contributor_data = response.json()
-            serializer = ContributorSerializer(
-                data={
-                    "id": contributor_data["id"],
+            contributor, created = Contributor.objects.get_or_create(
+                id=contributor_data["id"],
+                defaults={
                     "email": contributor_data["email"],
                     "name": contributor_data["name"],
                     "location": contributor_data["location"],
                     "html_url": contributor_data["html_url"],
                     "avatar_url": contributor_data["avatar_url"],
-                }
+                },
             )
-            if serializer.is_valid():
-                return serializer.save()
-        except KeyError:
+            return contributor if contributor or created else None
+        # pylint: disable-next=bare-except
+        except:
             return None
 
-        return None
-
-    def get_user(self, user_id: int):
+    # pylint: disable-next=arguments-renamed
+    def get_user(self, contributor_id: int):
         try:
-            return Contributor.objects.get(id=user_id)
+            return Contributor.objects.get(id=contributor_id)
         except Contributor.DoesNotExist:
             return None

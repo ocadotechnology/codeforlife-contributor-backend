@@ -36,11 +36,13 @@ router.register(
     basename="contributor",
 )
 
-urlpatterns = [
-    path(
-        "session/login/",
-        LoginView.as_view(),
-        name="session-login",
-    ),
-    *get_urlpatterns(router.urls),
-]
+urlpatterns = get_urlpatterns(
+    [
+        *router.urls,
+        path(
+            "session/login/",
+            LoginView.as_view(),
+            name="session-login",
+        ),
+    ]
+)
