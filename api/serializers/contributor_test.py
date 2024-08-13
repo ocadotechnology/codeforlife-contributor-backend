@@ -10,7 +10,6 @@ from ..models import Contributor
 from .contributor import ContributorSerializer
 
 
+# pylint: disable-next=missing-class-docstring,
 class TestContributorSerializer(ModelSerializerTestCase[User, Contributor]):
-    """Test the Contributor serializers"""
-
     model_serializer_class = ContributorSerializer
