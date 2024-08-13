@@ -7,11 +7,10 @@ import json
 from unittest.mock import Mock, patch
 
 import requests
+from codeforlife.request import HttpRequest
 from codeforlife.tests import TestCase
 from django.conf import settings
-from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APIClient
 
 from ...models import Contributor
 from .github import GitHubBackend
@@ -25,8 +24,7 @@ class TestGitHubBackend(TestCase):
         # Set up initial test data
         self.contributor1 = Contributor.objects.get(id=1)
         self.backend = GitHubBackend()
-
-        self.client = APIClient()
+        self.request = HttpRequest()
 
         self.gh_access_token_response = requests.Response()
         self.gh_access_token_response.status_code = status.HTTP_200_OK
@@ -82,13 +80,9 @@ class TestGitHubBackend(TestCase):
         with patch.object(
             requests, "post", return_value=response
         ) as requests_post:
-            res = self.client.post(
-                reverse("session-login"),
-                data={"code": code},
-                format="json",
-            )
+            res = self.backend.authenticate(request=self.request, code=code)
 
-            assert res.status_code == status.HTTP_400_BAD_REQUEST
+            assert not res
             self._assert_request_github_access_token(requests_post, code)
 
     def test_login__code_expired(self):
@@ -104,13 +98,9 @@ class TestGitHubBackend(TestCase):
         with patch.object(
             requests, "post", return_value=response
         ) as requests_post:
-            res = self.client.post(
-                reverse("session-login"),
-                data={"code": code},
-                format="json",
-            )
+            res = self.backend.authenticate(request=self.request, code=code)
 
-            assert res.status_code == status.HTTP_400_BAD_REQUEST
+            assert not res
             self._assert_request_github_access_token(requests_post, code)
 
     def test_login__token_failure(self):
@@ -126,14 +116,9 @@ class TestGitHubBackend(TestCase):
             with patch.object(
                 requests, "get", return_value=response_get
             ) as requests_get:
-                response = self.client.post(
-                    reverse("session-login"),
-                    data={"code": code},
-                    format="json",
-                )
+                res = self.backend.authenticate(request=self.request, code=code)
 
-                assert response.status_code == status.HTTP_400_BAD_REQUEST
-
+                assert not res
                 self._assert_request_github_access_token(requests_post, code)
                 self._assert_request_github_user(requests_get, "Bearer 123254")
 
@@ -155,13 +140,8 @@ class TestGitHubBackend(TestCase):
             with patch.object(
                 requests, "get", return_value=response_get
             ) as requests_get:
-                response = self.client.post(
-                    reverse("session-login"),
-                    data={"code": code},
-                    format="json",
-                )
+                res = self.backend.authenticate(request=self.request, code=code)
 
-                assert response.status_code == status.HTTP_400_BAD_REQUEST
-
+                assert not res
                 self._assert_request_github_access_token(requests_post, code)
                 self._assert_request_github_user(requests_get, "Bearer 123254")
