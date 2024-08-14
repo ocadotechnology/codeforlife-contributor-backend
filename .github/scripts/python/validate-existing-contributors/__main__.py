@@ -14,9 +14,7 @@ from codeforlife.response import Response
 from codeforlife.types import DataDict
 from rest_framework import status
 
-from .....api.models.agreement_signature import (
-    AgreementSignature,  # type: ignore
-)
+from .....api.models import AgreementSignature  # type: ignore
 
 PullRequest = t.Dict[str, t.Any]
 Contributors = t.Set[str]
@@ -60,7 +58,7 @@ def get_signed_contributors():
         timeout=5,
     )
     if not response.ok:
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return []
 
     latest_commit_id = response.json()[0]["sha"]
 
