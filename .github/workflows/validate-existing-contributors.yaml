@@ -8,7 +8,7 @@ on:
 
 env:
   PYTHON_VERSION: 3.11
-  WORKING_DIR: codeforlife-contributor-backend/.github/scripts/python/validate-existing-contributors@validate-contributors
+  WORKING_DIR: codeforlife-contributor-backend/.github/scripts/python/validate-existing-contributors
 
 jobs:
   validate-existing-contributors:
