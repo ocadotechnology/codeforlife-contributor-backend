@@ -8,7 +8,7 @@ on:
 
 env:
   PYTHON_VERSION: 3.11
-  WORKING_DIR: codeforlife-workspace/.github/scripts/python/validate-existing-contributors@validate-contributors
+  WORKING_DIR: codeforlife-contributor-backend/.github/scripts/python/validate-existing-contributors@validate-contributors
 
 jobs:
   validate-existing-contributors:
@@ -26,12 +26,12 @@ jobs:
       - name: 🛫 Checkout Workspace
         uses: actions/checkout@v4
         with:
-          repository: ocadotechnology/codeforlife-workspace
+          repository: ocadotechnology/codeforlife-contributor-backend
           ref: main
-          path: codeforlife-workspace
+          path: codeforlife-contributor-backend
 
       - name: 🐍 Set up Python ${{ env.PYTHON_VERSION }} Environment
-        uses: ocadotechnology/codeforlife-workspace/.github/actions/python/setup-environment@validate-contributors
+        uses: ocadotechnology/codeforlife-contributor-backend/.github/actions/python/setup-environment@validate-contributors
         with:
           checkout: "false"
           python-version: ${{ env.PYTHON_VERSION }}
