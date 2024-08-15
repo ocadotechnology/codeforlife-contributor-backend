@@ -10,12 +10,9 @@ import os
 import typing as t
 
 import requests
-from django.conf import settings
 
 # TODO: figure out the right import later
 # from .....api.models import AgreementSignature  # type: ignore
-
-# from codeforlife.types import DataDict
 
 
 PullRequest = t.Dict[str, t.Any]
@@ -55,8 +52,7 @@ def get_signed_contributors() -> Contributors:
     # Get the latest commit hash/ID of the contributor agreement,
     param: t.Dict[str, t.Any] = {"path": GH_FILE, "per_page": 1}
     response = requests.get(
-        # pylint: disable-next=line-too-long
-        url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits",
+        url=f"https://api.github.com/repos/{GH_ORG}/{GH_REPO}/commits",
         headers={"X-GitHub-Api-Version": "2022-11-28"},
         params=param,
         timeout=5,
@@ -68,7 +64,6 @@ def get_signed_contributors() -> Contributors:
         return set()
 
     latest_commit_id = response.json()[0]["sha"]
-    print("latest_commit_id:", latest_commit_id)
 
     # TODO: Uncomment this when database is created
     # signed_contributors = AgreementSignature.objects.filter(
@@ -120,9 +115,6 @@ def main():
     pull_request = get_inputs()
 
     signed_contributors = get_signed_contributors()
-    print("PR", pull_request)
-    print()
-    print("signed_contributors", signed_contributors)
 
     assert_contributors(pull_request, signed_contributors)
 
