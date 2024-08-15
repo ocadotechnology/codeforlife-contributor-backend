@@ -27,7 +27,7 @@ BOTS = {
 
 # Information about the repo
 GH_ORG = "ocadotechnology"
-GH_REPO = "codeforlife-workshop"
+GH_REPO = "codeforlife-workspace"
 GH_FILE = "CONTRIBUTING.md"
 
 
@@ -59,14 +59,14 @@ def get_signed_contributors() -> Contributors:
         params=param,
         timeout=5,
     )
-    # if not response.ok:
-    #     response.raise_for_status()
-    #     # Process the response if the call was successful
-    #     data = response.json()
-    #     print("ERROR: ", data)
-    #     return set()
+    if not response.ok:
+        response.raise_for_status()
+        data = response.json()
+        print("ERROR: ", data)
+        return set()
 
-    # latest_commit_id = response.json()[0]["sha"]
+    latest_commit_id = response.json()[0]["sha"]
+    print("latest_commit_id:", latest_commit_id)
 
     # TODO: Uncomment this when database is created
     # signed_contributors = AgreementSignature.objects.filter(
@@ -79,6 +79,7 @@ def get_signed_contributors() -> Contributors:
     # }
     # return contributors_emails
 
+    # TODO: remove dummy data once database is set up
     dummy_signed_contributors = {"salman.ashraf2513@gmail.com"}
     return dummy_signed_contributors
 
