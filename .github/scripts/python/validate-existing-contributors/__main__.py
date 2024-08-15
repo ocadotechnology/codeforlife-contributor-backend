@@ -12,7 +12,7 @@ import typing as t
 import requests
 
 # TODO: figure out the right import later
-from .....api.models import AgreementSignature  # type: ignore
+# from .....api.models import AgreementSignature  # type: ignore
 
 # from codeforlife.types import DataDict
 
