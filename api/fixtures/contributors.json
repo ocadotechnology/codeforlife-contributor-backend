@@ -7,7 +7,8 @@
       "name": "contributor1",
       "location": "Hatfield",
       "html_url": "https://github.com/contributor1",
-      "avatar_url": "https://contributor1.github.io/gravatar-url-generator/#/"
+      "avatar_url": "https://contributor1.github.io/gravatar-url-generator/#/",
+      "last_login": "2024-02-02T12:00:00Z"
     }
   },
   {
@@ -18,7 +19,8 @@
       "name": "contributor2",
       "location": "Hatfield",
       "html_url": "https://github.com/contributor2",
-      "avatar_url": "https://contributor2.github.io/gravatar-url-generator/#/"
+      "avatar_url": "https://contributor2.github.io/gravatar-url-generator/#/",
+      "last_login": "2024-02-02T12:00:00Z"
     }
   },
   {
@@ -29,7 +31,8 @@
       "name": "contributor3",
       "location": "Hatfield",
       "html_url": "https://github.com/contributor3",
-      "avatar_url": "https://contributor3.github.io/gravatar-url-generator/#/"
+      "avatar_url": "https://contributor3.github.io/gravatar-url-generator/#/",
+      "last_login": "2024-02-02T12:00:00Z"
     }
   },
   {
@@ -40,7 +43,8 @@
       "name": "contributor4",
       "location": "Hatfield",
       "html_url": "https://github.com/contributor4",
-      "avatar_url": "https://contributor4.github.io/gravatar-url-generator/#/"
+      "avatar_url": "https://contributor4.github.io/gravatar-url-generator/#/",
+      "last_login": "2024-02-02T12:00:00Z"
     }
   }
 ]
