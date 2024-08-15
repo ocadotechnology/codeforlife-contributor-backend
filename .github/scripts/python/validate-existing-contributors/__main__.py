@@ -10,6 +10,7 @@ import os
 import typing as t
 
 import requests
+from django.conf import settings
 
 # TODO: figure out the right import later
 # from .....api.models import AgreementSignature  # type: ignore
@@ -54,7 +55,8 @@ def get_signed_contributors() -> Contributors:
     # Get the latest commit hash/ID of the contributor agreement,
     param: t.Dict[str, t.Any] = {"path": GH_FILE, "per_page": 1}
     response = requests.get(
-        url=f"https://api.github.com/repos/{GH_ORG}/{GH_REPO}/commits",
+        # pylint: disable-next=line-too-long
+        url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits",
         headers={"X-GitHub-Api-Version": "2022-11-28"},
         params=param,
         timeout=5,
