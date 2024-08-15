@@ -23,15 +23,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🛫 Checkout Workspace
+      - name: 🛫 Checkout Contributor Backend
         uses: actions/checkout@v4
         with:
-          repository: ocadotechnology/codeforlife-workspace
-          ref: main
-          path: codeforlife-workspace
+          repository: ocadotechnology/codeforlife-contributor-backend
+          ref: validate-contributors
+          path: codeforlife-contributor-backend
 
       - name: 🐍 Set up Python ${{ env.PYTHON_VERSION }} Environment
-        uses: ocadotechnology/codeforlife-contributor-backend/.github/actions/python/setup-environment@validate-contributors
+        uses: ocadotechnology/codeforlife-workspace/.github/actions/python/setup-environment@main
         with:
           checkout: "false"
           python-version: ${{ env.PYTHON_VERSION }}
