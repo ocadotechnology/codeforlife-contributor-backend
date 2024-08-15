@@ -59,14 +59,14 @@ def get_signed_contributors() -> Contributors:
         params=param,
         timeout=5,
     )
-    if not response.ok:
-        response.raise_for_status()
-        # Process the response if the call was successful
-        data = response.json()
-        print("ERROR: ", data)
-        return set()
+    # if not response.ok:
+    #     response.raise_for_status()
+    #     # Process the response if the call was successful
+    #     data = response.json()
+    #     print("ERROR: ", data)
+    #     return set()
 
-    latest_commit_id = response.json()[0]["sha"]
+    # latest_commit_id = response.json()[0]["sha"]
 
     # TODO: Uncomment this when database is created
     # signed_contributors = AgreementSignature.objects.filter(
