@@ -11,9 +11,8 @@ from codeforlife.response import Response
 from codeforlife.types import DataDict
 from codeforlife.user.models import User
 from codeforlife.views import ModelViewSet, action
+from django.conf import settings
 from rest_framework import status
-
-import settings
 
 from ..models import AgreementSignature
 from ..serializers import AgreementSignatureSerializer
