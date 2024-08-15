@@ -11,10 +11,8 @@ import typing as t
 
 import requests
 
+# TODO: figure out the right import later
 # from .....api.models import AgreementSignature  # type: ignore
-
-# from api.models.agreement_signature import AgreementSignature
-
 
 # from codeforlife.types import DataDict
 
@@ -113,6 +111,12 @@ def main():
     pull_request = get_inputs()
 
     signed_contributors = get_signed_contributors()
+    print("PR", pull_request)
+    print("PR", pull_request)
+    print("PR", pull_request)
+    print("PR", pull_request)
+    print("signed_contributors", signed_contributors)
+    print("signed_contributors", signed_contributors)
 
     assert_contributors(pull_request, signed_contributors)
 
