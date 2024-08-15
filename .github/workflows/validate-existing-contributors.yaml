@@ -35,6 +35,10 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           working-directory: ${{ env.WORKING_DIR }}
 
+      - name: 📦 Install Dependencies with Pipenv
+        working-directory: ${{ env.WORKING_DIR }}
+        run: pipenv install
+
       - name: 🕵️ Validate Existing Contributors
         working-directory: ${{ env.WORKING_DIR }}
         run: pipenv run python .

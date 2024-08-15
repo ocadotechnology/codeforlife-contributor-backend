@@ -10,9 +10,7 @@ import os
 import typing as t
 
 import requests
-from codeforlife.response import Response
 from codeforlife.types import DataDict
-from rest_framework import status
 
 from .....api.models import AgreementSignature  # type: ignore
 
