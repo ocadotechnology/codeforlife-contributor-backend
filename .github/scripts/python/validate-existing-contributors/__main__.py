@@ -51,10 +51,11 @@ def get_signed_contributors():
     """
 
     # Get the latest commit hash/ID of the contributor agreement,
+    param: t.Dict[str, t.Any] = {"path": GH_FILE, "per_page": 1}
     response = requests.get(
         url=f"https://api.github.com/repos/{GH_ORG}/{GH_REPO}/commits",
         headers={"X-GitHub-Api-Version": "2022-11-28"},
-        params={"path": GH_FILE, "per_page": 1},  # type: ignore
+        params=param,
         timeout=5,
     )
     if not response.ok:
