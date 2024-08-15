@@ -12,7 +12,7 @@ import typing as t
 import requests
 
 # TODO: figure out the right import later
-# from .....api.models import AgreementSignature  # type: ignore
+from .....api.models import AgreementSignature  # type: ignore
 
 # from codeforlife.types import DataDict
 
@@ -43,7 +43,7 @@ def get_inputs():
     return pull_request
 
 
-def get_signed_contributors():
+def get_signed_contributors() -> Contributors:
     """Get the latest commit hash/ID of the contributor agreement,
        and return the contributors that have signed that contribution agreement.
 
@@ -60,21 +60,23 @@ def get_signed_contributors():
         timeout=5,
     )
     if not response.ok:
-        return []
+        return set()
 
     latest_commit_id = response.json()[0]["sha"]
 
+    # TODO: Uncomment this when database is created
     # signed_contributors = AgreementSignature.objects.filter(
     #     latest_commit_id=latest_commit_id
     # )
 
-    # contributors_emails = [
+    # contributors_emails = {
     #     contributor.contributor.email.lower()
     #     for contributor in signed_contributors
-    # ]
+    # }
+    # return contributors_emails
 
-    contributors_emails = ["salman.ashraf2513@gmail.com"]
-    return contributors_emails
+    dummy_signed_contributors = {"salman.ashraf2513@gmail.com"}
+    return dummy_signed_contributors
 
 
 def assert_contributors(
