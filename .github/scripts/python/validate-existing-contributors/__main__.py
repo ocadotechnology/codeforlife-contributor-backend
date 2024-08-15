@@ -10,9 +10,11 @@ import os
 import typing as t
 
 import requests
-from codeforlife.types import DataDict
 
 from .....api.models import AgreementSignature  # type: ignore
+
+# from codeforlife.types import DataDict
+
 
 PullRequest = t.Dict[str, t.Any]
 Contributors = t.Set[str]
@@ -52,7 +54,7 @@ def get_signed_contributors():
     response = requests.get(
         url=f"https://api.github.com/repos/{GH_ORG}/{GH_REPO}/commits",
         headers={"X-GitHub-Api-Version": "2022-11-28"},
-        params=t.cast(DataDict, {"path": GH_FILE, "per_page": 1}),
+        params={"path": GH_FILE, "per_page": 1},  # type: ignore
         timeout=5,
     )
     if not response.ok:
