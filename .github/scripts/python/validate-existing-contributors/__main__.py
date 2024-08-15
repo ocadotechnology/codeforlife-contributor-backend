@@ -11,7 +11,10 @@ import typing as t
 
 import requests
 
-from .....api.models import AgreementSignature  # type: ignore
+# from .....api.models import AgreementSignature  # type: ignore
+
+# from api.models.agreement_signature import AgreementSignature
+
 
 # from codeforlife.types import DataDict
 
@@ -63,14 +66,16 @@ def get_signed_contributors():
 
     latest_commit_id = response.json()[0]["sha"]
 
-    signed_contributors = AgreementSignature.objects.filter(
-        latest_commit_id=latest_commit_id
-    )
+    # signed_contributors = AgreementSignature.objects.filter(
+    #     latest_commit_id=latest_commit_id
+    # )
 
-    contributors_emails = [
-        contributor.contributor.email.lower()
-        for contributor in signed_contributors
-    ]
+    # contributors_emails = [
+    #     contributor.contributor.email.lower()
+    #     for contributor in signed_contributors
+    # ]
+
+    contributors_emails = ["salman.ashraf2513@gmail.com"]
     return contributors_emails
 
 
