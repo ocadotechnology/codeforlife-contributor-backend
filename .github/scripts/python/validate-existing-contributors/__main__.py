@@ -60,6 +60,10 @@ def get_signed_contributors() -> Contributors:
         timeout=5,
     )
     if not response.ok:
+        response.raise_for_status()
+        # Process the response if the call was successful
+        data = response.json()
+        print("ERROR: ", data)
         return set()
 
     latest_commit_id = response.json()[0]["sha"]
@@ -114,10 +118,7 @@ def main():
 
     signed_contributors = get_signed_contributors()
     print("PR", pull_request)
-    print("PR", pull_request)
-    print("PR", pull_request)
-    print("PR", pull_request)
-    print("signed_contributors", signed_contributors)
+    print()
     print("signed_contributors", signed_contributors)
 
     assert_contributors(pull_request, signed_contributors)
