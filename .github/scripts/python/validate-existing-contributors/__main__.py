@@ -77,7 +77,7 @@ def get_signed_contributors() -> Contributors:
     # return contributors_emails
 
     # TODO: remove dummy data once database is set up
-    dummy_signed_contributors = {"salman.ashraf2513@gmail.com", "f.aucomte@hotmail.co.uk"}
+    dummy_signed_contributors = {"salman.ashraf2513@gmail.com"}
     return dummy_signed_contributors
 
 
