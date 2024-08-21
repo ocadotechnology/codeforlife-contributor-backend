@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ocadotechnology/codeforlife-contributor-backend
-          ref: development
+          ref: validate-contributors
           path: codeforlife-contributor-backend
 
       - name: 🐍 Set up Python ${{ env.PYTHON_VERSION }} Environment
