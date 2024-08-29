@@ -27,6 +27,7 @@ class Contributor(models.Model):
     html_url = models.TextField(_("html url"))
     avatar_url = models.TextField(_("avatar url"))
     last_login = models.DateTimeField(_("last login"), blank=True, null=True)
+    is_active = models.BooleanField(_("is active"), default=True)
 
     class Meta(TypedModelMeta):
         verbose_name = _("contributor")
