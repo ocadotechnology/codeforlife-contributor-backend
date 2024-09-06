@@ -17,6 +17,8 @@ else:
 class Contributor(models.Model):
     """A contributor that contributes to a repo"""
 
+    is_active = True
+
     pk: int
     id = models.IntegerField(
         primary_key=True, help_text=_("The contributor's GitHub user-ID.")
@@ -27,7 +29,6 @@ class Contributor(models.Model):
     html_url = models.TextField(_("html url"))
     avatar_url = models.TextField(_("avatar url"))
     last_login = models.DateTimeField(_("last login"), blank=True, null=True)
-    is_active = models.BooleanField(_("is active"), default=True)
 
     class Meta(TypedModelMeta):
         verbose_name = _("contributor")

@@ -66,11 +66,11 @@ class GitHubBackend(BaseBackend):
                 id=contributor_data["id"],
                 defaults={
                     "id": contributor_data["id"],
-                    "email": contributor_data.get("email"),
-                    "name": contributor_data.get("name"),
+                    "email": contributor_data["email"],
+                    "name": contributor_data["name"],
                     "location": contributor_data.get("location"),
-                    "html_url": contributor_data.get("html_url"),
-                    "avatar_url": contributor_data.get("avatar_url"),
+                    "html_url": contributor_data["html_url"],
+                    "avatar_url": contributor_data["avatar_url"],
                 },
             )[0]
         # pylint: disable-next=bare-except
