@@ -23,8 +23,8 @@ from codeforlife.settings import *
 GH_ORG = "ocadotechnology"
 GH_REPO = "codeforlife-workspace"
 GH_FILE = "CONTRIBUTING.md"
-GH_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID", "replace-me")
-GH_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET", "replace-me")
+GH_CLIENT_ID = os.getenv("GH_CLIENT_ID", "Ov23liBErSabQFqROeMg")
+GH_CLIENT_SECRET = os.getenv("GH_CLIENT_SECRET", "replace-me")
 
 AUTHENTICATION_BACKENDS = ["api.auth.backends.GitHubBackend"]
 
