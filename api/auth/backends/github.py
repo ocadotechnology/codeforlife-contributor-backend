@@ -63,7 +63,15 @@ class GitHubBackend(BaseBackend):
 
         try:
             return Contributor.objects.get_or_create(
-                id=contributor_data["id"], defaults=contributor_data
+                id=contributor_data["id"],
+                defaults={
+                    "id": contributor_data["id"],
+                    "email": contributor_data["email"],
+                    "name": contributor_data["name"],
+                    "location": contributor_data.get("location"),
+                    "html_url": contributor_data["html_url"],
+                    "avatar_url": contributor_data["avatar_url"],
+                },
             )[0]
         # pylint: disable-next=bare-except
         except:
