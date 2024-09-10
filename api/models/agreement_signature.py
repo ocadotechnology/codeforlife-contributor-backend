@@ -21,7 +21,11 @@ class AgreementSignature(models.Model):
     """Signature of a contributor signing the agreement"""
 
     contributor_id: int
-    contributor = models.ForeignKey(Contributor, on_delete=models.CASCADE)
+    contributor = models.ForeignKey(
+        Contributor,
+        on_delete=models.CASCADE,
+        related_name="agreement_signatures",
+    )
 
     agreement_id = models.CharField(
         _("agreement id"),

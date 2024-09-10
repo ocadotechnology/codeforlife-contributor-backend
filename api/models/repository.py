@@ -20,7 +20,11 @@ class Repository(models.Model):
     """A repository that a contributor has contributed to."""
 
     contributor_id: int
-    contributor = models.ForeignKey(Contributor, on_delete=models.CASCADE)
+    contributor = models.ForeignKey(
+        Contributor,
+        on_delete=models.CASCADE,
+        related_name="repositories",
+    )
 
     gh_id = models.IntegerField(
         _("GitHub ID"),

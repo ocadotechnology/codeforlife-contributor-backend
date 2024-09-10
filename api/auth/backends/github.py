@@ -6,6 +6,7 @@ import typing as t
 
 import requests
 from codeforlife.request import HttpRequest
+from codeforlife.types import JsonDict
 from django.conf import settings
 from django.contrib.auth.backends import BaseBackend
 
@@ -35,47 +36,27 @@ class GitHubBackend(BaseBackend):
             },
             timeout=5,
         )
-
         if not response.ok:
             return None
-        auth_data = response.json()
 
-        # Code expired
+        auth_data: JsonDict = response.json()
         if "error" in auth_data:
             return None
 
-        # Get user's information
-        response = requests.get(
-            url="https://api.github.com/user",
-            headers={
-                "Accept": "application/json",
-                "X-GitHub-Api-Version": "2022-11-28",
-                # pylint: disable-next=line-too-long
-                "Authorization": f"{auth_data['token_type']} {auth_data['access_token']}",
-            },
-            timeout=5,
-        )
+        auth = f"{auth_data['token_type']} {auth_data['access_token']}"
 
-        if not response.ok:
-            return None
-
-        contributor_data = response.json()
+        github_user = Contributor.get_github_user(auth)
 
         try:
-            return Contributor.objects.get_or_create(
-                id=contributor_data["id"],
-                defaults={
-                    "id": contributor_data["id"],
-                    "email": contributor_data["email"],
-                    "name": contributor_data["name"],
-                    "location": contributor_data.get("location"),
-                    "html_url": contributor_data["html_url"],
-                    "avatar_url": contributor_data["avatar_url"],
-                },
-            )[0]
-        # pylint: disable-next=bare-except
-        except:
-            return None
+            contributor = Contributor.objects.get(id=github_user["id"])
+        except Contributor.DoesNotExist:
+            contributor = Contributor(id=github_user["id"])
+
+        return (
+            contributor
+            if contributor.sync_with_github(auth, github_user)
+            else None
+        )
 
     # pylint: disable-next=arguments-renamed
     def get_user(self, contributor_id: int):
