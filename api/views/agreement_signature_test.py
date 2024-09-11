@@ -7,21 +7,18 @@ import json
 from unittest.mock import patch
 
 import requests
-from codeforlife.tests import ModelViewSetTestCase
 from codeforlife.user.models import User
+from django.conf import settings
 from django.utils import timezone
 from rest_framework import status
 
-import settings
-
+from ..common import ModelViewSetTestCase
 from ..models import AgreementSignature, Contributor
 from .agreement_signature import AgreementSignatureViewSet
 
 
 # pylint: disable-next=too-many-ancestors,missing-class-docstring
-class TestAgreementSignatureViewSet(
-    ModelViewSetTestCase[User, AgreementSignature]
-):
+class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
     basename = "agreement-signature"
     model_view_set_class = AgreementSignatureViewSet
     fixtures = ["agreement_signatures", "contributors"]
@@ -36,12 +33,13 @@ class TestAgreementSignatureViewSet(
 
     def test_get_queryset__retrieve(self):
         """Includes all of a contributor's agreement-signatures."""
+        self.client.login_as(self.contributor1)
+        
         self.assert_get_queryset(
             values=AgreementSignature.objects.filter(
                 contributor=self.contributor1
-            ),
+            ).order_by("signed_at"),
             action="retrieve",
-            kwargs={"contributor_pk": self.contributor1.pk},
         )
 
     def test_get_queryset__list(self):

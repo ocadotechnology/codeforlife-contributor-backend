@@ -6,20 +6,18 @@ Created on 12/07/2024 at 14:07:45(+01:00).
 from datetime import datetime
 
 import requests
-from codeforlife.serializers import ModelSerializer
-from codeforlife.user.models import User
+from django.conf import settings
 from django.utils import timezone
 from rest_framework import serializers
 
-import settings
-
+from ..common import ModelSerializer
 from ..models import AgreementSignature, Contributor
 
 
 # pylint: disable=missing-class-docstring
 # pylint: disable=missing-function-docstring
 # pylint: disable=too-many-ancestors
-class AgreementSignatureSerializer(ModelSerializer[User, AgreementSignature]):
+class AgreementSignatureSerializer(ModelSerializer[AgreementSignature]):
     class Meta:
         model = AgreementSignature
         fields = ["id", "contributor", "agreement_id", "signed_at"]

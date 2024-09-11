@@ -43,19 +43,8 @@ class GitHubBackend(BaseBackend):
         if "error" in auth_data:
             return None
 
-        auth = f"{auth_data['token_type']} {auth_data['access_token']}"
-
-        github_user = Contributor.get_github_user(auth)
-
-        try:
-            contributor = Contributor.objects.get(id=github_user["id"])
-        except Contributor.DoesNotExist:
-            contributor = Contributor(id=github_user["id"])
-
-        return (
-            contributor
-            if contributor.sync_with_github(auth, github_user)
-            else None
+        return Contributor.sync_with_github(
+            auth=f"{auth_data['token_type']} {auth_data['access_token']}"
         )
 
     # pylint: disable-next=arguments-renamed

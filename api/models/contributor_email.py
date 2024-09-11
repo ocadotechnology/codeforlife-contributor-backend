@@ -44,6 +44,9 @@ class ContributorEmail(models.Model):
             )
         ]
 
+    def __str__(self):
+        return self.email
+
     @staticmethod
     def get_github_emails(auth: str):
         # pylint: disable=line-too-long
@@ -62,7 +65,7 @@ class ContributorEmail(models.Model):
         """
         # pylint: enable=line-too-long
         response = requests.get(
-            url="https://api.github.com/user/emails",
+            url="https://api.github.com/user/emails?per_page=100",
             headers={
                 "Accept": "application/vnd.github+json",
                 "X-GitHub-Api-Version": "2022-11-28",
@@ -77,24 +80,24 @@ class ContributorEmail(models.Model):
         return t.cast(t.List[JsonDict], response.json())
 
     @classmethod
-    def sync_with_github(
-        cls,
-        contributor: Contributor,
-        auth: str,
-        github_emails: t.Optional[t.List[JsonDict]] = None,
-    ):
+    def sync_with_github(cls, contributor: Contributor, auth: str):
         # pylint: disable=line-too-long
         """Sync a contributor's emails with GitHub.
 
         Args:
             contributor: The contributor to sync.
             auth: The auth header used to access the user's data.
-            github_emails: The github-emails to sync. If not provided, they will be retrieved from GitHub.
+
+        Returns:
+            The synced contributor's emails.
         """
         # pylint: enable=line-too-long
-        github_emails = github_emails or cls.get_github_emails(auth)
+        github_emails = cls.get_github_emails(auth)
+        github_emails = [
+            email for email in github_emails if email["verified"] == True
+        ]
 
-        contributor.emails.delete()
+        contributor.emails.all().delete()
 
         return cls.objects.bulk_create(
             [

@@ -47,8 +47,7 @@ class Contributor(models.Model):
         verbose_name_plural = _("contributors")
 
     def __str__(self):
-        primary_email = self.primary_email
-        return f"{self.name} <{primary_email}>" if primary_email else self.name
+        return f"{self.name} <{self.primary_email}>"
 
     @property
     def primary_email(self):
@@ -105,25 +104,33 @@ class Contributor(models.Model):
 
         return t.cast(JsonDict, response.json())
 
-    def sync_with_github(
-        self, auth: str, github_user: t.Optional[JsonDict] = None
-    ):
+    @classmethod
+    def sync_with_github(cls, auth: str):
         # pylint: disable=line-too-long
         """Sync a contributor with GitHub.
 
         Args:
             auth: The auth header used to access the user's data.
-            github_user: The github-user to sync. If not provided, it will be retrieved from GitHub.
+
+        Returns:
+            The synced contributor.
         """
         # pylint: enable=line-too-long
         from .contributor_email import ContributorEmail
 
-        github_user = github_user or self.get_github_user(auth)
+        github_user = cls.get_github_user(auth)
 
-        self.name = github_user["name"]
-        self.location = github_user.get("location")
-        self.html_url = github_user["html_url"]
-        self.avatar_url = github_user["avatar_url"]
-        self.save()
+        try:
+            contributor = Contributor.objects.get(id=github_user["id"])
+        except Contributor.DoesNotExist:
+            contributor = Contributor(id=github_user["id"])
 
-        ContributorEmail.sync_with_github(self, auth)
+        contributor.name = github_user["name"]
+        contributor.location = github_user.get("location")
+        contributor.html_url = github_user["html_url"]
+        contributor.avatar_url = github_user["avatar_url"]
+        contributor.save()
+
+        ContributorEmail.sync_with_github(contributor, auth)
+
+        return contributor
