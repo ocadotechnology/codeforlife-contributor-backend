@@ -2,7 +2,6 @@ import typing as t
 
 from codeforlife.types import DataDict
 from django.db.models import Model
-from django.views import View
 from rest_framework.serializers import ModelSerializer as _ModelSerializer
 
 from .request import Request

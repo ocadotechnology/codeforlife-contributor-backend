@@ -3,15 +3,17 @@
 Created on 12/07/2024 at 14:07:45(+01:00).
 """
 
+import typing as t
 from datetime import datetime
 
 import requests
+from codeforlife.types import JsonDict
 from django.conf import settings
 from django.utils import timezone
 from rest_framework import serializers
 
 from ..common import ModelSerializer
-from ..models import AgreementSignature, Contributor
+from ..models import AgreementSignature
 
 
 # pylint: disable=missing-class-docstring
@@ -20,7 +22,7 @@ from ..models import AgreementSignature, Contributor
 class AgreementSignatureSerializer(ModelSerializer[AgreementSignature]):
     class Meta:
         model = AgreementSignature
-        fields = ["id", "contributor", "agreement_id", "signed_at"]
+        fields = ["id", "agreement_id", "signed_at"]
 
     def validate_signed_at(self, value: datetime):
         if value > timezone.now():
@@ -59,24 +61,25 @@ class AgreementSignatureSerializer(ModelSerializer[AgreementSignature]):
                 "Invalid commit ID", code="invalid_commit_id"
             )
 
-        response_json = response.json()
-        for file in response_json.get("files", []):
-            if file["filename"] == settings.GH_FILE:
-                return response_json
-
-        raise serializers.ValidationError(
-            "Agreement not in commit files", code="agreement_not_in_files"
-        )
+        return t.cast(JsonDict, response.json())
 
     def validate(self, attrs):
-        contributor: Contributor = attrs["contributor"]
         agreement_id: str = attrs["agreement_id"]
 
         # Check validity of the new agreement_ID
         commit = self._get_agreement_commit(agreement_id)
+        if all(
+            file["filename"] != settings.GH_FILE
+            for file in commit.get("files", [])
+        ):
+            raise serializers.ValidationError(
+                "Agreement not in commit files", code="agreement_not_in_files"
+            )
 
         # Check if contributor has signed a contribution in the past
-        last_agreement_signature = contributor.last_agreement_signature
+        last_agreement_signature = (
+            self.request.contributor.last_agreement_signature
+        )
         if last_agreement_signature:
             last_commit = self._get_agreement_commit(
                 last_agreement_signature.agreement_id
@@ -92,3 +95,7 @@ class AgreementSignatureSerializer(ModelSerializer[AgreementSignature]):
                 )
 
         return attrs
+
+    def create(self, validated_data):
+        validated_data["contributor"] = self.request.contributor
+        return super().create(validated_data)

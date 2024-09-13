@@ -39,12 +39,12 @@ class GitHubBackend(BaseBackend):
         if not response.ok:
             return None
 
-        auth_data: JsonDict = response.json()
-        if "error" in auth_data:
+        access_token: JsonDict = response.json()
+        if "error" in access_token:
             return None
 
         return Contributor.sync_with_github(
-            auth=f"{auth_data['token_type']} {auth_data['access_token']}"
+            auth=f"{access_token['token_type']} {access_token['access_token']}"
         )
 
     # pylint: disable-next=arguments-renamed

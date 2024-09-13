@@ -93,7 +93,6 @@ class Contributor(models.Model):
             headers={
                 "Accept": "application/json",
                 "X-GitHub-Api-Version": "2022-11-28",
-                # pylint: disable-next=line-too-long
                 "Authorization": auth,
             },
             timeout=5,

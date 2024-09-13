@@ -8,19 +8,18 @@ from datetime import timedelta
 from unittest.mock import call, patch
 
 import requests
-from codeforlife.tests import ModelSerializerTestCase
-from codeforlife.user.models import User
 from django.conf import settings
 from django.utils import timezone
 from rest_framework import status
 
+from ..common import ModelSerializerTestCase
 from ..models import AgreementSignature, Contributor
 from .agreement_signature import AgreementSignatureSerializer
 
 
 # pylint: disable-next=missing-class-docstring,too-many-ancestors
 class TestAgreementSignatureSerializer(
-    ModelSerializerTestCase[User, AgreementSignature]
+    ModelSerializerTestCase[AgreementSignature]
 ):
     model_serializer_class = AgreementSignatureSerializer
     fixtures = ["contributors", "agreement_signatures"]
@@ -94,6 +93,7 @@ class TestAgreementSignatureSerializer(
     def test_validate__old_version(self):
         """Can check if contributor tried to sign an older version."""
 
+        contributor = self.contributor
         agreement_id = "81efd9e68f161104071f7bef7f9256e4840c1af7"
         now = timezone.now()
 
@@ -119,7 +119,7 @@ class TestAgreementSignatureSerializer(
             }
         ).encode("utf-8")
 
-        last_agreement_signature = self.contributor.last_agreement_signature
+        last_agreement_signature = contributor.last_agreement_signature
         assert last_agreement_signature
 
         with patch.object(
@@ -127,11 +127,12 @@ class TestAgreementSignatureSerializer(
         ) as requests_get:
             self.assert_validate(
                 attrs={
-                    "contributor": self.contributor,
+                    "contributor": contributor,
                     "agreement_id": agreement_id,
                     "signed_at": now - timedelta(days=1),
                 },
                 error_code="old_version",
+                context={"request": self.request_factory.get(user=contributor)},
             )
 
             requests_get.assert_has_calls(

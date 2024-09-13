@@ -65,12 +65,13 @@ class ContributorEmail(models.Model):
         """
         # pylint: enable=line-too-long
         response = requests.get(
-            url="https://api.github.com/user/emails?per_page=100",
+            url="https://api.github.com/user/emails",
             headers={
                 "Accept": "application/vnd.github+json",
                 "X-GitHub-Api-Version": "2022-11-28",
                 "Authorization": auth,
             },
+            params={"per_page": 100},
             timeout=5,
         )
 
