@@ -1,3 +1,10 @@
+"""
+© Ocado Group
+Created on 13/09/2024 at 12:00:50(+03:00).
+"""
+
+# pylint: disable=duplicate-code
+
 import json
 import typing as t
 from unittest.mock import ANY, call, patch
@@ -17,7 +24,10 @@ from .model_view_set import ModelViewSet
 AnyModel = t.TypeVar("AnyModel", bound=Model)
 
 
+# pylint: disable-next=too-many-ancestors,arguments-differ
 class ModelViewSetClient(_ModelViewSetClient, t.Generic[AnyModel]):
+    """Client used to make test requests."""
+
     def __init__(self, enforce_csrf_checks: bool = False, **defaults):
         super().__init__(enforce_csrf_checks, **defaults)
 
@@ -25,6 +35,7 @@ class ModelViewSetClient(_ModelViewSetClient, t.Generic[AnyModel]):
             enforce_csrf_checks, **defaults
         )
 
+    # pylint: disable-next=arguments-differ
     def login(  # type: ignore[override]
         self, contributor: t.Union[int, Contributor]
     ):
@@ -129,11 +140,15 @@ class ModelViewSetClient(_ModelViewSetClient, t.Generic[AnyModel]):
 
         return Contributor.objects.get(session=self.session.session_key)
 
+    # pylint: disable-next=arguments-differ
     def login_as(self, contributor: Contributor):  # type: ignore[override]
         return self.login(contributor)
 
 
+# pylint: disable-next=too-many-ancestors
 class ModelViewSetTestCase(_ModelViewSetTestCase, t.Generic[AnyModel]):
+    """Base model view set test case."""
+
     model_view_set_class: t.Type[  # type: ignore[assignment]
         ModelViewSet[AnyModel]
     ]

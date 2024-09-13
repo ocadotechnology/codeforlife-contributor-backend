@@ -10,6 +10,7 @@ from codeforlife.types import JsonDict
 from django.db import models
 from django.db.models import Q, UniqueConstraint
 from django.utils.translation import gettext_lazy as _
+from requests.exceptions import RequestException
 
 from .contributor import Contributor
 
@@ -76,7 +77,7 @@ class ContributorEmail(models.Model):
         )
 
         if not response.ok:
-            raise Exception("Failed to call GitHub API.")
+            raise RequestException("Failed to call GitHub API.")
 
         return t.cast(t.List[JsonDict], response.json())
 
@@ -94,9 +95,7 @@ class ContributorEmail(models.Model):
         """
         # pylint: enable=line-too-long
         github_emails = cls.get_github_emails(auth)
-        github_emails = [
-            email for email in github_emails if email["verified"] == True
-        ]
+        github_emails = [email for email in github_emails if email["verified"]]
 
         contributor.emails.all().delete()
 

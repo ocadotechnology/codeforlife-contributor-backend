@@ -1,3 +1,8 @@
+"""
+© Ocado Group
+Created on 13/09/2024 at 12:00:41(+03:00).
+"""
+
 import typing as t
 
 from codeforlife.types import DataDict
@@ -10,6 +15,8 @@ AnyModel = t.TypeVar("AnyModel", bound=Model)
 
 
 class ModelSerializer(_ModelSerializer[AnyModel], t.Generic[AnyModel]):
+    """Base model serializer."""
+
     @property
     def request(self):
         """The HTTP request that triggered the view."""

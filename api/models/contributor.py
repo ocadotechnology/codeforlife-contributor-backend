@@ -10,6 +10,7 @@ from codeforlife.types import JsonDict
 from django.db import models
 from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
+from requests.exceptions import RequestException
 
 if t.TYPE_CHECKING:
     from django_stubs_ext.db.models import TypedModelMeta  # pragma: no cover
@@ -52,6 +53,7 @@ class Contributor(models.Model):
     @property
     def primary_email(self):
         """The primary email of this contributor, if they have one."""
+        # pylint: disable-next=import-outside-toplevel
         from .contributor_email import ContributorEmail
 
         try:
@@ -99,7 +101,7 @@ class Contributor(models.Model):
         )
 
         if not response.ok:
-            raise Exception("Failed to call GitHub API.")
+            raise RequestException("Failed to call GitHub API.")
 
         return t.cast(JsonDict, response.json())
 
@@ -115,6 +117,7 @@ class Contributor(models.Model):
             The synced contributor.
         """
         # pylint: enable=line-too-long
+        # pylint: disable-next=import-outside-toplevel
         from .contributor_email import ContributorEmail
 
         github_user = cls.get_github_user(auth)

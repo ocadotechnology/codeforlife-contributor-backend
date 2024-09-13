@@ -1,3 +1,8 @@
+"""
+© Ocado Group
+Created on 13/09/2024 at 12:00:34(+03:00).
+"""
+
 import typing as t
 
 from codeforlife.tests import (
@@ -13,6 +18,8 @@ AnyModel = t.TypeVar("AnyModel", bound=Model)
 
 
 class ModelSerializerTestCase(_ModelSerializerTestCase, t.Generic[AnyModel]):
+    """Base model serializer test case."""
+
     model_serializer_class: t.Type[  # type: ignore[assignment]
         ModelSerializer[AnyModel]
     ]
