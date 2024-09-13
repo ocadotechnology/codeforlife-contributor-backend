@@ -8,6 +8,6 @@ from ..models import Contributor
 from .contributor import ContributorSerializer
 
 
-# pylint: disable-next=missing-class-docstring,
+# pylint: disable-next=missing-class-docstring,too-many-ancestors
 class TestContributorSerializer(ModelSerializerTestCase[Contributor]):
     model_serializer_class = ContributorSerializer
