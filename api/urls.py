@@ -44,5 +44,6 @@ urlpatterns = get_urlpatterns(
             LoginView.as_view(),
             name="session-login",
         ),
-    ]
+    ],
+    include_user_urls=False
 )
