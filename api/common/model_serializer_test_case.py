@@ -13,9 +13,11 @@ AnyModel = t.TypeVar("AnyModel", bound=Model)
 
 
 class ModelSerializerTestCase(_ModelSerializerTestCase, t.Generic[AnyModel]):
-    model_serializer_class: t.Type[ModelSerializer[AnyModel]]
+    model_serializer_class: t.Type[  # type: ignore[assignment]
+        ModelSerializer[AnyModel]
+    ]
 
-    request_factory: APIRequestFactory
+    request_factory: APIRequestFactory  # type: ignore[assignment]
 
     @classmethod
     def setUpClass(cls):
@@ -32,7 +34,7 @@ class ModelSerializerTestCase(_ModelSerializerTestCase, t.Generic[AnyModel]):
         Returns:
             The model view set's class.
         """
-        return Contributor
+        return Contributor # type: ignore[return-value]
 
     @classmethod
     def get_model_class(cls) -> t.Type[AnyModel]:

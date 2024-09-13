@@ -21,11 +21,13 @@ class ModelViewSetClient(_ModelViewSetClient, t.Generic[AnyModel]):
     def __init__(self, enforce_csrf_checks: bool = False, **defaults):
         super().__init__(enforce_csrf_checks, **defaults)
 
-        self.request_factory = APIRequestFactory(
+        self.request_factory = APIRequestFactory(  # type: ignore[assignment]
             enforce_csrf_checks, **defaults
         )
 
-    def login(self, contributor: t.Union[int, Contributor]):
+    def login(  # type: ignore[override]
+        self, contributor: t.Union[int, Contributor]
+    ):
         # Logout current user (if any) before logging in next user.
         self.logout()
 
@@ -127,12 +129,14 @@ class ModelViewSetClient(_ModelViewSetClient, t.Generic[AnyModel]):
 
         return Contributor.objects.get(session=self.session.session_key)
 
-    def login_as(self, contributor: Contributor):
+    def login_as(self, contributor: Contributor):  # type: ignore[override]
         return self.login(contributor)
 
 
 class ModelViewSetTestCase(_ModelViewSetTestCase, t.Generic[AnyModel]):
-    model_view_set_class: t.Type[ModelViewSet[AnyModel]]
+    model_view_set_class: t.Type[  # type: ignore[assignment]
+        ModelViewSet[AnyModel]
+    ]
     client: ModelViewSetClient[AnyModel]
     client_class: t.Type[ModelViewSetClient[AnyModel]] = ModelViewSetClient
 

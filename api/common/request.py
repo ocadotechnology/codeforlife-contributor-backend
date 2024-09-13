@@ -7,7 +7,7 @@ from ..models import Contributor
 
 
 class Request(_Request):
-    user: t.Union[Contributor, AnonymousUser]
+    user: t.Union[Contributor, AnonymousUser]  # type: ignore[assignment]
 
     @property
     def anon_user(self):
