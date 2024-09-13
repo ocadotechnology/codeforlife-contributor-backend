@@ -34,7 +34,7 @@ class ModelSerializerTestCase(_ModelSerializerTestCase, t.Generic[AnyModel]):
         Returns:
             The model view set's class.
         """
-        return Contributor # type: ignore[return-value]
+        return Contributor  # type: ignore[return-value]
 
     @classmethod
     def get_model_class(cls) -> t.Type[AnyModel]:
