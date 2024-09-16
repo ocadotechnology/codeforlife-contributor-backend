@@ -3,12 +3,8 @@
 Created on 12/07/2024 at 14:07:45(+01:00).
 """
 
-import typing as t
 from datetime import datetime
 
-import requests
-from codeforlife.types import JsonDict
-from django.conf import settings
 from django.utils import timezone
 from rest_framework import serializers
 
