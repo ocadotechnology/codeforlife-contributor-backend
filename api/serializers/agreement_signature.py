@@ -15,14 +15,23 @@ from rest_framework import serializers
 from ..common import ModelSerializer
 from ..models import AgreementSignature
 
-
 # pylint: disable=missing-class-docstring
 # pylint: disable=missing-function-docstring
 # pylint: disable=too-many-ancestors
+
+
 class AgreementSignatureSerializer(ModelSerializer[AgreementSignature]):
     class Meta:
         model = AgreementSignature
         fields = ["id", "agreement_id", "signed_at"]
+
+    def validate_agreement_id(self, value: str):
+        if AgreementSignature.get_latest_sha_from_github() != value:
+            raise serializers.ValidationError(
+                "Can only sign the latest agreement", code="only_latest"
+            )
+
+        return value
 
     def validate_signed_at(self, value: datetime):
         if value > timezone.now():
@@ -31,70 +40,6 @@ class AgreementSignatureSerializer(ModelSerializer[AgreementSignature]):
             )
 
         return value
-
-    def _get_agreement_commit(self, ref: str):
-        """
-        Get a commit for the agreement using GitHub's API
-
-        https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#
-        get-a-commit
-
-        Args:
-            ref: The SHA for the commit.
-
-        Raises:
-            ValidationError: If the commit does not exist for the agreement.
-
-        Returns:
-            The commit's data.
-        """
-
-        # Send an API request
-        response = requests.get(
-            # pylint: disable-next=line-too-long
-            url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits/{ref}",
-            headers={"X-GitHub-Api-Version": "2022-11-28"},
-            timeout=5,
-        )
-        if not response.ok:
-            raise serializers.ValidationError(
-                "Invalid commit ID", code="invalid_commit_id"
-            )
-
-        return t.cast(JsonDict, response.json())
-
-    def validate(self, attrs):
-        agreement_id: str = attrs["agreement_id"]
-
-        # Check validity of the new agreement_ID
-        commit = self._get_agreement_commit(agreement_id)
-        if all(
-            file["filename"] != settings.GH_FILE
-            for file in commit.get("files", [])
-        ):
-            raise serializers.ValidationError(
-                "Agreement not in commit files", code="agreement_not_in_files"
-            )
-
-        # Check if contributor has signed a contribution in the past
-        last_agreement_signature = (
-            self.request.contributor.last_agreement_signature
-        )
-        if last_agreement_signature:
-            last_commit = self._get_agreement_commit(
-                last_agreement_signature.agreement_id
-            )
-
-            if (
-                commit["commit"]["author"]["date"]
-                <= last_commit["commit"]["author"]["date"]
-            ):
-                raise serializers.ValidationError(
-                    "You tried to sign an older version of the agreement.",
-                    code="old_version",
-                )
-
-        return attrs
 
     def create(self, validated_data):
         validated_data["contributor"] = self.request.contributor

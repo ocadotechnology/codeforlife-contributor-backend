@@ -4,8 +4,7 @@ Created on 16/07/2024 at 14:59:49(+01:00).
 """
 
 import json
-from datetime import timedelta
-from unittest.mock import ANY, call, patch
+from unittest.mock import ANY, patch
 
 import requests
 from django.conf import settings
@@ -92,39 +91,19 @@ class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
     def test_create(self):
         """Can create a contributor signature."""
         contributor = self.contributor1
-        now = timezone.now()
+        agreement_id = "81efd9e68f161104071f7bef7f9256e4840c1af7"
 
-        get_new_commit_response = requests.Response()
-        get_new_commit_response.status_code = status.HTTP_200_OK
-        get_new_commit_response.encoding = "utf-8"
+        response = requests.Response()
+        response.status_code = status.HTTP_200_OK
+        response.encoding = "utf-8"
         # pylint: disable-next=protected-access
-        get_new_commit_response._content = json.dumps(
-            {
-                "files": [{"filename": settings.GH_FILE}],
-                "commit": {"author": {"date": str(now)}},
-            }
-        ).encode("utf-8")
-
-        get_last_commit_response = requests.Response()
-        get_last_commit_response.status_code = status.HTTP_200_OK
-        get_last_commit_response.encoding = "utf-8"
-        # pylint: disable-next=protected-access
-        get_last_commit_response._content = json.dumps(
-            {"commit": {"author": {"date": str(now - timedelta(days=1))}}}
-        ).encode("utf-8")
+        response._content = json.dumps([{"sha": agreement_id}]).encode("utf-8")
 
         self.client.login_as(contributor)
 
         with patch.object(
-            requests,
-            "get",
-            side_effect=[get_new_commit_response, get_last_commit_response],
-        ) as get:
-            agreement_id = "81efd9e68f161104071f7bef7f9256e4840c1af7"
-            last_agreement_id = (
-                contributor.last_agreement_signature.agreement_id
-            )
-
+            requests, "get", return_value=response
+        ) as requests_get:
             self.client.create(
                 data={
                     "agreement_id": agreement_id,
@@ -132,21 +111,12 @@ class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
                 },
             )
 
-            get.assert_has_calls(
-                [
-                    call(
-                        # pylint: disable-next=line-too-long
-                        url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits/{agreement_id}",
-                        headers={"X-GitHub-Api-Version": "2022-11-28"},
-                        timeout=ANY,
-                    ),
-                    call(
-                        # pylint: disable-next=line-too-long
-                        url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits/{last_agreement_id}",
-                        headers={"X-GitHub-Api-Version": "2022-11-28"},
-                        timeout=ANY,
-                    ),
-                ]
+            requests_get.assert_called_once_with(
+                # pylint: disable-next=line-too-long
+                url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits",
+                headers={"X-GitHub-Api-Version": "2022-11-28"},
+                params={"path": settings.GH_FILE, "per_page": 1},
+                timeout=ANY,
             )
 
     def _test_check_signed_latest(
