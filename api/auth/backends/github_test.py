@@ -80,13 +80,15 @@ class TestGitHubBackend(TestCase):
         with patch.object(
             requests, "post", return_value=response
         ) as requests_post:
-            res = self.backend.authenticate(request=self.request, code=code)
+            contributor = self.backend.authenticate(
+                request=self.request, code=code
+            )
 
-            assert not res
+            assert not contributor
             self._assert_request_github_access_token(requests_post, code)
 
-    def test_login__code_expired(self):
-        """Provided code must not expired."""
+    def test_login__error(self):
+        """Login cannot return an error in the response."""
         code = "7f06468085765cdc1578"
 
         response = requests.Response()
@@ -98,50 +100,9 @@ class TestGitHubBackend(TestCase):
         with patch.object(
             requests, "post", return_value=response
         ) as requests_post:
-            res = self.backend.authenticate(request=self.request, code=code)
+            contributor = self.backend.authenticate(
+                request=self.request, code=code
+            )
 
-            assert not res
+            assert not contributor
             self._assert_request_github_access_token(requests_post, code)
-
-    def test_login__token_failure(self):
-        """Access token did not get accepted by github."""
-        code = "7f06468085765cdc1578"
-
-        response_get = requests.Response()
-        response_get.status_code = status.HTTP_401_UNAUTHORIZED
-
-        with patch.object(
-            requests, "post", return_value=self.gh_access_token_response
-        ) as requests_post:
-            with patch.object(
-                requests, "get", return_value=response_get
-            ) as requests_get:
-                res = self.backend.authenticate(request=self.request, code=code)
-
-                assert not res
-                self._assert_request_github_access_token(requests_post, code)
-                self._assert_request_github_user(requests_get, "Bearer 123254")
-
-    def test_login__invalid_contributor_data(self):
-        """
-        Github did not provide data needed to log the user in.
-        """
-        code = "7f06468085765cdc1578"
-
-        response_get = requests.Response()
-        response_get.status_code = status.HTTP_200_OK
-        response_get.encoding = "utf-8"
-        # pylint: disable-next=protected-access
-        response_get._content = json.dumps({}).encode("utf-8")
-
-        with patch.object(
-            requests, "post", return_value=self.gh_access_token_response
-        ) as requests_post:
-            with patch.object(
-                requests, "get", return_value=response_get
-            ) as requests_get:
-                res = self.backend.authenticate(request=self.request, code=code)
-
-                assert not res
-                self._assert_request_github_access_token(requests_post, code)
-                self._assert_request_github_user(requests_get, "Bearer 123254")

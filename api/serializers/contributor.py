@@ -5,17 +5,15 @@ Created on 12/07/2024 at 14:07:59(+01:00).
 
 import typing as t
 
-from codeforlife.serializers import ModelSerializer
-from codeforlife.user.models import User
-
+from ..common import ModelSerializer
 from ..models import Contributor
 
 
 # pylint: disable-next=missing-class-docstring,too-many-ancestors
-class ContributorSerializer(ModelSerializer[User, Contributor]):
+class ContributorSerializer(ModelSerializer[Contributor]):
     class Meta:
         model = Contributor
-        fields = ["id", "email", "name", "location", "html_url", "avatar_url"]
+        fields = ["id", "name", "location", "html_url", "avatar_url"]
         extra_kwargs: t.Dict[str, t.Dict[str, t.Any]] = {
             "id": {"validators": []}
         }
@@ -24,7 +22,6 @@ class ContributorSerializer(ModelSerializer[User, Contributor]):
         try:
             # Update an existing contributor
             contributor = Contributor.objects.get(id=validated_data["id"])
-            contributor.email = validated_data["email"]
             contributor.name = validated_data["name"]
             contributor.location = validated_data["location"]
             contributor.html_url = validated_data["html_url"]
@@ -32,7 +29,6 @@ class ContributorSerializer(ModelSerializer[User, Contributor]):
 
             contributor.save(
                 update_fields=[
-                    "email",
                     "name",
                     "location",
                     "html_url",

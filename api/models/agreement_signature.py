@@ -5,9 +5,13 @@ Created on 08/07/2024 at 10:48:44(+01:00).
 
 import typing as t
 
+import requests
+from codeforlife.types import DataDict
+from django.conf import settings
 from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from requests.exceptions import RequestException
 
 from .contributor import Contributor
 
@@ -21,7 +25,11 @@ class AgreementSignature(models.Model):
     """Signature of a contributor signing the agreement"""
 
     contributor_id: int
-    contributor = models.ForeignKey(Contributor, on_delete=models.CASCADE)
+    contributor = models.ForeignKey(
+        Contributor,
+        on_delete=models.CASCADE,
+        related_name="agreement_signatures",
+    )
 
     agreement_id = models.CharField(
         _("agreement id"),
@@ -40,3 +48,19 @@ class AgreementSignature(models.Model):
         cont = f"Contributor {self.contributor.pk} signed"
         repo = f"{self.agreement_id[:7]} at {self.signed_at}"
         return f"{cont} {repo}"
+
+    @staticmethod
+    def get_latest_sha_from_github():
+        """Get the latest agreement's commit's SHA from GitHub."""
+        response = requests.get(
+            # pylint: disable-next=line-too-long
+            url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits",
+            headers={"X-GitHub-Api-Version": "2022-11-28"},
+            params=t.cast(DataDict, {"path": settings.GH_FILE, "per_page": 1}),
+            timeout=5,
+        )
+
+        if not response.ok:
+            raise RequestException("Failed to call GitHub API.")
+
+        return t.cast(str, response.json()[0]["sha"])

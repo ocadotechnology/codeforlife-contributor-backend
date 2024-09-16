@@ -20,6 +20,7 @@ class Session(AbstractBaseSession):
     https://docs.djangoproject.com/en/3.2/topics/http/sessions/#example
     """
 
+    contributor_id: int
     contributor = models.OneToOneField(
         Contributor,
         null=True,

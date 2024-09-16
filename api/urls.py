@@ -17,6 +17,9 @@ Including another URLconf
 """
 
 from codeforlife.urls import get_urlpatterns
+
+# pylint: disable-next=wildcard-import,unused-wildcard-import
+from codeforlife.urls.handlers import *
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
@@ -44,5 +47,6 @@ urlpatterns = get_urlpatterns(
             LoginView.as_view(),
             name="session-login",
         ),
-    ]
+    ],
+    include_user_urls=False,
 )

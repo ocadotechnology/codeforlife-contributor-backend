@@ -11,7 +11,7 @@ from .contributor import Contributor
 class TestContributor(ModelTestCase[Contributor]):
     """Test the Contributor Model"""
 
-    fixtures = ["contributors"]
+    fixtures = ["contributors", "contributor_emails"]
 
     def setUp(self):
         self.contributor = Contributor.objects.get(pk=1)
@@ -21,5 +21,5 @@ class TestContributor(ModelTestCase[Contributor]):
         Parsing a contributor instance to a string returns its name and email.
         """
         name = self.contributor.name
-        email = self.contributor.email
+        email = self.contributor.primary_email
         assert str(self.contributor) == f"{name} <{email}>"

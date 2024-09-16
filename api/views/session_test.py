@@ -4,7 +4,7 @@ Created on 06/08/2024 at 14:52:07(+01:00).
 """
 
 import json
-from unittest.mock import Mock, patch
+from unittest.mock import ANY, Mock, call, patch
 
 import requests
 from codeforlife.tests import TestCase
@@ -54,14 +54,28 @@ class TestLoginView(TestCase):
 
     def _assert_request_github_user(self, request: Mock, auth: str):
         """Retrieve user data using the access token."""
-        request.assert_called_once_with(
-            url="https://api.github.com/user",
-            headers={
-                "Accept": "application/json",
-                "Authorization": auth,
-                "X-GitHub-Api-Version": "2022-11-28",
-            },
-            timeout=5,
+        request.assert_has_calls(
+            [
+                call(
+                    url="https://api.github.com/user",
+                    headers={
+                        "Accept": "application/json",
+                        "X-GitHub-Api-Version": "2022-11-28",
+                        "Authorization": auth,
+                    },
+                    timeout=ANY,
+                ),
+                call(
+                    url="https://api.github.com/user/emails",
+                    headers={
+                        "Accept": "application/vnd.github+json",
+                        "X-GitHub-Api-Version": "2022-11-28",
+                        "Authorization": auth,
+                    },
+                    params={"per_page": 100},
+                    timeout=ANY,
+                ),
+            ]
         )
 
     def test_login__new_contributor(self):
@@ -78,7 +92,6 @@ class TestLoginView(TestCase):
         response_get._content = json.dumps(
             {
                 "id": 999999999999999,
-                "email": "contributornew@gmail.com",
                 "name": "contributor new",
                 "location": "London",
                 "html_url": "https://github.com/contributornew",
@@ -86,11 +99,28 @@ class TestLoginView(TestCase):
             }
         ).encode("utf-8")
 
+        list_emails_response = requests.Response()
+        list_emails_response.status_code = status.HTTP_200_OK
+        list_emails_response.encoding = "utf-8"
+        # pylint: disable-next=protected-access
+        list_emails_response._content = json.dumps(
+            [
+                {
+                    "verified": True,
+                    "email": "contributornew@gmail.com",
+                    "primary": True,
+                    "visibility": "public",
+                }
+            ]
+        ).encode("utf-8")
+
         with patch.object(
             requests, "post", return_value=self.gh_access_token_response
         ) as requests_post:
             with patch.object(
-                requests, "get", return_value=response_get
+                requests,
+                "get",
+                side_effect=[response_get, list_emails_response],
             ) as requests_get:
                 response = self.client.post(
                     reverse("session-login"),
@@ -124,11 +154,28 @@ class TestLoginView(TestCase):
             }
         ).encode("utf-8")
 
+        list_emails_response = requests.Response()
+        list_emails_response.status_code = status.HTTP_200_OK
+        list_emails_response.encoding = "utf-8"
+        # pylint: disable-next=protected-access
+        list_emails_response._content = json.dumps(
+            [
+                {
+                    "verified": True,
+                    "email": "contributor1@gmail.com",
+                    "primary": True,
+                    "visibility": "public",
+                }
+            ]
+        ).encode("utf-8")
+
         with patch.object(
             requests, "post", return_value=self.gh_access_token_response
         ) as requests_post:
             with patch.object(
-                requests, "get", return_value=response_get
+                requests,
+                "get",
+                side_effect=[response_get, list_emails_response],
             ) as requests_get:
                 response = self.client.post(
                     reverse("session-login"),

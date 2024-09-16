@@ -1,0 +1,42 @@
+[
+  {
+    "model": "api.contributoremail",
+    "pk": 1,
+    "fields": {
+      "contributor": 1,
+      "email": "contributor1@gmail.com",
+      "is_public": true,
+      "is_primary": true
+    }
+  },
+  {
+    "model": "api.contributoremail",
+    "pk": 2,
+    "fields": {
+      "contributor": 2,
+      "email": "contributor2@gmail.com",
+      "is_public": true,
+      "is_primary": true
+    }
+  },
+  {
+    "model": "api.contributoremail",
+    "pk": 3,
+    "fields": {
+      "contributor": 3,
+      "email": "contributor3@gmail.com",
+      "is_public": true,
+      "is_primary": true
+    }
+  },
+  {
+    "model": "api.contributoremail",
+    "pk": 4,
+    "fields": {
+      "contributor": 4,
+      "email": "contributor4@gmail.com",
+      "is_public": true,
+      "is_primary": true
+    }
+  }
+]

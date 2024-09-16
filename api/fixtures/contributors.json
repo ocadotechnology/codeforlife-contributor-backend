@@ -3,7 +3,6 @@
     "model": "api.contributor",
     "pk": 1,
     "fields": {
-      "email": "contributor1@gmail.com",
       "name": "contributor1",
       "location": "Hatfield",
       "html_url": "https://github.com/contributor1",
@@ -15,7 +14,6 @@
     "model": "api.contributor",
     "pk": 2,
     "fields": {
-      "email": "contributor2@gmail.com",
       "name": "contributor2",
       "location": "Hatfield",
       "html_url": "https://github.com/contributor2",
@@ -27,7 +25,6 @@
     "model": "api.contributor",
     "pk": 3,
     "fields": {
-      "email": "contributor3@gmail.com",
       "name": "contributor3",
       "location": "Hatfield",
       "html_url": "https://github.com/contributor3",
@@ -39,7 +36,6 @@
     "model": "api.contributor",
     "pk": 4,
     "fields": {
-      "email": "contributor4@gmail.com",
       "name": "contributor4",
       "location": "Hatfield",
       "html_url": "https://github.com/contributor4",
