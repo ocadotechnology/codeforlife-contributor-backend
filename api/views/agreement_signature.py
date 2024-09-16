@@ -3,14 +3,8 @@
 Created on 15/07/2024 at 12:52:50(+01:00).
 """
 
-import typing as t
-
-import requests
 from codeforlife.response import Response
-from codeforlife.types import DataDict
 from codeforlife.views import action
-from django.conf import settings
-from rest_framework import status
 
 from ..common import ModelViewSet
 from ..models import AgreementSignature
@@ -31,18 +25,7 @@ class AgreementSignatureViewSet(ModelViewSet[AgreementSignature]):
     # pylint: disable-next=unused-argument
     def check_signed_latest(self, _):
         """Check if a contributor has signed the latest agreement."""
-        # Get latest agreement commit.
-        response = requests.get(
-            # pylint: disable-next=line-too-long
-            url=f"https://api.github.com/repos/{settings.GH_ORG}/{settings.GH_REPO}/commits",
-            headers={"X-GitHub-Api-Version": "2022-11-28"},
-            params=t.cast(DataDict, {"path": settings.GH_FILE, "per_page": 1}),
-            timeout=5,
-        )
-        if not response.ok:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-        latest_commit_id = response.json()[0]["sha"]
+        latest_commit_id = AgreementSignature.get_latest_sha_from_github()
         last_signature = self.get_queryset().last()
 
         is_signed, reason = True, ""
