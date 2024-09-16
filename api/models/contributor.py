@@ -9,6 +9,7 @@ import requests
 from codeforlife.types import JsonDict
 from django.db import models
 from django.db.models import QuerySet
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from requests.exceptions import RequestException
 
@@ -51,13 +52,24 @@ class Contributor(models.Model):
         return f"{self.name} <{self.primary_email}>"
 
     @property
+    def is_authenticated(self):
+        """A flag designating if this contributor has authenticated."""
+        # pylint: disable-next=import-outside-toplevel
+        from .session import Session
+
+        return Session.objects.filter(
+            contributor=self,
+            expire_date__gt=timezone.now(),
+        ).exists()
+
+    @property
     def primary_email(self):
         """The primary email of this contributor, if they have one."""
         # pylint: disable-next=import-outside-toplevel
         from .contributor_email import ContributorEmail
 
         try:
-            return self.emails.get(is_primary=True).email
+            return self.emails.get(is_primary=True)
         except ContributorEmail.DoesNotExist:
             return None
 

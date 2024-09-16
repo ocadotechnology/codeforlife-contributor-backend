@@ -45,5 +45,5 @@ urlpatterns = get_urlpatterns(
             name="session-login",
         ),
     ],
-    include_user_urls=False
+    include_user_urls=False,
 )

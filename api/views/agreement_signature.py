@@ -6,7 +6,6 @@ Created on 15/07/2024 at 12:52:50(+01:00).
 import typing as t
 
 import requests
-from codeforlife.permissions import AllowAny
 from codeforlife.response import Response
 from codeforlife.types import DataDict
 from codeforlife.views import action
@@ -21,7 +20,6 @@ from ..serializers import AgreementSignatureSerializer
 # pylint: disable-next=missing-class-docstring,too-many-ancestors
 class AgreementSignatureViewSet(ModelViewSet[AgreementSignature]):
     http_method_names = ["get", "post"]
-    permission_classes = [AllowAny]  # TODO: remove
     serializer_class = AgreementSignatureSerializer
 
     def get_queryset(self):
