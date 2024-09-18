@@ -2,6 +2,7 @@
 © Ocado Group
 Created on 05/08/2024 at 12:48:13(+01:00).
 """
+
 import typing as t
 
 import requests
@@ -17,10 +18,10 @@ class GitHubBackend(BaseBackend):
     """Authenticate a user using the code returned by github's callback url."""
 
     def authenticate(  # type: ignore[override]
-            self,
-            request: t.Optional[HttpRequest],
-            code: t.Optional[str] = None,
-            **kwargs,
+        self,
+        request: t.Optional[HttpRequest],
+        code: t.Optional[str] = None,
+        **kwargs,
     ):
         if code is None:
             return None

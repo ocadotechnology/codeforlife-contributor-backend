@@ -115,12 +115,12 @@ class TestLoginView(TestCase):
         ).encode("utf-8")
 
         with patch.object(
-                requests, "post", return_value=self.gh_access_token_response
+            requests, "post", return_value=self.gh_access_token_response
         ) as requests_post:
             with patch.object(
-                    requests,
-                    "get",
-                    side_effect=[response_get, list_emails_response],
+                requests,
+                "get",
+                side_effect=[response_get, list_emails_response],
             ) as requests_get:
                 response = self.client.post(
                     reverse("session-login"),
@@ -170,12 +170,12 @@ class TestLoginView(TestCase):
         ).encode("utf-8")
 
         with patch.object(
-                requests, "post", return_value=self.gh_access_token_response
+            requests, "post", return_value=self.gh_access_token_response
         ) as requests_post:
             with patch.object(
-                    requests,
-                    "get",
-                    side_effect=[response_get, list_emails_response],
+                requests,
+                "get",
+                side_effect=[response_get, list_emails_response],
             ) as requests_get:
                 response = self.client.post(
                     reverse("session-login"),

@@ -102,7 +102,7 @@ class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
         self.client.login_as(contributor)
 
         with patch.object(
-                requests, "get", return_value=response
+            requests, "get", return_value=response
         ) as requests_get:
             self.client.create(
                 data={
@@ -120,7 +120,7 @@ class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
             )
 
     def _test_check_signed_latest(
-            self, contributor: Contributor, is_signed: bool, reason: str = ""
+        self, contributor: Contributor, is_signed: bool, reason: str = ""
     ):
         latest_commit_id = "76241fa5e96ce9a620472842fee1ddadfd13cd86"
 
@@ -135,7 +135,7 @@ class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
         self.client.login_as(contributor)
 
         with patch.object(
-                requests, "get", return_value=response
+            requests, "get", return_value=response
         ) as requests_get:
             response = self.client.get(
                 self.reverse_action("check-signed-latest")
@@ -170,7 +170,7 @@ class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
         self.client.login_as(self.contributor3)
 
         with patch.object(
-                requests, "get", return_value=response
+            requests, "get", return_value=response
         ) as requests_get:
             self.client.get(
                 self.reverse_action("check-signed-latest"),

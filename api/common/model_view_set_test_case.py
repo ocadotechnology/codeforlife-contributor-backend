@@ -37,7 +37,7 @@ class ModelViewSetClient(_ModelViewSetClient, t.Generic[AnyModel]):
 
     # pylint: disable-next=arguments-differ
     def login(  # type: ignore[override]
-            self, contributor: t.Union[int, Contributor]
+        self, contributor: t.Union[int, Contributor]
     ):
         # Logout current user (if any) before logging in next user.
         self.logout()
@@ -91,13 +91,12 @@ class ModelViewSetClient(_ModelViewSetClient, t.Generic[AnyModel]):
         ).encode("utf-8")
 
         with patch.object(
-                requests, "post", return_value=access_token_response
+            requests, "post", return_value=access_token_response
         ) as post:
             with patch.object(
-                    requests,
-                    "get",
-                    side_effect=[get_contributor_response,
-                                 list_emails_response],
+                requests,
+                "get",
+                side_effect=[get_contributor_response, list_emails_response],
             ) as get:
                 assert APIClient.login(self, code=code), "Failed to login."
 

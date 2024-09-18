@@ -42,14 +42,14 @@ class APIRequestFactory(_APIRequestFactory):
 
     # pylint: disable-next=too-many-arguments
     def generic(
-            self,
-            method: str,
-            path: t.Optional[str] = None,
-            data: t.Optional[str] = None,
-            content_type: t.Optional[str] = None,
-            secure: bool = True,
-            user: t.Optional[Contributor] = None,
-            **extra
+        self,
+        method: str,
+        path: t.Optional[str] = None,
+        data: t.Optional[str] = None,
+        content_type: t.Optional[str] = None,
+        secure: bool = True,
+        user: t.Optional[Contributor] = None,
+        **extra
     ):
         return t.cast(
             Request,
@@ -65,11 +65,11 @@ class APIRequestFactory(_APIRequestFactory):
         )
 
     def get(  # type: ignore[override]
-            self,
-            path: t.Optional[str] = None,
-            data: t.Any = None,
-            user: t.Optional[Contributor] = None,
-            **extra
+        self,
+        path: t.Optional[str] = None,
+        data: t.Any = None,
+        user: t.Optional[Contributor] = None,
+        **extra
     ):
         return t.cast(
             Request,
@@ -83,14 +83,14 @@ class APIRequestFactory(_APIRequestFactory):
 
     # pylint: disable-next=too-many-arguments
     def post(  # type: ignore[override]
-            self,
-            path: t.Optional[str] = None,
-            data: t.Any = None,
-            # pylint: disable-next=redefined-builtin
-            format: t.Optional[str] = None,
-            content_type: t.Optional[str] = None,
-            user: t.Optional[Contributor] = None,
-            **extra
+        self,
+        path: t.Optional[str] = None,
+        data: t.Any = None,
+        # pylint: disable-next=redefined-builtin
+        format: t.Optional[str] = None,
+        content_type: t.Optional[str] = None,
+        user: t.Optional[Contributor] = None,
+        **extra
     ):
         if format is None and content_type is None:
             format = "json"
@@ -109,14 +109,14 @@ class APIRequestFactory(_APIRequestFactory):
 
     # pylint: disable-next=too-many-arguments
     def put(  # type: ignore[override]
-            self,
-            path: t.Optional[str] = None,
-            data: t.Any = None,
-            # pylint: disable-next=redefined-builtin
-            format: t.Optional[str] = None,
-            content_type: t.Optional[str] = None,
-            user: t.Optional[Contributor] = None,
-            **extra
+        self,
+        path: t.Optional[str] = None,
+        data: t.Any = None,
+        # pylint: disable-next=redefined-builtin
+        format: t.Optional[str] = None,
+        content_type: t.Optional[str] = None,
+        user: t.Optional[Contributor] = None,
+        **extra
     ):
         if format is None and content_type is None:
             format = "json"
@@ -135,14 +135,14 @@ class APIRequestFactory(_APIRequestFactory):
 
     # pylint: disable-next=too-many-arguments
     def patch(  # type: ignore[override]
-            self,
-            path: t.Optional[str] = None,
-            data: t.Any = None,
-            # pylint: disable-next=redefined-builtin
-            format: t.Optional[str] = None,
-            content_type: t.Optional[str] = None,
-            user: t.Optional[Contributor] = None,
-            **extra
+        self,
+        path: t.Optional[str] = None,
+        data: t.Any = None,
+        # pylint: disable-next=redefined-builtin
+        format: t.Optional[str] = None,
+        content_type: t.Optional[str] = None,
+        user: t.Optional[Contributor] = None,
+        **extra
     ):
         if format is None and content_type is None:
             format = "json"
@@ -161,14 +161,14 @@ class APIRequestFactory(_APIRequestFactory):
 
     # pylint: disable-next=too-many-arguments
     def delete(  # type: ignore[override]
-            self,
-            path: t.Optional[str] = None,
-            data: t.Any = None,
-            # pylint: disable-next=redefined-builtin
-            format: t.Optional[str] = None,
-            content_type: t.Optional[str] = None,
-            user: t.Optional[Contributor] = None,
-            **extra
+        self,
+        path: t.Optional[str] = None,
+        data: t.Any = None,
+        # pylint: disable-next=redefined-builtin
+        format: t.Optional[str] = None,
+        content_type: t.Optional[str] = None,
+        user: t.Optional[Contributor] = None,
+        **extra
     ):
         if format is None and content_type is None:
             format = "json"
@@ -187,14 +187,14 @@ class APIRequestFactory(_APIRequestFactory):
 
     # pylint: disable-next=too-many-arguments
     def options(  # type: ignore[override]
-            self,
-            path: t.Optional[str] = None,
-            data: t.Optional[t.Union[t.Dict[str, str], str]] = None,
-            # pylint: disable-next=redefined-builtin
-            format: t.Optional[str] = None,
-            content_type: t.Optional[str] = None,
-            user: t.Optional[Contributor] = None,
-            **extra
+        self,
+        path: t.Optional[str] = None,
+        data: t.Optional[t.Union[t.Dict[str, str], str]] = None,
+        # pylint: disable-next=redefined-builtin
+        format: t.Optional[str] = None,
+        content_type: t.Optional[str] = None,
+        user: t.Optional[Contributor] = None,
+        **extra
     ):
         if format is None and content_type is None:
             format = "json"

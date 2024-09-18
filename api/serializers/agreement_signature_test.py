@@ -36,7 +36,7 @@ class TestAgreementSignatureSerializer(
         response._content = json.dumps([{"sha": "b"}]).encode("utf-8")
 
         with patch.object(
-                requests, "get", return_value=response
+            requests, "get", return_value=response
         ) as requests_get:
             self.assert_validate_field(
                 name="agreement_id",
