@@ -32,4 +32,4 @@ codeforlife = {ref = "v0.18.8", git = "https://github.com/ocadotechnology/codefo
 # 🚫 Don't add [dev-packages] below that are inherited from the CFL package.
 
 [requires]
-python_version = "3.8"
+python_version = "3.12"
