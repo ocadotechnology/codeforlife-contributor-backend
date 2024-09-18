@@ -15,6 +15,7 @@ AnyModel = t.TypeVar("AnyModel", bound=Model)
 if t.TYPE_CHECKING:  # pragma: no cover
     from .model_serializer import ModelSerializer
 
+
     # NOTE: This raises an error during runtime.
     # pylint: disable-next=too-few-public-methods,invalid-name
     class __ModelViewSet(_ModelViewSet[AnyModel], t.Generic[AnyModel]):

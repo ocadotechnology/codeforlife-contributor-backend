@@ -78,7 +78,7 @@ class TestGitHubBackend(TestCase):
         response.status_code = status.HTTP_404_NOT_FOUND
 
         with patch.object(
-            requests, "post", return_value=response
+                requests, "post", return_value=response
         ) as requests_post:
             contributor = self.backend.authenticate(
                 request=self.request, code=code
@@ -98,7 +98,7 @@ class TestGitHubBackend(TestCase):
         response._content = json.dumps({"error": ""}).encode("utf-8")
 
         with patch.object(
-            requests, "post", return_value=response
+                requests, "post", return_value=response
         ) as requests_post:
             contributor = self.backend.authenticate(
                 request=self.request, code=code
