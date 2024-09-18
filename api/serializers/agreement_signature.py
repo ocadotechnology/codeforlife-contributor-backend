@@ -11,7 +11,6 @@ from rest_framework import serializers
 from ..common import ModelSerializer
 from ..models import AgreementSignature
 
-
 # pylint: disable=missing-class-docstring
 # pylint: disable=missing-function-docstring
 # pylint: disable=too-many-ancestors
