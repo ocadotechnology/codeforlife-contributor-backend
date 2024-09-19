@@ -2,6 +2,7 @@
 © Ocado Group
 Created on 05/08/2024 at 17:23:01(+01:00).
 """
+
 import json
 import typing as t
 from urllib.parse import quote_plus
@@ -34,7 +35,9 @@ class LoginView(_LoginView):
         contributor = form.contributor
 
         # pylint: disable-next=line-too-long
-        self.request.session.clear_expired(contributor_id=contributor.pk)  # type: ignore
+        self.request.session.clear_expired(
+            contributor_id=contributor.pk
+        )  # type: ignore
 
         login(self.request, contributor)  # type: ignore
 

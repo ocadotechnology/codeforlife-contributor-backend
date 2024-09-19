@@ -2,6 +2,7 @@
 © Ocado Group
 Created on 05/08/2024 at 12:48:13(+01:00).
 """
+
 import typing as t
 
 import requests

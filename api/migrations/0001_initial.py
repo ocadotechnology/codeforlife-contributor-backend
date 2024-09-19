@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -16,12 +15,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Contributor',
             fields=[
-                ('id', models.IntegerField(help_text="The contributor's GitHub user-ID.", primary_key=True, serialize=False)),
+                ('id', models.IntegerField(
+                    help_text="The contributor's GitHub user-ID.",
+                    primary_key=True, serialize=False)),
                 ('name', models.TextField(verbose_name='name')),
-                ('location', models.TextField(null=True, verbose_name='location')),
+                ('location',
+                 models.TextField(null=True, verbose_name='location')),
                 ('html_url', models.TextField(verbose_name='html url')),
                 ('avatar_url', models.TextField(verbose_name='avatar url')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
+                ('last_login', models.DateTimeField(blank=True, null=True,
+                                                    verbose_name='last login')),
             ],
             options={
                 'verbose_name': 'contributor',
@@ -31,10 +34,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Session',
             fields=[
-                ('session_key', models.CharField(max_length=40, primary_key=True, serialize=False, verbose_name='session key')),
+                ('session_key',
+                 models.CharField(max_length=40, primary_key=True,
+                                  serialize=False, verbose_name='session key')),
                 ('session_data', models.TextField(verbose_name='session data')),
-                ('expire_date', models.DateTimeField(db_index=True, verbose_name='expire date')),
-                ('contributor', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='api.contributor')),
+                ('expire_date', models.DateTimeField(db_index=True,
+                                                     verbose_name='expire date')),
+                ('contributor', models.OneToOneField(blank=True, null=True,
+                                                     on_delete=django.db.models.deletion.CASCADE,
+                                                     to='api.contributor')),
             ],
             options={
                 'verbose_name': 'session',
@@ -45,11 +53,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ContributorEmail',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('email', models.EmailField(max_length=254, unique=True, verbose_name='email')),
+                ('id', models.AutoField(auto_created=True, primary_key=True,
+                                        serialize=False, verbose_name='ID')),
+                ('email', models.EmailField(max_length=254, unique=True,
+                                            verbose_name='email')),
                 ('is_primary', models.BooleanField(verbose_name='is primary')),
                 ('is_public', models.BooleanField(verbose_name='is public')),
-                ('contributor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='emails', to='api.contributor')),
+                ('contributor',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   related_name='emails',
+                                   to='api.contributor')),
             ],
             options={
                 'verbose_name': 'contributor email',
@@ -59,10 +72,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AgreementSignature',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('agreement_id', models.CharField(help_text='Commit ID of the contribution agreement in workspace.', max_length=40, validators=[django.core.validators.MinLengthValidator(40)], verbose_name='agreement id')),
+                ('id', models.AutoField(auto_created=True, primary_key=True,
+                                        serialize=False, verbose_name='ID')),
+                ('agreement_id', models.CharField(
+                    help_text='Commit ID of the contribution agreement in workspace.',
+                    max_length=40,
+                    validators=[django.core.validators.MinLengthValidator(40)],
+                    verbose_name='agreement id')),
                 ('signed_at', models.DateTimeField(verbose_name='signed at')),
-                ('contributor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='agreement_signatures', to='api.contributor')),
+                ('contributor',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   related_name='agreement_signatures',
+                                   to='api.contributor')),
             ],
             options={
                 'verbose_name': 'agreement signature',
@@ -72,10 +93,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Repository',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('gh_id', models.IntegerField(help_text='Github ID of the repo a contributor has contributed to.', verbose_name='GitHub ID')),
-                ('points', models.IntegerField(default=0, help_text='Story points the contributor closed for this repository.', verbose_name='points')),
-                ('contributor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='repositories', to='api.contributor')),
+                ('id', models.AutoField(auto_created=True, primary_key=True,
+                                        serialize=False, verbose_name='ID')),
+                ('gh_id', models.IntegerField(
+                    help_text='Github ID of the repo a contributor has contributed to.',
+                    verbose_name='GitHub ID')),
+                ('points', models.IntegerField(default=0,
+                                               help_text='Story points the contributor closed for this repository.',
+                                               verbose_name='points')),
+                ('contributor',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   related_name='repositories',
+                                   to='api.contributor')),
             ],
             options={
                 'verbose_name': 'repository',
@@ -85,7 +114,9 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='contributoremail',
-            constraint=models.UniqueConstraint(condition=models.Q(('is_primary', True)), fields=('contributor',), name='contributor__is_primary'),
+            constraint=models.UniqueConstraint(
+                condition=models.Q(('is_primary', True)),
+                fields=('contributor',), name='contributor__is_primary'),
         ),
         migrations.AlterUniqueTogether(
             name='agreementsignature',
