@@ -91,7 +91,7 @@ class TestLoginView(TestCase):
         # pylint: disable-next=protected-access
         response_get._content = json.dumps(
             {
-                "id": 999999999999999,
+                "id": 999,
                 "name": "contributor new",
                 "location": "London",
                 "html_url": "https://github.com/contributornew",
