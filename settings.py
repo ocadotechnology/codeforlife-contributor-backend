@@ -33,5 +33,4 @@ SESSION_ENGINE = "api.models.session"
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
 
-DATABASES = get_databases()
 STATIC_ROOT = get_static_root(BASE_DIR)
