@@ -3,4 +3,4 @@ set -e
 
 cd "${BASH_SOURCE%/*}/.."
 
-wget -O - https://raw.githubusercontent.com/ocadotechnology/codeforlife-workspace/main/scripts/backend/setup | SERVICE_NAME=contributor bash
+wget -O - https://raw.githubusercontent.com/ocadotechnology/codeforlife-workspace/main/scripts/backend/setup | bash

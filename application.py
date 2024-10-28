@@ -9,8 +9,14 @@ https://cloud.google.com/appengine/docs/standard/python3/runtime#application_sta
 
 import os
 
+from codeforlife.app import StandaloneApplication
+from django.core.asgi import get_asgi_application
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 
-app = get_wsgi_application() # TODO: use asgi
+
+if __name__ == "__main__":
+    StandaloneApplication(app=get_asgi_application()).run()
+else:
+    app = get_wsgi_application()
