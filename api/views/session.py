@@ -7,7 +7,7 @@ import json
 import typing as t
 from urllib.parse import quote_plus
 
-from codeforlife.request import HttpRequest
+from codeforlife.request import BaseHttpRequest
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView as _LoginView
@@ -15,12 +15,14 @@ from django.http import JsonResponse
 from rest_framework import status
 
 from ..forms import GitHubLoginForm
+from ..models import Contributor
+from ..models.session import SessionStore
 
 
 class LoginView(_LoginView):
     """Login users with their existing github accounts."""
 
-    request: HttpRequest
+    request: BaseHttpRequest[SessionStore, Contributor]
 
     def get_form_class(self):
         return GitHubLoginForm

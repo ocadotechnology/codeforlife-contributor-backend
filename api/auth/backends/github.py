@@ -6,12 +6,13 @@ Created on 05/08/2024 at 12:48:13(+01:00).
 import typing as t
 
 import requests
-from codeforlife.request import HttpRequest
+from codeforlife.request import BaseHttpRequest
 from codeforlife.types import JsonDict
 from django.conf import settings
 from django.contrib.auth.backends import BaseBackend
 
 from ...models import Contributor
+from ...models.session import SessionStore
 
 
 class GitHubBackend(BaseBackend):
@@ -19,7 +20,7 @@ class GitHubBackend(BaseBackend):
 
     def authenticate(  # type: ignore[override]
         self,
-        request: t.Optional[HttpRequest],
+        request: t.Optional[BaseHttpRequest[SessionStore, Contributor]],
         code: t.Optional[str] = None,
         **kwargs,
     ):
