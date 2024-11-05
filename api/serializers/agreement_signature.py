@@ -38,5 +38,5 @@ class AgreementSignatureSerializer(ModelSerializer[AgreementSignature]):
         return value
 
     def create(self, validated_data):
-        validated_data["contributor"] = self.request.contributor
+        validated_data["contributor"] = self.request.auth_user
         return super().create(validated_data)

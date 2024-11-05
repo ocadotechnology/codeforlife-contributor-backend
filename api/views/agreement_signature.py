@@ -18,7 +18,7 @@ class AgreementSignatureViewSet(ModelViewSet[AgreementSignature]):
 
     def get_queryset(self):
         return AgreementSignature.objects.filter(
-            contributor=self.request.contributor
+            contributor=self.request.auth_user
         ).order_by("signed_at")
 
     @action(detail=False, methods=["get"])
