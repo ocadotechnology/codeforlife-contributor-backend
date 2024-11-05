@@ -10,6 +10,7 @@ from django.db.models import Model
 from rest_framework.viewsets import ModelViewSet as _ModelViewSet
 
 from ..models import Contributor
+from ..models.session import SessionStore
 
 AnyModel = t.TypeVar("AnyModel", bound=Model)
 
@@ -31,14 +32,14 @@ else:
 class ModelViewSet(__ModelViewSet[AnyModel], t.Generic[AnyModel]):
     """Base model view set."""
 
-    request: BaseRequest[Contributor]
+    request: BaseRequest[SessionStore, Contributor]
     serializer_class: t.Optional[t.Type["ModelSerializer[AnyModel]"]]
 
     def initialize_request(self, request, *args, **kwargs):
         # NOTE: Call to super has side effects and is required.
         super().initialize_request(request, *args, **kwargs)
 
-        return BaseRequest[Contributor](
+        return BaseRequest[SessionStore, Contributor](
             request=request,
             parsers=self.get_parsers(),
             authenticators=self.get_authenticators(),

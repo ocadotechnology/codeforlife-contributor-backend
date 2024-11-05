@@ -11,6 +11,7 @@ from django.db.models import Model
 from rest_framework.serializers import ModelSerializer as _ModelSerializer
 
 from ..models import Contributor
+from ..models.session import SessionStore
 
 AnyModel = t.TypeVar("AnyModel", bound=Model)
 
@@ -22,7 +23,9 @@ class ModelSerializer(_ModelSerializer[AnyModel], t.Generic[AnyModel]):
     def request(self):
         """The HTTP request that triggered the view."""
 
-        return t.cast(BaseRequest[Contributor], self.context["request"])
+        return t.cast(
+            BaseRequest[SessionStore, Contributor], self.context["request"]
+        )
 
     @property
     def view(self):

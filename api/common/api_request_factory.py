@@ -16,6 +16,7 @@ from rest_framework.parsers import (
 from rest_framework.test import APIRequestFactory as _APIRequestFactory
 
 from ..models import Contributor
+from ..models.session import SessionStore
 
 
 class APIRequestFactory(_APIRequestFactory):
@@ -24,7 +25,7 @@ class APIRequestFactory(_APIRequestFactory):
     def request(self, user: t.Optional[Contributor] = None, **kwargs):
         wsgi_request = t.cast(WSGIRequest, super().request(**kwargs))
 
-        request = BaseRequest[Contributor](
+        request = BaseRequest[SessionStore, Contributor](
             wsgi_request,
             parsers=[
                 JSONParser(),
@@ -52,7 +53,7 @@ class APIRequestFactory(_APIRequestFactory):
         **extra
     ):
         return t.cast(
-            BaseRequest[Contributor],
+            BaseRequest[SessionStore, Contributor],
             super().generic(
                 method,
                 path or "/",
@@ -72,7 +73,7 @@ class APIRequestFactory(_APIRequestFactory):
         **extra
     ):
         return t.cast(
-            BaseRequest[Contributor],
+            BaseRequest[SessionStore, Contributor],
             super().get(
                 path or "/",
                 data,
@@ -96,7 +97,7 @@ class APIRequestFactory(_APIRequestFactory):
             format = "json"
 
         return t.cast(
-            BaseRequest[Contributor],
+            BaseRequest[SessionStore, Contributor],
             super().post(
                 path or "/",
                 data,
@@ -122,7 +123,7 @@ class APIRequestFactory(_APIRequestFactory):
             format = "json"
 
         return t.cast(
-            BaseRequest[Contributor],
+            BaseRequest[SessionStore, Contributor],
             super().put(
                 path or "/",
                 data,
@@ -148,7 +149,7 @@ class APIRequestFactory(_APIRequestFactory):
             format = "json"
 
         return t.cast(
-            BaseRequest[Contributor],
+            BaseRequest[SessionStore, Contributor],
             super().patch(
                 path or "/",
                 data,
@@ -174,7 +175,7 @@ class APIRequestFactory(_APIRequestFactory):
             format = "json"
 
         return t.cast(
-            BaseRequest[Contributor],
+            BaseRequest[SessionStore, Contributor],
             super().delete(
                 path or "/",
                 data,
@@ -200,7 +201,7 @@ class APIRequestFactory(_APIRequestFactory):
             format = "json"
 
         return t.cast(
-            BaseRequest[Contributor],
+            BaseRequest[SessionStore, Contributor],
             super().options(
                 path or "/",
                 data or {},
