@@ -5,11 +5,12 @@ Created on 13/09/2024 at 12:00:41(+03:00).
 
 import typing as t
 
+from codeforlife.request import BaseRequest
 from codeforlife.types import DataDict
 from django.db.models import Model
 from rest_framework.serializers import ModelSerializer as _ModelSerializer
 
-from .request import Request
+from ..models import Contributor
 
 AnyModel = t.TypeVar("AnyModel", bound=Model)
 
@@ -21,7 +22,7 @@ class ModelSerializer(_ModelSerializer[AnyModel], t.Generic[AnyModel]):
     def request(self):
         """The HTTP request that triggered the view."""
 
-        return t.cast(Request, self.context["request"])
+        return t.cast(BaseRequest[Contributor], self.context["request"])
 
     @property
     def view(self):

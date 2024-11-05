@@ -5,6 +5,7 @@ Created on 13/09/2024 at 12:00:25(+03:00).
 
 import typing as t
 
+from codeforlife.request import BaseRequest
 from django.core.handlers.wsgi import WSGIRequest
 from rest_framework.parsers import (
     FileUploadParser,
@@ -15,7 +16,6 @@ from rest_framework.parsers import (
 from rest_framework.test import APIRequestFactory as _APIRequestFactory
 
 from ..models import Contributor
-from .request import Request
 
 
 class APIRequestFactory(_APIRequestFactory):
@@ -24,7 +24,7 @@ class APIRequestFactory(_APIRequestFactory):
     def request(self, user: t.Optional[Contributor] = None, **kwargs):
         wsgi_request = t.cast(WSGIRequest, super().request(**kwargs))
 
-        request = Request(
+        request = BaseRequest[Contributor](
             wsgi_request,
             parsers=[
                 JSONParser(),
@@ -52,7 +52,7 @@ class APIRequestFactory(_APIRequestFactory):
         **extra
     ):
         return t.cast(
-            Request,
+            BaseRequest[Contributor],
             super().generic(
                 method,
                 path or "/",
@@ -72,7 +72,7 @@ class APIRequestFactory(_APIRequestFactory):
         **extra
     ):
         return t.cast(
-            Request,
+            BaseRequest[Contributor],
             super().get(
                 path or "/",
                 data,
@@ -96,7 +96,7 @@ class APIRequestFactory(_APIRequestFactory):
             format = "json"
 
         return t.cast(
-            Request,
+            BaseRequest[Contributor],
             super().post(
                 path or "/",
                 data,
@@ -122,7 +122,7 @@ class APIRequestFactory(_APIRequestFactory):
             format = "json"
 
         return t.cast(
-            Request,
+            BaseRequest[Contributor],
             super().put(
                 path or "/",
                 data,
@@ -148,7 +148,7 @@ class APIRequestFactory(_APIRequestFactory):
             format = "json"
 
         return t.cast(
-            Request,
+            BaseRequest[Contributor],
             super().patch(
                 path or "/",
                 data,
@@ -174,7 +174,7 @@ class APIRequestFactory(_APIRequestFactory):
             format = "json"
 
         return t.cast(
-            Request,
+            BaseRequest[Contributor],
             super().delete(
                 path or "/",
                 data,
@@ -200,7 +200,7 @@ class APIRequestFactory(_APIRequestFactory):
             format = "json"
 
         return t.cast(
-            Request,
+            BaseRequest[Contributor],
             super().options(
                 path or "/",
                 data or {},

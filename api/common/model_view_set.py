@@ -5,10 +5,11 @@ Created on 13/09/2024 at 12:00:57(+03:00).
 
 import typing as t
 
+from codeforlife.request import BaseRequest
 from django.db.models import Model
 from rest_framework.viewsets import ModelViewSet as _ModelViewSet
 
-from .request import Request
+from ..models import Contributor
 
 AnyModel = t.TypeVar("AnyModel", bound=Model)
 
@@ -30,14 +31,14 @@ else:
 class ModelViewSet(__ModelViewSet[AnyModel], t.Generic[AnyModel]):
     """Base model view set."""
 
-    request: Request
+    request: BaseRequest[Contributor]
     serializer_class: t.Optional[t.Type["ModelSerializer[AnyModel]"]]
 
     def initialize_request(self, request, *args, **kwargs):
         # NOTE: Call to super has side effects and is required.
         super().initialize_request(request, *args, **kwargs)
 
-        return Request(
+        return BaseRequest[Contributor](
             request=request,
             parsers=self.get_parsers(),
             authenticators=self.get_authenticators(),
