@@ -7,6 +7,7 @@ import typing as t
 
 import requests
 from codeforlife.types import JsonDict
+from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 from django.db.models import QuerySet
 from django.utils import timezone
@@ -24,15 +25,18 @@ else:
     TypedModelMeta = object
 
 
-class Contributor(models.Model):
+class Contributor(AbstractBaseUser):
     """A contributor that contributes to a repo"""
+
+    USERNAME_FIELD = "id"
 
     agreement_signatures: QuerySet["AgreementSignature"]
     emails: QuerySet["ContributorEmail"]
     repositories: QuerySet["Repository"]
     session: "Session"
 
-    is_active = True
+    # Contributors log in with their GitHub account.
+    password = None  # type: ignore[assignment]
 
     pk: int
     id = models.IntegerField(
@@ -42,7 +46,6 @@ class Contributor(models.Model):
     location = models.TextField(_("location"), null=True)
     html_url = models.TextField(_("html url"))
     avatar_url = models.TextField(_("avatar url"))
-    last_login = models.DateTimeField(_("last login"), blank=True, null=True)
 
     class Meta(TypedModelMeta):
         verbose_name = _("contributor")

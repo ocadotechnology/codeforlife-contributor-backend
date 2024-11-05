@@ -41,6 +41,11 @@ INSTALLED_APPS.remove("game")
 INSTALLED_APPS.remove("portal")
 INSTALLED_APPS.remove("common")
 
+# Auth user model
+# https://docs.djangoproject.com/en/3.2/topics/auth/customizing/#substituting-a-custom-user-model
+
+AUTH_USER_MODEL = "api.contributor"
+
 # Authentication backends
 # https://docs.djangoproject.com/en/3.2/ref/settings/#authentication-backends
 
