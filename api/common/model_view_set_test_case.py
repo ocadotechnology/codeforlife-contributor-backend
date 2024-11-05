@@ -10,6 +10,8 @@ import typing as t
 from unittest.mock import ANY, call, patch
 
 import requests
+from codeforlife.request import BaseRequest
+from codeforlife.tests import BaseAPIRequestFactory
 from codeforlife.tests import ModelViewSetClient as _ModelViewSetClient
 from codeforlife.tests import ModelViewSetTestCase as _ModelViewSetTestCase
 from django.conf import settings
@@ -18,7 +20,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from ..models import Contributor
-from .api_request_factory import APIRequestFactory
+from ..models.session import SessionStore
 from .model_view_set import ModelViewSet
 
 AnyModel = t.TypeVar("AnyModel", bound=Model)
@@ -31,7 +33,9 @@ class ModelViewSetClient(_ModelViewSetClient, t.Generic[AnyModel]):
     def __init__(self, enforce_csrf_checks: bool = False, **defaults):
         super().__init__(enforce_csrf_checks, **defaults)
 
-        self.request_factory = APIRequestFactory(  # type: ignore[assignment]
+        self.request_factory = BaseAPIRequestFactory[
+            BaseRequest[SessionStore, Contributor], Contributor
+        ](  # type: ignore[assignment]
             enforce_csrf_checks, **defaults
         )
 

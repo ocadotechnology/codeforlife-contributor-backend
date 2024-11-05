@@ -5,13 +5,15 @@ Created on 13/09/2024 at 12:00:34(+03:00).
 
 import typing as t
 
+from codeforlife.request import BaseRequest
+from codeforlife.tests import BaseAPIRequestFactory
 from codeforlife.tests import (
     ModelSerializerTestCase as _ModelSerializerTestCase,
 )
 from django.db.models import Model
 
 from ..models import Contributor
-from .api_request_factory import APIRequestFactory
+from ..models.session import SessionStore
 from .model_serializer import ModelSerializer
 
 AnyModel = t.TypeVar("AnyModel", bound=Model)
@@ -24,13 +26,17 @@ class ModelSerializerTestCase(_ModelSerializerTestCase, t.Generic[AnyModel]):
         ModelSerializer[AnyModel]
     ]
 
-    request_factory: APIRequestFactory  # type: ignore[assignment]
+    request_factory: BaseAPIRequestFactory[  # type: ignore[assignment]
+        BaseRequest[SessionStore, Contributor], Contributor
+    ]
 
     @classmethod
     def setUpClass(cls):
         result = super().setUpClass()
 
-        cls.request_factory = APIRequestFactory()
+        cls.request_factory = BaseAPIRequestFactory[
+            BaseRequest[SessionStore, Contributor], Contributor
+        ]()
 
         return result
 
