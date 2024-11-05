@@ -3,6 +3,7 @@
 Created on 05/07/2024 at 16:18:48(+01:00).
 """
 
+import sys
 import typing as t
 
 import requests
@@ -59,6 +60,14 @@ class Contributor(AbstractBaseUser):
         """A flag designating if this contributor has authenticated."""
         # pylint: disable-next=import-outside-toplevel
         from .session import Session
+
+        # Avoid initial migration error where session table is not created yet
+        if (
+            sys.argv
+            and "manage.py" in sys.argv[0]
+            and "runserver" not in sys.argv
+        ):
+            return True
 
         return Session.objects.filter(
             contributor=self,
