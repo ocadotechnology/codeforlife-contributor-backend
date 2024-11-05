@@ -37,9 +37,9 @@ from codeforlife.settings import *
 # https://docs.djangoproject.com/en/3.2/ref/settings/#installed-apps
 
 INSTALLED_APPS.remove("codeforlife.user")
-INSTALLED_APPS.remove("game")
-INSTALLED_APPS.remove("portal")
-INSTALLED_APPS.remove("common")
+INSTALLED_APPS.remove("game")  # TODO: remove after restructure
+INSTALLED_APPS.remove("portal")  # TODO: remove after restructure
+INSTALLED_APPS.remove("common")  # TODO: remove after restructure
 
 # Auth user model
 # https://docs.djangoproject.com/en/3.2/topics/auth/customizing/#substituting-a-custom-user-model
