@@ -6,7 +6,7 @@ Created on 13/09/2024 at 12:00:41(+03:00).
 import typing as t
 
 from codeforlife.request import BaseRequest
-from codeforlife.serializers import BaseModelSerializer
+from codeforlife.serializers import BaseModelListSerializer, BaseModelSerializer
 from django.db.models import Model
 
 from ..models import Contributor
@@ -20,3 +20,10 @@ class ModelSerializer(
     t.Generic[AnyModel],
 ):
     """Base model serializer."""
+
+
+class ModelListSerializer(
+    BaseModelListSerializer[BaseRequest[SessionStore, Contributor], AnyModel],
+    t.Generic[AnyModel],
+):
+    """Base model list serializer."""
