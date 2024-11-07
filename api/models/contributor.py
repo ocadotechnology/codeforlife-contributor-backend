@@ -55,25 +55,6 @@ class Contributor(AbstractBaseUser):
         return f"{self.name} <{self.primary_email}>"
 
     @property
-    def is_authenticated(self):
-        """A flag designating if this contributor has authenticated."""
-        # pylint: disable-next=import-outside-toplevel
-        from .session import Session
-
-        # Avoid initial migration error where session table is not created yet
-        if (
-            sys.argv
-            and "manage.py" in sys.argv[0]
-            and "runserver" not in sys.argv
-        ):
-            return True
-
-        return Session.objects.filter(
-            user=self,
-            expire_date__gt=timezone.now(),
-        ).exists()
-
-    @property
     def primary_email(self):
         """The primary email of this contributor, if they have one."""
         # pylint: disable-next=import-outside-toplevel

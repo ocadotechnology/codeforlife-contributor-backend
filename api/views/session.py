@@ -38,7 +38,7 @@ class LoginView(_LoginView):
 
         # pylint: disable-next=line-too-long
         self.request.session.clear_expired(
-            contributor_id=contributor.pk
+            user_id=contributor.pk
         )  # type: ignore
 
         login(self.request, contributor)  # type: ignore
