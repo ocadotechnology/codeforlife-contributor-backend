@@ -5,9 +5,9 @@ Created on 16/07/2024 at 11:03:09(+01:00).
 
 from codeforlife.permissions import AllowAny
 
-from ..common import ModelViewSet
 from ..models import Contributor
 from ..serializers import ContributorSerializer
+from ._model_view_set import ModelViewSet
 
 
 # pylint: disable-next=missing-class-docstring,too-many-ancestors

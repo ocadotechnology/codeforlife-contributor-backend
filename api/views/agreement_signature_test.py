@@ -11,8 +11,8 @@ from django.conf import settings
 from django.utils import timezone
 from rest_framework import status
 
-from ..common import ModelViewSetTestCase
 from ..models import AgreementSignature, Contributor
+from ._model_view_set_test_case import ModelViewSetTestCase
 from .agreement_signature import AgreementSignatureViewSet
 
 

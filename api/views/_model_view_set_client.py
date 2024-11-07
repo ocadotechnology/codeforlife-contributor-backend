@@ -11,11 +11,7 @@ from unittest.mock import ANY, call, patch
 
 import requests
 from codeforlife.request import BaseRequest
-from codeforlife.tests import (
-    BaseAPIRequestFactory,
-    BaseModelViewSetClient,
-    BaseModelViewSetTestCase,
-)
+from codeforlife.tests import BaseAPIRequestFactory, BaseModelViewSetClient
 from django.conf import settings
 from django.db.models import Model
 from rest_framework import status
@@ -23,9 +19,11 @@ from rest_framework.test import APIClient
 
 from ..models import Contributor
 from ..models.session import SessionStore
-from .model_view_set import ModelViewSet
 
 AnyModel = t.TypeVar("AnyModel", bound=Model)
+
+if t.TYPE_CHECKING:  # pragma: no cover
+    from ._model_view_set_test_case import ModelViewSetTestCase
 
 
 # pylint: disable-next=too-many-ancestors,arguments-differ
@@ -146,29 +144,3 @@ class ModelViewSetClient(
                 )
 
         return Contributor.objects.get(session=self.session.session_key)
-
-
-# pylint: disable-next=too-many-ancestors
-class ModelViewSetTestCase(
-    BaseModelViewSetTestCase[
-        ModelViewSet[AnyModel],
-        ModelViewSetClient[AnyModel],
-        AnyModel,
-    ],
-    t.Generic[AnyModel],
-):
-    """Base model view set test case."""
-
-    client_class = ModelViewSetClient
-
-    @classmethod
-    def get_model_class(cls) -> t.Type[AnyModel]:
-        """Get the model view set's class.
-
-        Returns:
-            The model view set's class.
-        """
-        # pylint: disable-next=no-member
-        return t.get_args(cls.__orig_bases__[0])[  # type: ignore[attr-defined]
-            0
-        ]

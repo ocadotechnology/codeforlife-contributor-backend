@@ -5,8 +5,8 @@ Created on 12/07/2024 at 14:07:59(+01:00).
 
 import typing as t
 
-from ..common import ModelSerializer
 from ..models import Contributor
+from ._model_serializer import ModelSerializer
 
 
 # pylint: disable-next=missing-class-docstring,too-many-ancestors

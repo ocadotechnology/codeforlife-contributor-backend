@@ -12,8 +12,8 @@ from django.conf import settings
 from django.utils import timezone
 from rest_framework import status
 
-from ..common import ModelSerializerTestCase
 from ..models import AgreementSignature, Contributor
+from ._model_serializer_test_case import ModelSerializerTestCase
 from .agreement_signature import AgreementSignatureSerializer
 
 

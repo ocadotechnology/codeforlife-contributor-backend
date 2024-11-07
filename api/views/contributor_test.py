@@ -3,8 +3,8 @@
 Created on 16/07/2024 at 14:54:09(+01:00).
 """
 
-from ..common import ModelViewSetTestCase
 from ..models import Contributor
+from ._model_view_set_test_case import ModelViewSetTestCase
 from .contributor import ContributorViewSet
 
 

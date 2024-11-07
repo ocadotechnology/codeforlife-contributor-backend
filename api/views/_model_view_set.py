@@ -15,7 +15,7 @@ from ..models.session import SessionStore
 AnyModel = t.TypeVar("AnyModel", bound=Model)
 
 if t.TYPE_CHECKING:  # pragma: no cover
-    from .model_serializer import ModelSerializer
+    from ..serializers._model_serializer import ModelSerializer
 
 
 # pylint: disable-next=too-many-ancestors
