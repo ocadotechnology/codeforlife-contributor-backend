@@ -7,8 +7,8 @@ import sys
 import typing as t
 
 import requests
+from codeforlife.models import AbstractBaseUser
 from codeforlife.types import JsonDict
-from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 from django.db.models import QuerySet
 from django.utils import timezone
@@ -39,7 +39,6 @@ class Contributor(AbstractBaseUser):
     # Contributors log in with their GitHub account.
     password = None  # type: ignore[assignment]
 
-    pk: int
     id = models.IntegerField(
         primary_key=True, help_text=_("The contributor's GitHub user-ID.")
     )
