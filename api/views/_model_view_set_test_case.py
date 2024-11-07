@@ -8,6 +8,7 @@ Created on 13/09/2024 at 12:00:50(+03:00).
 import typing as t
 
 from codeforlife.tests import BaseModelViewSetTestCase
+from codeforlife.types import get_arg
 from django.db.models import Model
 
 from ._model_view_set import ModelViewSet
@@ -36,7 +37,4 @@ class ModelViewSetTestCase(
         Returns:
             The model view set's class.
         """
-        # pylint: disable-next=no-member
-        return t.get_args(cls.__orig_bases__[0])[  # type: ignore[attr-defined]
-            0
-        ]
+        return get_arg(cls, 0)
