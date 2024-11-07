@@ -22,6 +22,7 @@ AnyModel = t.TypeVar("AnyModel", bound=Model)
 
 # pylint: disable-next=too-many-ancestors
 class ModelListSerializerTestCase(
+    # pylint: disable=duplicate-code
     BaseModelListSerializerTestCase[
         ModelListSerializer[AnyModel],
         ModelSerializer[AnyModel],
@@ -31,6 +32,7 @@ class ModelListSerializerTestCase(
         AnyModel,
     ],
     t.Generic[AnyModel],
+    # pylint: enable=duplicate-code
 ):
     """Base model serializer test case."""
 

@@ -14,9 +14,16 @@ from ..models.session import SessionStore
 
 AnyModel = t.TypeVar("AnyModel", bound=Model)
 
+if t.TYPE_CHECKING:  # pragma: no cover
+    from ..views._model_view_set import ModelViewSet
+
 
 class ModelSerializer(
-    BaseModelSerializer[BaseRequest[SessionStore, Contributor], AnyModel],
+    BaseModelSerializer[
+        BaseRequest[SessionStore, Contributor],
+        "ModelViewSet[AnyModel]",
+        AnyModel,
+    ],
     t.Generic[AnyModel],
 ):
     """Base model serializer."""

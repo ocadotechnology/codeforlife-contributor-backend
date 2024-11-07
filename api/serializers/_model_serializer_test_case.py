@@ -17,6 +17,7 @@ AnyModel = t.TypeVar("AnyModel", bound=Model)
 
 
 class ModelSerializerTestCase(
+    # pylint: disable=duplicate-code
     BaseModelSerializerTestCase[
         ModelSerializer[AnyModel],
         BaseAPIRequestFactory[
@@ -25,6 +26,7 @@ class ModelSerializerTestCase(
         AnyModel,
     ],
     t.Generic[AnyModel],
+    # pylint: enable=duplicate-code
 ):
     """Base model serializer test case."""
 

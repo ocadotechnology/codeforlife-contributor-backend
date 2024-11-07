@@ -20,10 +20,13 @@ if t.TYPE_CHECKING:  # pragma: no cover
 
 # pylint: disable-next=too-many-ancestors
 class ModelViewSet(
-    BaseModelViewSet[BaseRequest[SessionStore, Contributor], AnyModel],
+    BaseModelViewSet[
+        BaseRequest[SessionStore, Contributor],
+        "ModelSerializer[AnyModel]",
+        AnyModel,
+    ],
     t.Generic[AnyModel],
 ):
     """Base model view set."""
 
-    request_class = BaseRequest[SessionStore, Contributor]
-    serializer_class: t.Optional[t.Type["ModelSerializer[AnyModel]"]]
+    request_class = BaseRequest
