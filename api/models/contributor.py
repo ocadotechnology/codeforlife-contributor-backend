@@ -69,7 +69,7 @@ class Contributor(AbstractBaseUser):
             return True
 
         return Session.objects.filter(
-            contributor=self,
+            user=self,
             expire_date__gt=timezone.now(),
         ).exists()
 
