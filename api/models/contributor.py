@@ -3,7 +3,6 @@
 Created on 05/07/2024 at 16:18:48(+01:00).
 """
 
-import sys
 import typing as t
 
 import requests
@@ -11,7 +10,6 @@ from codeforlife.models import AbstractBaseUser
 from codeforlife.types import JsonDict
 from django.db import models
 from django.db.models import QuerySet
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from requests.exceptions import RequestException
 
