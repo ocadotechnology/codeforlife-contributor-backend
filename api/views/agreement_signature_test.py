@@ -74,7 +74,7 @@ class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
         agreement_signature = contributor.agreement_signatures.first()
         assert agreement_signature
 
-        self.client.login_as(contributor)
+        self.client.login(contributor)
         self.client.retrieve(model=agreement_signature)
 
     def test_list(self):
@@ -85,7 +85,7 @@ class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
         )
         assert agreement_signatures
 
-        self.client.login_as(contributor)
+        self.client.login(contributor)
         self.client.list(models=agreement_signatures)
 
     def test_create(self):
@@ -99,7 +99,7 @@ class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
         # pylint: disable-next=protected-access
         response._content = json.dumps([{"sha": agreement_id}]).encode("utf-8")
 
-        self.client.login_as(contributor)
+        self.client.login(contributor)
 
         with patch.object(
             requests, "get", return_value=response
@@ -132,7 +132,7 @@ class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
             "utf-8"
         )
 
-        self.client.login_as(contributor)
+        self.client.login(contributor)
 
         with patch.object(
             requests, "get", return_value=response
@@ -167,7 +167,7 @@ class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
         response = requests.Response()
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
-        self.client.login_as(self.contributor3)
+        self.client.login(self.contributor3)
 
         with patch.object(
             requests, "get", return_value=response
