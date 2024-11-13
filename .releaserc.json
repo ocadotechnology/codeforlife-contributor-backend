@@ -14,7 +14,9 @@
     [
       "@semantic-release/github",
       {
-        "assets": ["requirements.txt"]
+        "assets": ["requirements.txt"],
+        "successComment": false,
+        "failComment": false
       }
     ]
   ]
