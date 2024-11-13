@@ -14,7 +14,7 @@
     [
       "@semantic-release/github",
       {
-        "assets": ["requirements.txt", "static/**"],
+        "assets": [{ "path": "build.zip", "label": "Build files" }],
         "successComment": false,
         "failComment": false
       }
