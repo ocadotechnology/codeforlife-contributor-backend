@@ -6,6 +6,40 @@ on:
   workflow_dispatch:
 
 jobs:
-  main:
-    uses: ocadotechnology/codeforlife-workspace/.github/workflows/backend.yaml@main
+  # main:
+  #   uses: ocadotechnology/codeforlife-workspace/.github/workflows/backend.yaml@main
+  #   secrets: inherit
+  build:
+    runs-on: ubuntu-latest
+    # Build if:
+    #  - the repo's owner is Ocado Tech.
+    #  - the repo is not the backend template.
+    #  - a change is made to the default branch.
+    if: |
+      github.repository_owner_id == 2088731 &&
+      github.repository_id != 610204172 &&
+      github.ref_name == github.event.repository.default_branch
+    steps:
+      - name: 🐍 Set up Python 3.12 Environment
+        uses: ocadotechnology/codeforlife-workspace/.github/actions/python/setup-environment@main
+        with:
+          python-version: 3.12
+
+      - name: 🏗️ Generate requirements.txt
+        run: pipenv requirements > requirements.txt
+
+      - name: 🏗️ Collect Static Files
+        run: pipenv run python ./manage.py collectstatic --noinput --clear
+
+      - name: 📤 Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: |
+            requirements.txt
+            static/
+
+  release:
+    needs: [build]
+    uses: ocadotechnology/codeforlife-workspace/.github/workflows/release.yaml@main
     secrets: inherit
