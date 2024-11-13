@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.3...v1.0.4) (2024-11-13)
+
+
+### Bug Fixes
+
+* no permissions ([92d15e1](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/92d15e1b026df84e6b7c2851c3b9119e9a790f53))
+
 ## [1.0.3](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.2...v1.0.3) (2024-11-13)
 
 
