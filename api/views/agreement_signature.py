@@ -6,9 +6,9 @@ Created on 15/07/2024 at 12:52:50(+01:00).
 from codeforlife.response import Response
 from codeforlife.views import action
 
-from ..common import ModelViewSet
 from ..models import AgreementSignature
 from ..serializers import AgreementSignatureSerializer
+from ._model_view_set import ModelViewSet
 
 
 # pylint: disable-next=missing-class-docstring,too-many-ancestors
@@ -18,7 +18,7 @@ class AgreementSignatureViewSet(ModelViewSet[AgreementSignature]):
 
     def get_queryset(self):
         return AgreementSignature.objects.filter(
-            contributor=self.request.contributor
+            contributor=self.request.auth_user
         ).order_by("signed_at")
 
     @action(detail=False, methods=["get"])

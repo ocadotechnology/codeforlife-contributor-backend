@@ -6,10 +6,10 @@ Created on 05/07/2024 at 16:18:48(+01:00).
 import typing as t
 
 import requests
+from codeforlife.models import AbstractBaseUser
 from codeforlife.types import JsonDict
 from django.db import models
 from django.db.models import QuerySet
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from requests.exceptions import RequestException
 
@@ -24,17 +24,19 @@ else:
     TypedModelMeta = object
 
 
-class Contributor(models.Model):
+class Contributor(AbstractBaseUser):
     """A contributor that contributes to a repo"""
+
+    USERNAME_FIELD = "id"
 
     agreement_signatures: QuerySet["AgreementSignature"]
     emails: QuerySet["ContributorEmail"]
     repositories: QuerySet["Repository"]
     session: "Session"
 
-    is_active = True
+    # Contributors log in with their GitHub account.
+    password = None  # type: ignore[assignment]
 
-    pk: int
     id = models.IntegerField(
         primary_key=True, help_text=_("The contributor's GitHub user-ID.")
     )
@@ -42,7 +44,6 @@ class Contributor(models.Model):
     location = models.TextField(_("location"), null=True)
     html_url = models.TextField(_("html url"))
     avatar_url = models.TextField(_("avatar url"))
-    last_login = models.DateTimeField(_("last login"), blank=True, null=True)
 
     class Meta(TypedModelMeta):
         verbose_name = _("contributor")
@@ -50,17 +51,6 @@ class Contributor(models.Model):
 
     def __str__(self):
         return f"{self.name} <{self.primary_email}>"
-
-    @property
-    def is_authenticated(self):
-        """A flag designating if this contributor has authenticated."""
-        # pylint: disable-next=import-outside-toplevel
-        from .session import Session
-
-        return Session.objects.filter(
-            contributor=self,
-            expire_date__gt=timezone.now(),
-        ).exists()
 
     @property
     def primary_email(self):

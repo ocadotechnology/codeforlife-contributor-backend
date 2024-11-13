@@ -45,7 +45,7 @@ class AgreementSignature(models.Model):
         verbose_name_plural = _("agreement signatures")
 
     def __str__(self):
-        cont = f"Contributor {self.contributor.pk} signed"
+        cont = f"Contributor {self.contributor_id} signed"
         repo = f"{self.agreement_id[:7]} at {self.signed_at}"
         return f"{cont} {repo}"
 

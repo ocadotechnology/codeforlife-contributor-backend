@@ -7,12 +7,13 @@ import json
 from unittest.mock import Mock, patch
 
 import requests
-from codeforlife.request import HttpRequest
+from codeforlife.request import BaseHttpRequest
 from codeforlife.tests import TestCase
 from django.conf import settings
 from rest_framework import status
 
 from ...models import Contributor
+from ...models.session import SessionStore
 from .github import GitHubBackend
 
 
@@ -24,7 +25,7 @@ class TestGitHubBackend(TestCase):
         # Set up initial test data
         self.contributor1 = Contributor.objects.get(id=1)
         self.backend = GitHubBackend()
-        self.request = HttpRequest()
+        self.request = BaseHttpRequest[SessionStore, Contributor]()
 
         self.gh_access_token_response = requests.Response()
         self.gh_access_token_response.status_code = status.HTTP_200_OK

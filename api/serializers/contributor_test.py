@@ -3,8 +3,8 @@
 Created on 12/07/2024 at 11:36:23(+01:00).
 """
 
-from ..common import ModelSerializerTestCase
 from ..models import Contributor
+from ._model_serializer_test_case import ModelSerializerTestCase
 from .contributor import ContributorSerializer
 
 

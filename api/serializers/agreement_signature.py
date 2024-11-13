@@ -8,8 +8,8 @@ from datetime import datetime
 from django.utils import timezone
 from rest_framework import serializers
 
-from ..common import ModelSerializer
 from ..models import AgreementSignature
+from ._model_serializer import ModelSerializer
 
 # pylint: disable=missing-class-docstring
 # pylint: disable=missing-function-docstring
@@ -38,5 +38,5 @@ class AgreementSignatureSerializer(ModelSerializer[AgreementSignature]):
         return value
 
     def create(self, validated_data):
-        validated_data["contributor"] = self.request.contributor
+        validated_data["contributor"] = self.request.auth_user
         return super().create(validated_data)

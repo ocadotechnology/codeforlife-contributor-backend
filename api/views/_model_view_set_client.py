@@ -10,30 +10,35 @@ import typing as t
 from unittest.mock import ANY, call, patch
 
 import requests
-from codeforlife.tests import ModelViewSetClient as _ModelViewSetClient
-from codeforlife.tests import ModelViewSetTestCase as _ModelViewSetTestCase
+from codeforlife.request import BaseRequest
+from codeforlife.tests import BaseAPIRequestFactory, BaseModelViewSetClient
 from django.conf import settings
 from django.db.models import Model
 from rest_framework import status
 from rest_framework.test import APIClient
 
 from ..models import Contributor
-from .api_request_factory import APIRequestFactory
-from .model_view_set import ModelViewSet
+from ..models.session import SessionStore
 
 AnyModel = t.TypeVar("AnyModel", bound=Model)
 
+if t.TYPE_CHECKING:  # pragma: no cover
+    from ._model_view_set_test_case import ModelViewSetTestCase
+
 
 # pylint: disable-next=too-many-ancestors,arguments-differ
-class ModelViewSetClient(_ModelViewSetClient, t.Generic[AnyModel]):
+class ModelViewSetClient(
+    BaseModelViewSetClient[
+        "ModelViewSetTestCase[AnyModel]",
+        BaseAPIRequestFactory[
+            BaseRequest[SessionStore, Contributor], Contributor
+        ],
+    ],
+    t.Generic[AnyModel],
+):
     """Client used to make test requests."""
 
-    def __init__(self, enforce_csrf_checks: bool = False, **defaults):
-        super().__init__(enforce_csrf_checks, **defaults)
-
-        self.request_factory = APIRequestFactory(  # type: ignore[assignment]
-            enforce_csrf_checks, **defaults
-        )
+    request_factory_class = BaseAPIRequestFactory
 
     # pylint: disable-next=arguments-differ
     def login(  # type: ignore[override]
@@ -139,44 +144,3 @@ class ModelViewSetClient(_ModelViewSetClient, t.Generic[AnyModel]):
                 )
 
         return Contributor.objects.get(session=self.session.session_key)
-
-    # pylint: disable-next=arguments-differ
-    def login_as(self, contributor: Contributor):  # type: ignore[override]
-        return self.login(contributor)
-
-
-# pylint: disable-next=too-many-ancestors
-class ModelViewSetTestCase(_ModelViewSetTestCase, t.Generic[AnyModel]):
-    """Base model view set test case."""
-
-    model_view_set_class: t.Type[  # type: ignore[assignment]
-        ModelViewSet[AnyModel]
-    ]
-    client: ModelViewSetClient[AnyModel]
-    client_class: t.Type[ModelViewSetClient[AnyModel]] = ModelViewSetClient
-
-    @classmethod
-    def get_model_class(cls) -> t.Type[AnyModel]:
-        """Get the model view set's class.
-
-        Returns:
-            The model view set's class.
-        """
-        # pylint: disable-next=no-member
-        return t.get_args(cls.__orig_bases__[0])[  # type: ignore[attr-defined]
-            0
-        ]
-
-    @classmethod
-    def get_request_user_class(cls):
-        return Contributor
-
-    def _get_client_class(self):
-        # TODO: unpack type args in index after moving to python 3.11
-        # pylint: disable-next=too-few-public-methods
-        class _Client(
-            self.client_class[self.get_model_class()]  # type: ignore[misc]
-        ):
-            _test_case = self
-
-        return _Client
