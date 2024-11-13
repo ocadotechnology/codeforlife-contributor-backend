@@ -14,7 +14,7 @@
     [
       "@semantic-release/github",
       {
-        "assets": ["application.py"]
+        "assets": ["requirements.txt"]
       }
     ]
   ]
