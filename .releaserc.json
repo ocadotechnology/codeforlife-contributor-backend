@@ -1,5 +1,5 @@
 {
-  "branches": ["contributor-backend-31"],
+  "branches": ["development"],
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
@@ -14,7 +14,7 @@
     [
       "@semantic-release/github",
       {
-        "assets": ["CHANGELOG.md"]
+        "assets": ["application.py"]
       }
     ]
   ]
