@@ -2,6 +2,7 @@
 url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
+
 ## ℹ️ HOW-TO: Make the python-package editable.
 #
 # 1. Comment out the git-codeforlife package under [packages].
@@ -22,11 +23,11 @@ name = "pypi"
 # 5. Run `pipenv install --dev` in your terminal.
 
 [packages]
-codeforlife = {ref = "v0.21.0", git = "https://github.com/ocadotechnology/codeforlife-package-python.git"}
+codeforlife = {ref = "v0.22.0", git = "https://github.com/ocadotechnology/codeforlife-package-python.git"}
 # 🚫 Don't add [packages] below that are inherited from the CFL package.
 
 [dev-packages]
-codeforlife = {ref = "v0.21.0", git = "https://github.com/ocadotechnology/codeforlife-package-python.git", extras = ["dev"]}
+codeforlife = {ref = "v0.22.0", git = "https://github.com/ocadotechnology/codeforlife-package-python.git", extras = ["dev"]}
 # codeforlife = {file = "../codeforlife-package-python", editable = true, extras = ["dev"]}
 # 🚫 Don't add [dev-packages] below that are inherited from the CFL package.
 
