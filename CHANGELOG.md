@@ -1,3 +1,10 @@
+## [1.0.12](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.11...v1.0.12) (2024-11-21)
+
+
+### Bug Fixes
+
+* relocate to workspace ([99e4ad5](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/99e4ad535717c2efd18ecdd4379e30c252351816))
+
 ## [1.0.11](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.10...v1.0.11) (2024-11-21)
 
 
