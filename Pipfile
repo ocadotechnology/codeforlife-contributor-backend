@@ -23,11 +23,11 @@ name = "pypi"
 # 5. Run `pipenv install --dev` in your terminal.
 
 [packages]
-codeforlife = {ref = "v0.22.0", git = "https://github.com/ocadotechnology/codeforlife-package-python.git"}
+codeforlife = {file = "https://github.com/ocadotechnology/codeforlife-package-python/archive/refs/tags/v0.22.0.zip"}
 # 🚫 Don't add [packages] below that are inherited from the CFL package.
 
 [dev-packages]
-codeforlife = {ref = "v0.22.0", git = "https://github.com/ocadotechnology/codeforlife-package-python.git", extras = ["dev"]}
+codeforlife = {file = "https://github.com/ocadotechnology/codeforlife-package-python/archive/refs/tags/v0.22.0.zip", extras = ["dev"]}
 # codeforlife = {file = "../codeforlife-package-python", editable = true, extras = ["dev"]}
 # 🚫 Don't add [dev-packages] below that are inherited from the CFL package.
 
