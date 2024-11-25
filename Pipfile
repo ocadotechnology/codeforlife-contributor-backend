@@ -5,9 +5,9 @@ name = "pypi"
 
 ## ℹ️ HOW-TO: Make the python-package editable.
 #
-# 1. Comment out the git-codeforlife package under [packages].
-# 2. Comment out the git-codeforlife package under [dev-packages].
-# 3. Uncomment the editable-codeforlife package under [dev-packages].
+# 1. Comment out the non-editable codeforlife package under [packages].
+# 2. Comment out the non-editable codeforlife package under [dev-packages].
+# 3. Uncomment the editable codeforlife package under [dev-packages].
 # 4. Run `pipenv install --dev` in your terminal.
 #
 # ⚠️ Make sure you revert these changes before pushing your changes or the
@@ -15,11 +15,11 @@ name = "pypi"
 #
 ## ℹ️ HOW-TO: Install a new version of the python-package.
 #
-# 1. Uncomment the git-codeforlife package under [packages].
-# 2. Uncomment the git-codeforlife package under [dev-packages].
-# 3. Comment out the editable-codeforlife package under [dev-packages].
-# 4. Set the ref key of the git-codeforlife packages under [packages] and
-#     [dev-packages] to have the same version number.
+# 1. Uncomment the non-editable codeforlife package under [packages].
+# 2. Uncomment the non-editable codeforlife package under [dev-packages].
+# 3. Comment out the editable codeforlife package under [dev-packages].
+# 4. Set the tag of the editable codeforlife packages under [packages] and
+#     [dev-packages] to have the same tag.
 # 5. Run `pipenv install --dev` in your terminal.
 
 [packages]
