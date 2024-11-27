@@ -1,3 +1,10 @@
+## [1.0.16](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.15...v1.0.16) (2024-11-27)
+
+
+### Bug Fixes
+
+* install cfl package from pypi ([deb177a](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/deb177ab7b8875a2098d9602bbc1a749498dd1db))
+
 ## [1.0.15](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.14...v1.0.15) (2024-11-26)
 
 
