@@ -1,3 +1,4 @@
 {
-  "artifactUrl": "REPLACE_IN_PIPELINE"
+  "artifactUrl": "REPLACE_IN_PIPELINE",
+  "assetsPrefix": "REPLACE_IN_PIPELINE"
 }
