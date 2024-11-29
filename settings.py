@@ -66,6 +66,7 @@ STATIC_ROOT = get_static_root(BASE_DIR)
 # pylint: disable-all
 
 import json
+import logging
 
 import boto3
 
@@ -88,6 +89,9 @@ def check_for_pointer_file(S3_APP_BUCKET, S3_APP_KEY):
 
 def construct_db_config(S3_APP_BUCKET, S3_KEY, DB_DATA):
     s3 = boto3.client("s3")
+
+    print(f'connecting with bucket: "{S3_APP_BUCKET}", key: "{S3_KEY}"')
+    logging.info(f'connecting with bucket: "{S3_APP_BUCKET}", key: "{S3_KEY}"')
 
     cfg = s3.get_object(Bucket=S3_APP_BUCKET, Key=S3_KEY)
 
