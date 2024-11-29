@@ -67,97 +67,69 @@ STATIC_ROOT = get_static_root(BASE_DIR)
 
 import json
 import logging
+import typing as t
 
 import boto3
+from codeforlife.types import JsonDict
+
+if t.TYPE_CHECKING:
+    from mypy_boto3_s3.client import S3Client
 
 
-def check_for_pointer_file(S3_APP_BUCKET, S3_APP_KEY):
-    s3 = boto3.client("s3")
+AWS_S3_APP_BUCKET = os.getenv("aws_s3_app_bucket")
+AWS_S3_APP_FOLDER = os.getenv("aws_s3_app_folder")
+# AWS_REGION = os.getenv("aws_region")
+APP_ID = os.getenv("APP_ID")  # type: ignore[assignment]
+APP_VERSION = os.getenv("APP_VERSION")  # type: ignore[assignment]
 
-    pointer = s3.list_objects(
-        Bucket=S3_APP_BUCKET, Prefix=f"{S3_APP_KEY}/dbMetadata/pointer"
-    )
 
-    if pointer.get("Contents"):
-        resp = s3.get_object(
-            Bucket=S3_APP_BUCKET, Key=pointer["Contents"][0]["Key"]
+def get_databases():
+    if AWS_S3_APP_BUCKET and AWS_S3_APP_FOLDER and APP_ID:
+        key = f"{AWS_S3_APP_FOLDER}/dbMetadata/{APP_ID}/app.dbdata"
+
+        print(
+            f'(print) connecting with bucket: "{AWS_S3_APP_BUCKET}", key: "{key}"'
         )
-        return resp["Body"].read().decode("utf-8")
-
-    return None
-
-
-def construct_db_config(S3_APP_BUCKET, S3_KEY, DB_DATA):
-    s3 = boto3.client("s3")
-
-    print(f'connecting with bucket: "{S3_APP_BUCKET}", key: "{S3_KEY}"')
-    logging.info(f'connecting with bucket: "{S3_APP_BUCKET}", key: "{S3_KEY}"')
-
-    cfg = s3.get_object(Bucket=S3_APP_BUCKET, Key=S3_KEY)
-
-    config = json.loads(cfg["Body"].read().decode("utf-8"))
-
-    if config and config["DBEngine"] == "postgres":
-        DB_DATA["default"].update(
-            {
-                "NAME": config["Database"],
-                "USER": config["user"],
-                "PASSWORD": config["password"],
-                "HOST": config["Endpoint"],
-                "PORT": config["Port"],
-            }
+        logging.info(
+            f'(log) connecting with bucket: "{AWS_S3_APP_BUCKET}", key: "{key}"'
         )
 
-        return DB_DATA
+        s3: "S3Client" = boto3.client("s3")
+        db_data_object = s3.get_object(Bucket=AWS_S3_APP_BUCKET, Key=key)
 
+        db_data: JsonDict = json.loads(
+            db_data_object["Body"].read().decode("utf-8")
+        )
 
-def load_db_config(S3_APP_BUCKET, S3_APP_KEY):
-    s3 = boto3.client("s3")
+        if not db_data or db_data["DBEngine"] != "postgres":
+            raise ConnectionAbortedError("Invalid database data.")
 
-    default_dict = {
+        name = db_data["Database"]
+        user = db_data["user"]
+        password = db_data["password"]
+        host = db_data["Endpoint"]
+        port = db_data["Port"]
+    else:
+        name = os.getenv("DB_NAME", SERVICE_NAME)
+        user = os.getenv("DB_USER", "root")
+        password = os.getenv("DB_PASSWORD", "password")
+        host = os.getenv("DB_HOST", "localhost")
+        port = int(os.getenv("DB_PORT", "5432"))
+
+    return {
         "default": {
-            # "ENGINE": "django.db.backends.postgresql_psycopg2",
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": "",
-            "USER": "",
-            "PASSWORD": "",
-            "HOST": "",
-            "PORT": "",
-            "OPTIONS": {
-                "connect_timeout": 300,
-            },
+            "NAME": name,
+            "USER": user,
+            "PASSWORD": password,
+            "HOST": host,
+            "PORT": port,
+            # "OPTIONS": {
+            #     "connect_timeout": 300,
+            # },
             "ATOMIC_REQUESTS": True,
         }
     }
 
-    link = check_for_pointer_file(S3_APP_BUCKET, S3_APP_KEY)
-    if link:
-        return construct_db_config(S3_APP_BUCKET, link, default_dict)
 
-    objs = s3.list_objects(
-        Bucket=S3_APP_BUCKET, Prefix=f"{S3_APP_KEY}/dbMetadata/"
-    )
-    for config_file in objs.get("Contents", []):
-        return construct_db_config(
-            S3_APP_BUCKET, config_file["Key"], default_dict
-        )
-
-
-S3_BUCKET = os.getenv("aws_s3_app_bucket")
-S3_PREFIX = os.getenv("aws_s3_app_folder")
-# AWS_REGION = os.getenv("aws_region")
-
-if S3_BUCKET and S3_PREFIX:
-    DATABASES = load_db_config(S3_BUCKET, S3_PREFIX)
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.getenv("DB_NAME", SERVICE_NAME),
-#         "HOST": os.getenv("DB_HOST", "localhost"),
-#         "PORT": int(os.getenv("DB_PORT", "5432")),
-#         # "USER": os.getenv("DB_USER", "root"),
-#         # "PASSWORD": os.getenv("DB_PASSWORD", "password"),
-#         "ATOMIC_REQUESTS": True,
-#     }
-# }
+DATABASES = get_databases()
