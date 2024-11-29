@@ -1,3 +1,10 @@
+## [1.0.24](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.23...v1.0.24) (2024-11-29)
+
+
+### Bug Fixes
+
+* assetsPrefix ([0242043](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/02420438ed09eff4163f3a30d27b4b05661823be))
+
 ## [1.0.23](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.22...v1.0.23) (2024-11-29)
 
 
