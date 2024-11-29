@@ -141,8 +141,8 @@ S3_BUCKET = os.getenv("aws_s3_app_bucket")
 S3_PREFIX = os.getenv("aws_s3_app_folder")
 # AWS_REGION = os.getenv("aws_region")
 
-
-DATABASES = load_db_config(S3_BUCKET, S3_PREFIX)
+if S3_BUCKET and S3_PREFIX:
+    DATABASES = load_db_config(S3_BUCKET, S3_PREFIX)
 
 # DATABASES = {
 #     "default": {
