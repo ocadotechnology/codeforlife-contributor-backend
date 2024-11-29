@@ -24,6 +24,7 @@ name = "pypi"
 
 [packages]
 codeforlife = "==0.22.12"
+boto3 = "==1.34.162"
 # 🚫 Don't add [packages] below that are inherited from the CFL package.
 
 [dev-packages]
