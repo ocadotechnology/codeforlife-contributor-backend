@@ -1,3 +1,12 @@
+## [1.0.18](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.17...v1.0.18) (2024-11-29)
+
+
+### Bug Fixes
+
+* if ([c7ce580](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/c7ce580e24057a1bc7fe74fd7e65350faf8819d9))
+* linting and stubs ([d147b69](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/d147b694c19dc4f5d6c2cf4dc639b497b3d8017e))
+* load db config ([52bd4ea](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/52bd4eaf6ec9843b8ae70f55e908f412ebd3748a))
+
 ## [1.0.17](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.16...v1.0.17) (2024-11-27)
 
 
