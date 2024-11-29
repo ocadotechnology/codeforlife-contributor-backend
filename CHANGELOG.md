@@ -1,3 +1,10 @@
+## [1.0.23](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.22...v1.0.23) (2024-11-29)
+
+
+### Bug Fixes
+
+* deploy static ([1bbb737](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/1bbb73773d8b97c51e086befdc398998e27de9dc))
+
 ## [1.0.22](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.21...v1.0.22) (2024-11-29)
 
 
