@@ -15,7 +15,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 
 
 if __name__ == "__main__":
-    # TODO: delete workers=1
+    # TODO: delete workers=1 after testing
     StandaloneApplication(app=get_asgi_application(), workers=1).run()
 else:
     app = get_wsgi_application()
