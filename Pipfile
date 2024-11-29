@@ -29,6 +29,7 @@ boto3 = "==1.34.162"
 
 [dev-packages]
 codeforlife = {version = "==0.22.12", extras = ["dev"]}
+boto3-stubs = {version = "==1.35.71", extras = ["ec2", "s3"]}
 # codeforlife = {file = "../codeforlife-package-python", editable = true, extras = ["dev"]}
 # 🚫 Don't add [dev-packages] below that are inherited from the CFL package.
 

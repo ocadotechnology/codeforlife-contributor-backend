@@ -63,6 +63,8 @@ STATIC_ROOT = get_static_root(BASE_DIR)
 
 # TODO: delete this
 
+# pylint: disable-all
+
 import json
 
 import boto3
