@@ -59,4 +59,12 @@ SESSION_ENGINE = "api.models.session"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_ROOT = get_static_root(BASE_DIR)
+# TODO: move to cfl package
+# STATIC_ROOT = get_static_root(BASE_DIR)
+STATIC_ROOT = os.getenv("STATIC_ROOT", BASE_DIR / "static")
+STATIC_URL = os.getenv("STATIC_URL", "/static/")
+
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+if AWS_STORAGE_BUCKET_NAME:
+    DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
+    STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
