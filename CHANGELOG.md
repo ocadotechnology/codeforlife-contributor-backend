@@ -1,3 +1,10 @@
+## [1.0.29](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.28...v1.0.29) (2024-12-01)
+
+
+### Bug Fixes
+
+* install django storages ([5e7aaff](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/5e7aaff92b961cabf08171b46046ccb651a0f9a5))
+
 ## [1.0.28](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.27...v1.0.28) (2024-12-01)
 
 
