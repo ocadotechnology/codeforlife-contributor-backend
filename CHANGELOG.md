@@ -1,3 +1,10 @@
+## [1.0.28](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.27...v1.0.28) (2024-12-01)
+
+
+### Bug Fixes
+
+* static variables ([911cc17](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/911cc17992cd38173c974e04ce8e6452757af449))
+
 ## [1.0.27](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.26...v1.0.27) (2024-12-01)
 
 
