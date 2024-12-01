@@ -25,6 +25,7 @@ name = "pypi"
 [packages]
 codeforlife = "==0.23.0"
 # 🚫 Don't add [packages] below that are inherited from the CFL package.
+django-storages = {version = "==1.14.4", extras = ["s3"]}
 
 [dev-packages]
 codeforlife = {version = "==0.23.0", extras = ["dev"]}
