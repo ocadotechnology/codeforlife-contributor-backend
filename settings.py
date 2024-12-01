@@ -59,7 +59,7 @@ SESSION_ENGINE = "api.models.session"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-# TODO: move to cfl package
+# TODO: move to cfl package and create helper functions.
 # STATIC_ROOT = get_static_root(BASE_DIR)
 STATIC_ROOT = os.getenv("STATIC_ROOT", BASE_DIR / "static")
 STATIC_URL = os.getenv("STATIC_URL", "/static/")
