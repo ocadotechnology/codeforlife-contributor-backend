@@ -39,6 +39,26 @@ router.register(
     basename="contributor",
 )
 
+# TODO: delete this after finish testing
+# pylint: disable=wrong-import-position, wrong-import-order,ungrouped-imports
+import logging
+
+from codeforlife.views import HealthCheckView as _HealthCheckView
+from django.conf import settings
+
+
+# pylint: disable-next=missing-class-docstring
+class HealthCheckView(_HealthCheckView):
+    def get_health_check(self, request):
+        # pylint: disable-next=logging-fstring-interpolation
+        logging.warning(
+            f"STATIC_ROOT: {settings.STATIC_ROOT}."
+            f" STATIC_URL: {settings.STATIC_URL}."
+            f" AWS_STORAGE_BUCKET_NAME: {settings.AWS_STORAGE_BUCKET_NAME}."
+        )
+        return super().get_health_check(request)
+
+
 urlpatterns = get_urlpatterns(
     [
         *router.urls,
