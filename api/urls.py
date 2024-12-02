@@ -41,22 +41,61 @@ router.register(
 
 # TODO: delete this after finish testing
 # pylint: disable=wrong-import-position, wrong-import-order,ungrouped-imports
-import logging
-
 from codeforlife.views import HealthCheckView as _HealthCheckView
+from codeforlife.views.health_check import HealthCheck
 from django.conf import settings
 
 
 # pylint: disable-next=missing-class-docstring
 class HealthCheckView(_HealthCheckView):
     def get_health_check(self, request):
-        # pylint: disable-next=logging-fstring-interpolation
-        logging.warning(
-            f"STATIC_ROOT: {settings.STATIC_ROOT}."
-            f" STATIC_URL: {settings.STATIC_URL}."
-            f" AWS_STORAGE_BUCKET_NAME: {settings.AWS_STORAGE_BUCKET_NAME}."
+        health_check = super().get_health_check(request)
+        return HealthCheck(
+            health_status=health_check.health_status,
+            additional_info=health_check.additional_info,
+            details=[
+                HealthCheck.Detail(
+                    name="STATIC_ROOT",
+                    description=str(settings.STATIC_ROOT),
+                    health="healthy",
+                ),
+                HealthCheck.Detail(
+                    name="STATIC_URL",
+                    description=str(settings.STATIC_URL),
+                    health="healthy",
+                ),
+                HealthCheck.Detail(
+                    name="AWS_STORAGE_BUCKET_NAME",
+                    description=str(settings.AWS_STORAGE_BUCKET_NAME),
+                    health="healthy",
+                ),
+                HealthCheck.Detail(
+                    name="AWS_S3_CUSTOM_DOMAIN",
+                    description=str(settings.AWS_S3_CUSTOM_DOMAIN),
+                    health="healthy",
+                ),
+                HealthCheck.Detail(
+                    name="AWS_LOCATION",
+                    description=str(settings.AWS_LOCATION),
+                    health="healthy",
+                ),
+                HealthCheck.Detail(
+                    name="AWS_DEFAULT_ACL",
+                    description=str(settings.AWS_DEFAULT_ACL),
+                    health="healthy",
+                ),
+                HealthCheck.Detail(
+                    name="AWS_S3_ADDRESSING_STYLE",
+                    description=str(settings.AWS_S3_ADDRESSING_STYLE),
+                    health="healthy",
+                ),
+                HealthCheck.Detail(
+                    name="AWS_S3_REGION_NAME",
+                    description=str(settings.AWS_S3_REGION_NAME),
+                    health="healthy",
+                ),
+            ],
         )
-        return super().get_health_check(request)
 
 
 urlpatterns = get_urlpatterns(
