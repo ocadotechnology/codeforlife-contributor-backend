@@ -68,5 +68,6 @@ urlpatterns = get_urlpatterns(
             name="session-login",
         ),
     ],
+    health_check_view=HealthCheckView,
     include_user_urls=False,
 )
