@@ -67,12 +67,20 @@ STATIC_URL = os.getenv("STATIC_URL", "/static/")
 
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
-AWS_S3_CUSTOM_DOMAIN = os.getenv("AWS_S3_CUSTOM_DOMAIN")
-AWS_LOCATION = os.getenv("AWS_LOCATION")
-AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL")
-AWS_S3_ADDRESSING_STYLE = os.getenv("AWS_S3_ADDRESSING_STYLE")
-AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
 
+AWS_S3_CUSTOM_DOMAIN = os.getenv("AWS_S3_CUSTOM_DOMAIN")
+if AWS_S3_CUSTOM_DOMAIN == "":
+    AWS_S3_CUSTOM_DOMAIN = None
+AWS_LOCATION = os.getenv("AWS_LOCATION", "")
+AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL")
+if AWS_DEFAULT_ACL == "":
+    AWS_DEFAULT_ACL = None
+AWS_S3_ADDRESSING_STYLE = os.getenv("AWS_S3_ADDRESSING_STYLE")
+if AWS_S3_ADDRESSING_STYLE == "":
+    AWS_S3_ADDRESSING_STYLE = None
+AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
+if AWS_S3_REGION_NAME == "":
+    AWS_S3_REGION_NAME = None
 if AWS_STORAGE_BUCKET_NAME:
     DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
     STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
