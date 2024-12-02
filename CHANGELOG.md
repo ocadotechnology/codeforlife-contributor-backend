@@ -1,3 +1,10 @@
+## [1.0.35](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.34...v1.0.35) (2024-12-02)
+
+
+### Bug Fixes
+
+* AWS_S3_CUSTOM_DOMAIN ([8911817](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/891181773b9629aab2b2ea5dfb5752e9961aa2fa))
+
 ## [1.0.34](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.33...v1.0.34) (2024-12-02)
 
 
