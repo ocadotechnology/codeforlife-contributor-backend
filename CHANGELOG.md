@@ -1,3 +1,11 @@
+## [1.0.32](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.31...v1.0.32) (2024-12-02)
+
+
+### Bug Fixes
+
+* test ([a0a44d6](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/a0a44d671513245155aa8b667159d16a868ff23e))
+* test ([3899eba](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/3899eba5ee32aa88123c2a48167f42900369dc3c))
+
 ## [1.0.31](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.30...v1.0.31) (2024-12-02)
 
 
