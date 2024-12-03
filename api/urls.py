@@ -94,6 +94,11 @@ class HealthCheckView(_HealthCheckView):
                     description=str(settings.AWS_S3_REGION_NAME),
                     health="healthy",
                 ),
+                HealthCheck.Detail(
+                    name="STATICFILES_DIRS",
+                    description=str(settings.STATICFILES_DIRS),
+                    health="healthy",
+                ),
             ],
         )
 

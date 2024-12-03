@@ -63,7 +63,11 @@ SESSION_ENGINE = "api.models.session"
 # STATIC_ROOT = get_static_root(BASE_DIR)
 STATIC_ROOT = os.getenv("STATIC_ROOT", BASE_DIR / "static")
 STATIC_URL = os.getenv("STATIC_URL", "/static/")
-# STATICFILES_DIRS = ["static"]
+STATICFILES_DIRS = (
+    os.environ["STATICFILES_DIRS"].split(",")
+    if os.getenv("STATICFILES_DIRS")
+    else []
+)
 
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
