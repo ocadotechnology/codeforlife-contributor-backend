@@ -1,3 +1,10 @@
+## [1.0.38](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.37...v1.0.38) (2024-12-03)
+
+
+### Bug Fixes
+
+* STATICFILES_DIRS ([990aec1](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/990aec153f04b6e6385ecf0dfd61ee45858d5a07))
+
 ## [1.0.37](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.36...v1.0.37) (2024-12-03)
 
 
