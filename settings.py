@@ -82,5 +82,7 @@ AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
 if AWS_S3_REGION_NAME == "":
     AWS_S3_REGION_NAME = None
 if AWS_STORAGE_BUCKET_NAME:
+    if "storages" not in INSTALLED_APPS:
+        INSTALLED_APPS.append("storages")
     DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
     STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
