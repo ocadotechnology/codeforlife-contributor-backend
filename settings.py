@@ -84,5 +84,6 @@ if AWS_S3_REGION_NAME == "":
 if AWS_STORAGE_BUCKET_NAME:
     if "storages" not in INSTALLED_APPS:
         INSTALLED_APPS.append("storages")
+        print("Added storages to installed apps.")
     DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
     STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
