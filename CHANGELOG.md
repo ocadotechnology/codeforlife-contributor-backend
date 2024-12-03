@@ -1,3 +1,11 @@
+## [1.0.37](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.36...v1.0.37) (2024-12-03)
+
+
+### Bug Fixes
+
+* install storages app ([4fcfbc6](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/4fcfbc6953f687b256fb8a445595950d57ca8898))
+* print ([7cec9b8](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/7cec9b8133bc7cfe4253d326446dbf5278217064))
+
 ## [1.0.36](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.35...v1.0.36) (2024-12-02)
 
 
