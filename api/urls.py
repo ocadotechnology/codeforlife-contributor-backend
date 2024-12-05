@@ -55,6 +55,11 @@ class HealthCheckView(_HealthCheckView):
             additional_info=health_check.additional_info,
             details=[
                 HealthCheck.Detail(
+                    name="settings_secrets_keys",
+                    description=",".join(list(settings.secrets.keys())),
+                    health="healthy",
+                ),
+                HealthCheck.Detail(
                     name="STATIC_ROOT",
                     description=str(settings.STATIC_ROOT),
                     health="healthy",

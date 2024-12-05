@@ -16,11 +16,87 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 
+
+def set_up_settings(service_name: str):
+    """Set up the settings for the service.
+
+    *This needs to be called before importing the CFL settings!*
+
+    Examples:
+        ```
+        from codeforlife import set_up_settings
+
+        # Must set up settings before importing them!
+        secrets = set_up_settings("example")
+
+        from codeforlife.settings import *
+        ```
+
+    Args:
+        service_name: The name of the current service.
+
+    Returns:
+        The secrets. These are not loaded as environment variables so that 3rd
+        party packages cannot read them.
+    """
+
+    # pylint: disable-all
+
+    import sys
+
+    # import typing as t
+    from io import StringIO
+
+    import boto3
+    from dotenv import dotenv_values, load_dotenv
+
+    # Env = t.Literal["local", "development", "staging", "production"]
+    # if t.TYPE_CHECKING:
+    #     from mypy_boto3_s3.client import S3Client
+
+    if "codeforlife.settings" in sys.modules:
+        raise ImportError(
+            "You must set up the CFL settings before importing them."
+        )
+
+    os.environ["SERVICE_NAME"] = service_name
+
+    os.environ.setdefault("ENV", "local")
+    # env = t.cast(Env, os.environ["ENV"])
+    env = os.environ["ENV"]
+
+    load_dotenv(f".env/.env.{env}", override=False)
+    load_dotenv(".env/.env", override=False)
+
+    if env == "local":
+        _secrets = dotenv_values(".env/.env.local.secrets")
+    else:
+        _AWS_S3_APP_BUCKET = os.environ["aws_s3_app_bucket"]
+        _AWS_S3_APP_FOLDER = os.environ["aws_s3_app_folder"]
+
+        # Get the secrets object.
+        s3: "S3Client" = boto3.client("s3")
+        secrets_object = s3.get_object(
+            Bucket=_AWS_S3_APP_BUCKET,
+            Key=f"{_AWS_S3_APP_FOLDER}/secure/.env.secrets",
+        )
+
+        secrets_str = secrets_object["Body"].read().decode("utf-8")
+
+        _secrets = dotenv_values(stream=StringIO(secrets_str))
+
+    return {key: value for key, value in _secrets.items() if value is not None}
+
+    # pylint: enable
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
 
-# NOTE: Must come before importing CFL settings.
-os.environ["SERVICE_NAME"] = "contributor"
+secrets = set_up_settings(service_name="contributor")
+
+# pylint: disable-next=wildcard-import,unused-wildcard-import,wrong-import-position
+from codeforlife.settings import *
 
 # GitHub
 
@@ -29,9 +105,6 @@ GH_REPO = "codeforlife-workspace"
 GH_FILE = "CONTRIBUTING.md"
 GH_CLIENT_ID = os.getenv("GH_CLIENT_ID", "Ov23liBErSabQFqROeMg")
 GH_CLIENT_SECRET = os.getenv("GH_CLIENT_SECRET", "replace-me")
-
-# pylint: disable-next=wildcard-import,unused-wildcard-import,wrong-import-position
-from codeforlife.settings import *
 
 # Installed Apps
 # https://docs.djangoproject.com/en/3.2/ref/settings/#installed-apps

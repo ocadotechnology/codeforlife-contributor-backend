@@ -2,7 +2,6 @@
 url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
-
 ## ℹ️ HOW-TO: Make the python-package editable.
 #
 # 1. Comment out the non-editable codeforlife package under [packages].
@@ -26,6 +25,7 @@ name = "pypi"
 codeforlife = "==0.23.1"
 # 🚫 Don't add [packages] below that are inherited from the CFL package.
 django-storages = {version = "==1.14.4", extras = ["s3"]}
+python-dotenv = "*"
 
 [dev-packages]
 codeforlife = {version = "==0.23.1", extras = ["dev"]}
