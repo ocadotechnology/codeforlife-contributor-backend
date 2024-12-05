@@ -22,14 +22,20 @@ def set_up_settings(service_base_dir: Path, service_name: str):
 
     *This needs to be called before importing the CFL settings!*
 
+    To expose a secret to your Django project, you'll need to create a setting
+    for it following Django's conventions.
+
     Examples:
         ```
         from codeforlife import set_up_settings
 
         # Must set up settings before importing them!
-        SECRETS = set_up_settings("example")
+        secrets = set_up_settings("example")
 
         from codeforlife.settings import *
+
+        # Expose secret to django project.
+        MY_SECRET = secrets["MY_SECRET"]
         ```
 
     Args:
@@ -119,8 +125,8 @@ from codeforlife.settings import *
 GH_ORG = "ocadotechnology"
 GH_REPO = "codeforlife-workspace"
 GH_FILE = "CONTRIBUTING.md"
-GH_CLIENT_ID = os.getenv("GH_CLIENT_ID", "Ov23liBErSabQFqROeMg")
-GH_CLIENT_SECRET = os.getenv("GH_CLIENT_SECRET", "replace-me")
+GH_CLIENT_ID = os.environ["GH_CLIENT_ID"]
+GH_CLIENT_SECRET = SECRETS["GH_CLIENT_SECRET"]
 
 # Installed Apps
 # https://docs.djangoproject.com/en/3.2/ref/settings/#installed-apps
