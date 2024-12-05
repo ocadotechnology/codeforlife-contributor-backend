@@ -1,3 +1,10 @@
+## [1.0.43](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.42...v1.0.43) (2024-12-05)
+
+
+### Bug Fixes
+
+* dotenv ([af0516a](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/af0516acf3e428cd8448b2b4af2f770a15c95c03))
+
 ## [1.0.42](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.41...v1.0.42) (2024-12-05)
 
 
