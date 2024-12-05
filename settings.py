@@ -17,7 +17,7 @@ import os
 from pathlib import Path
 
 
-def set_up_settings(service_name: str):
+def set_up_settings(service_base_dir: Path, service_name: str):
     """Set up the settings for the service.
 
     *This needs to be called before importing the CFL settings!*
@@ -27,12 +27,13 @@ def set_up_settings(service_name: str):
         from codeforlife import set_up_settings
 
         # Must set up settings before importing them!
-        secrets = set_up_settings("example")
+        SECRETS = set_up_settings("example")
 
         from codeforlife.settings import *
         ```
 
     Args:
+        service_base_dir: The base directory of the service.
         service_name: The name of the current service.
 
     Returns:
@@ -59,6 +60,7 @@ def set_up_settings(service_name: str):
             "You must set up the CFL settings before importing them."
         )
 
+    os.environ["SERVICE_BASE_DIR"] = str(service_base_dir)
     os.environ["SERVICE_NAME"] = service_name
 
     os.environ.setdefault("ENV", "local")
@@ -107,7 +109,7 @@ def set_up_settings(service_name: str):
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
 
-secrets = set_up_settings(service_name="contributor")
+SECRETS = set_up_settings(BASE_DIR, service_name="contributor")
 
 # pylint: disable-next=wildcard-import,unused-wildcard-import,wrong-import-position
 from codeforlife.settings import *
@@ -147,31 +149,26 @@ SESSION_ENGINE = "api.models.session"
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 # TODO: move to cfl package and create helper functions.
-# STATIC_ROOT = get_static_root(BASE_DIR)
-STATIC_ROOT = os.getenv("STATIC_ROOT", BASE_DIR / "static")
+STATIC_ROOT = Path(os.environ["SERVICE_BASE_DIR"]) / "static"
 STATIC_URL = os.getenv("STATIC_URL", "/static/")
-STATICFILES_DIRS = (
-    os.environ["STATICFILES_DIRS"].split(",")
-    if os.getenv("STATICFILES_DIRS")
-    else []
-)
+
 
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
 
-AWS_S3_CUSTOM_DOMAIN = os.getenv("AWS_S3_CUSTOM_DOMAIN")
-if AWS_S3_CUSTOM_DOMAIN == "":
-    AWS_S3_CUSTOM_DOMAIN = None
-AWS_LOCATION = os.getenv("AWS_LOCATION", "")
-AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL")
-if AWS_DEFAULT_ACL == "":
-    AWS_DEFAULT_ACL = None
-AWS_S3_ADDRESSING_STYLE = os.getenv("AWS_S3_ADDRESSING_STYLE")
-if AWS_S3_ADDRESSING_STYLE == "":
-    AWS_S3_ADDRESSING_STYLE = None
-AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
-if AWS_S3_REGION_NAME == "":
-    AWS_S3_REGION_NAME = None
+# AWS_S3_CUSTOM_DOMAIN = os.getenv("AWS_S3_CUSTOM_DOMAIN")
+# if AWS_S3_CUSTOM_DOMAIN == "":
+#     AWS_S3_CUSTOM_DOMAIN = None
+# AWS_LOCATION = os.getenv("AWS_LOCATION", "")
+# AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL")
+# if AWS_DEFAULT_ACL == "":
+#     AWS_DEFAULT_ACL = None
+# AWS_S3_ADDRESSING_STYLE = os.getenv("AWS_S3_ADDRESSING_STYLE")
+# if AWS_S3_ADDRESSING_STYLE == "":
+#     AWS_S3_ADDRESSING_STYLE = None
+# AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
+# if AWS_S3_REGION_NAME == "":
+#     AWS_S3_REGION_NAME = None
 if AWS_STORAGE_BUCKET_NAME:
     if "storages" not in INSTALLED_APPS:
         INSTALLED_APPS.append("storages")

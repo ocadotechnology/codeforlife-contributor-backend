@@ -56,52 +56,7 @@ class HealthCheckView(_HealthCheckView):
             details=[
                 HealthCheck.Detail(
                     name="settings_secrets_keys",
-                    description=",".join(list(settings.secrets.keys())),
-                    health="healthy",
-                ),
-                HealthCheck.Detail(
-                    name="STATIC_ROOT",
-                    description=str(settings.STATIC_ROOT),
-                    health="healthy",
-                ),
-                HealthCheck.Detail(
-                    name="STATIC_URL",
-                    description=str(settings.STATIC_URL),
-                    health="healthy",
-                ),
-                HealthCheck.Detail(
-                    name="AWS_STORAGE_BUCKET_NAME",
-                    description=str(settings.AWS_STORAGE_BUCKET_NAME),
-                    health="healthy",
-                ),
-                HealthCheck.Detail(
-                    name="AWS_S3_CUSTOM_DOMAIN",
-                    description=str(settings.AWS_S3_CUSTOM_DOMAIN),
-                    health="healthy",
-                ),
-                HealthCheck.Detail(
-                    name="AWS_LOCATION",
-                    description=str(settings.AWS_LOCATION),
-                    health="healthy",
-                ),
-                HealthCheck.Detail(
-                    name="AWS_DEFAULT_ACL",
-                    description=str(settings.AWS_DEFAULT_ACL),
-                    health="healthy",
-                ),
-                HealthCheck.Detail(
-                    name="AWS_S3_ADDRESSING_STYLE",
-                    description=str(settings.AWS_S3_ADDRESSING_STYLE),
-                    health="healthy",
-                ),
-                HealthCheck.Detail(
-                    name="AWS_S3_REGION_NAME",
-                    description=str(settings.AWS_S3_REGION_NAME),
-                    health="healthy",
-                ),
-                HealthCheck.Detail(
-                    name="STATICFILES_DIRS",
-                    description=str(settings.STATICFILES_DIRS),
+                    description=",".join(list(settings.SECRETS.keys())),
                     health="healthy",
                 ),
             ],
