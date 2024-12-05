@@ -1,3 +1,11 @@
+## [1.0.41](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.40...v1.0.41) (2024-12-05)
+
+
+### Bug Fixes
+
+* environment variables ([ef65757](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/ef65757f53262f8add837a63eceb2ed984b6c814))
+* get secret ([3028532](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/3028532b96e7897d59476dc63c47900719c6749e))
+
 ## [1.0.40](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.39...v1.0.40) (2024-12-05)
 
 
