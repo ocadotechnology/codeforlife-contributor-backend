@@ -126,7 +126,7 @@ GH_ORG = "ocadotechnology"
 GH_REPO = "codeforlife-workspace"
 GH_FILE = "CONTRIBUTING.md"
 GH_CLIENT_ID = os.environ["GH_CLIENT_ID"]
-GH_CLIENT_SECRET = SECRETS["GH_CLIENT_SECRET"]
+GH_CLIENT_SECRET = SECRETS.get("GH_CLIENT_SECRET")
 
 # Installed Apps
 # https://docs.djangoproject.com/en/3.2/ref/settings/#installed-apps
