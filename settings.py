@@ -69,7 +69,21 @@ def set_up_settings(service_name: str):
     load_dotenv(".env/.env", override=False)
 
     if env == "local":
-        _secrets = dotenv_values(".env/.env.local.secrets")
+        secrets_path = ".env/.env.local.secrets"
+        # TODO: move this to the dev container setup script.
+        if not os.path.exists(secrets_path):
+            with open(secrets_path, "w+", encoding="utf-8") as secrets_file:
+                secrets_file.write(
+                    "# 📝 Local Secret Variables 📝\n"
+                    "# These secret variables are only loaded in your local environment (on your PC).\n"
+                    "#\n"
+                    "# This file is git-ignored intentionally to keep these variables a secret.\n"
+                    "#\n"
+                    "# 🚫 DO NOT PUSH SECRETS TO THE CODE REPO 🚫\n"
+                    "\n"
+                )
+
+        _secrets = dotenv_values(secrets_path)
     else:
         _AWS_S3_APP_BUCKET = os.environ["aws_s3_app_bucket"]
         _AWS_S3_APP_FOLDER = os.environ["aws_s3_app_folder"]
