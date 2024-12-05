@@ -107,7 +107,7 @@ def set_up_settings(service_base_dir: Path, service_name: str):
 
         _secrets = dotenv_values(stream=StringIO(secrets_str))
 
-    # TODO: make custom namespace
+    # TODO: make custom namespace.
     return {key: value for key, value in _secrets.items() if value is not None}
 
     # pylint: enable
