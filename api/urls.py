@@ -26,42 +26,16 @@ from rest_framework.routers import DefaultRouter
 from .views import AgreementSignatureViewSet, ContributorViewSet, LoginView
 
 router = DefaultRouter()
-
 router.register(
     "agreement-signatures",
     AgreementSignatureViewSet,
     basename="agreement-signature",
 )
-
 router.register(
     "contributors",
     ContributorViewSet,
     basename="contributor",
 )
-
-# TODO: delete this after finish testing
-# pylint: disable=wrong-import-position, wrong-import-order,ungrouped-imports
-from codeforlife.views import HealthCheckView as _HealthCheckView
-from codeforlife.views.health_check import HealthCheck
-from django.conf import settings
-
-
-# pylint: disable-next=missing-class-docstring
-class HealthCheckView(_HealthCheckView):
-    def get_health_check(self, request):
-        health_check = super().get_health_check(request)
-        return HealthCheck(
-            health_status=health_check.health_status,
-            additional_info=health_check.additional_info,
-            details=[
-                HealthCheck.Detail(
-                    name="settings_secrets_keys",
-                    description=",".join(list(settings.SECRETS.keys())),
-                    health="healthy",
-                ),
-            ],
-        )
-
 
 urlpatterns = get_urlpatterns(
     [
@@ -72,6 +46,5 @@ urlpatterns = get_urlpatterns(
             name="session-login",
         ),
     ],
-    health_check_view=HealthCheckView,
     include_user_urls=False,
 )

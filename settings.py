@@ -16,107 +16,12 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 
-
-def set_up_settings(service_base_dir: Path, service_name: str):
-    """Set up the settings for the service.
-
-    *This needs to be called before importing the CFL settings!*
-
-    To expose a secret to your Django project, you'll need to create a setting
-    for it following Django's conventions.
-
-    Examples:
-        ```
-        from codeforlife import set_up_settings
-
-        # Must set up settings before importing them!
-        secrets = set_up_settings("example")
-
-        from codeforlife.settings import *
-
-        # Expose secret to django project.
-        MY_SECRET = secrets["MY_SECRET"]
-        ```
-
-    Args:
-        service_base_dir: The base directory of the service.
-        service_name: The name of the current service.
-
-    Returns:
-        The secrets. These are not loaded as environment variables so that 3rd
-        party packages cannot read them.
-    """
-
-    # pylint: disable-all
-
-    import sys
-
-    # import typing as t
-    from io import StringIO
-
-    import boto3
-    from dotenv import dotenv_values, load_dotenv
-
-    # Env = t.Literal["local", "development", "staging", "production"]
-    # if t.TYPE_CHECKING:
-    #     from mypy_boto3_s3.client import S3Client
-
-    if "codeforlife.settings" in sys.modules:
-        raise ImportError(
-            "You must set up the CFL settings before importing them."
-        )
-
-    os.environ["SERVICE_BASE_DIR"] = str(service_base_dir)
-    os.environ["SERVICE_NAME"] = service_name
-
-    os.environ.setdefault("ENV", "local")
-    # env = t.cast(Env, os.environ["ENV"])
-    env = os.environ["ENV"]
-
-    load_dotenv(f".env/.env.{env}", override=False)
-    load_dotenv(".env/.env", override=False)
-
-    if env == "local":
-        secrets_path = ".env/.env.local.secrets"
-        # TODO: move this to the dev container setup script.
-        if not os.path.exists(secrets_path):
-            with open(secrets_path, "w+", encoding="utf-8") as secrets_file:
-                secrets_file.write(
-                    "# 📝 Local Secret Variables 📝\n"
-                    "# These secret variables are only loaded in your local environment (on your PC).\n"
-                    "#\n"
-                    "# This file is git-ignored intentionally to keep these variables a secret.\n"
-                    "#\n"
-                    "# 🚫 DO NOT PUSH SECRETS TO THE CODE REPO 🚫\n"
-                    "\n"
-                )
-
-        _secrets = dotenv_values(secrets_path)
-    else:
-        _AWS_S3_APP_BUCKET = os.environ["aws_s3_app_bucket"]
-        _AWS_S3_APP_FOLDER = os.environ["aws_s3_app_folder"]
-
-        # Get the secrets object.
-        s3: "S3Client" = boto3.client("s3")
-        secrets_object = s3.get_object(
-            Bucket=_AWS_S3_APP_BUCKET,
-            Key=f"{_AWS_S3_APP_FOLDER}/secure/.env.secrets",
-        )
-
-        secrets_str = secrets_object["Body"].read().decode("utf-8")
-
-        _secrets = dotenv_values(stream=StringIO(secrets_str))
-
-    # TODO: make custom namespace.
-    return {key: value for key, value in _secrets.items() if value is not None}
-
-    # pylint: enable
-
+from codeforlife import set_up_settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
 
-SECRETS = set_up_settings(BASE_DIR, service_name="contributor")
+secrets = set_up_settings(BASE_DIR, service_name="contributor")
 
 # pylint: disable-next=wildcard-import,unused-wildcard-import,wrong-import-position
 from codeforlife.settings import *
@@ -127,7 +32,7 @@ GH_ORG = "ocadotechnology"
 GH_REPO = "codeforlife-workspace"
 GH_FILE = "CONTRIBUTING.md"
 GH_CLIENT_ID = os.environ["GH_CLIENT_ID"]
-GH_CLIENT_SECRET = SECRETS.get("GH_CLIENT_SECRET")
+GH_CLIENT_SECRET = secrets.GH_CLIENT_SECRET
 
 # Installed Apps
 # https://docs.djangoproject.com/en/3.2/ref/settings/#installed-apps
@@ -151,34 +56,3 @@ AUTHENTICATION_BACKENDS = ["api.auth.backends.GitHubBackend"]
 # https://docs.djangoproject.com/en/3.2/topics/http/sessions/
 
 SESSION_ENGINE = "api.models.session"
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-# TODO: move to cfl package and create helper functions.
-STATIC_ROOT = Path(os.environ["SERVICE_BASE_DIR"]) / "static"
-STATIC_URL = os.getenv("STATIC_URL", "/static/")
-
-
-# https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
-
-# AWS_S3_CUSTOM_DOMAIN = os.getenv("AWS_S3_CUSTOM_DOMAIN")
-# if AWS_S3_CUSTOM_DOMAIN == "":
-#     AWS_S3_CUSTOM_DOMAIN = None
-# AWS_LOCATION = os.getenv("AWS_LOCATION", "")
-# AWS_DEFAULT_ACL = os.getenv("AWS_DEFAULT_ACL")
-# if AWS_DEFAULT_ACL == "":
-#     AWS_DEFAULT_ACL = None
-# AWS_S3_ADDRESSING_STYLE = os.getenv("AWS_S3_ADDRESSING_STYLE")
-# if AWS_S3_ADDRESSING_STYLE == "":
-#     AWS_S3_ADDRESSING_STYLE = None
-# AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
-# if AWS_S3_REGION_NAME == "":
-#     AWS_S3_REGION_NAME = None
-if AWS_STORAGE_BUCKET_NAME:
-    if "storages" not in INSTALLED_APPS:
-        INSTALLED_APPS.append("storages")
-        print("Added storages to installed apps.")
-    DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
-    STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
