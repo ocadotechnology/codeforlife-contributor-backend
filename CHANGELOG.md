@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.45...v1.1.0) (2024-12-06)
+
+
+### Features
+
+* otp compliant ([cf38c7a](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/cf38c7af1668e6d0f6a631445a63c723d8c08602))
+
 ## [1.0.45](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.44...v1.0.45) (2024-12-05)
 
 
