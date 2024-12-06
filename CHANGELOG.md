@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.0...v1.1.1) (2024-12-06)
+
+
+### Bug Fixes
+
+* set worker count ([02d25f7](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/02d25f78a9e58489f403fe716c96cd140e2f5e07))
+
 # [1.1.0](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.0.45...v1.1.0) (2024-12-06)
 
 
