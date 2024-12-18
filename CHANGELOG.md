@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.1...v1.1.2) (2024-12-18)
+
+
+### Bug Fixes
+
+* cors ([f6836f4](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/f6836f4fcd13aa780ac8d33f55bad66aed9353e2))
+
 ## [1.1.1](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.0...v1.1.1) (2024-12-06)
 
 
