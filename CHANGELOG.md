@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.2...v1.1.3) (2024-12-18)
+
+
+### Bug Fixes
+
+* env var SERVICE_SITE_URL ([a6c8c88](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/a6c8c8891997dab72fca0c9abf1b82eec7e53c5e))
+
 ## [1.1.2](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.1...v1.1.2) (2024-12-18)
 
 
