@@ -56,3 +56,5 @@ AUTHENTICATION_BACKENDS = ["api.auth.backends.GitHubBackend"]
 # https://docs.djangoproject.com/en/3.2/topics/http/sessions/
 
 SESSION_ENGINE = "api.models.session"
+
+CSRF_HEADER_NAME = "HTTP_CSRFTOKEN"
