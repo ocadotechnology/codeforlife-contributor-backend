@@ -1,3 +1,10 @@
+## [1.1.6](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.5...v1.1.6) (2024-12-20)
+
+
+### Bug Fixes
+
+* CSRF_TRUSTED_ORIGINS ([8fb0b92](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/8fb0b92cdfb6f33651670a0c9072fef64920d1f2))
+
 ## [1.1.5](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.4...v1.1.5) (2024-12-18)
 
 
