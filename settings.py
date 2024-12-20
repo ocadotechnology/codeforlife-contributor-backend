@@ -57,4 +57,7 @@ AUTHENTICATION_BACKENDS = ["api.auth.backends.GitHubBackend"]
 
 SESSION_ENGINE = "api.models.session"
 
-CSRF_HEADER_NAME = "HTTP_CSRFTOKEN"
+CSRF_TRUSTED_ORIGINS = []
+if ENV != "local":
+    CSRF_TRUSTED_ORIGINS.append(SERVICE_SITE_URL.removeprefix("https://"))
+    print(f"CSRF_TRUSTED_ORIGINS = {CSRF_TRUSTED_ORIGINS}")
