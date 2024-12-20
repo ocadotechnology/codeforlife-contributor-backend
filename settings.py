@@ -56,8 +56,3 @@ AUTHENTICATION_BACKENDS = ["api.auth.backends.GitHubBackend"]
 # https://docs.djangoproject.com/en/3.2/topics/http/sessions/
 
 SESSION_ENGINE = "api.models.session"
-
-CSRF_TRUSTED_ORIGINS = []
-if ENV != "local":
-    CSRF_TRUSTED_ORIGINS.append(SERVICE_SITE_URL.removeprefix("https://"))
-    print(f"CSRF_TRUSTED_ORIGINS = {CSRF_TRUSTED_ORIGINS}")
