@@ -1,3 +1,10 @@
+## [1.1.9](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.8...v1.1.9) (2024-12-30)
+
+
+### Bug Fixes
+
+* no rds descriptor ([8dfdece](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/8dfdece6eab7c48d82e407526d903022059791a7))
+
 ## [1.1.8](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.7...v1.1.8) (2024-12-30)
 
 
