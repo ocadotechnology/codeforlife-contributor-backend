@@ -1,3 +1,10 @@
+## [1.1.8](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.7...v1.1.8) (2024-12-30)
+
+
+### Bug Fixes
+
+* secondaryServerGroupName ([a0a3f32](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/a0a3f32f2adac427efefb0d77505641cf7e14752))
+
 ## [1.1.7](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.6...v1.1.7) (2024-12-20)
 
 
