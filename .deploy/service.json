@@ -1,5 +1,6 @@
 {
   "type": "rolling",
+  "secondaryServerGroupName": "REPLACE_IN_PIPELINE",
   "targetPlatform": "REPLACE_IN_PIPELINE",
   "applicationData": {
     "artifactUrl": "REPLACE_IN_PIPELINE",
