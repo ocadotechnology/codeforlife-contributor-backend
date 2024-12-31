@@ -1,3 +1,10 @@
+## [1.1.12](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.11...v1.1.12) (2024-12-31)
+
+
+### Bug Fixes
+
+* new cfl package ([ef3eabd](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/ef3eabd71a0e7e9f77507b322d3c651245ca2afd))
+
 ## [1.1.11](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.10...v1.1.11) (2024-12-31)
 
 
