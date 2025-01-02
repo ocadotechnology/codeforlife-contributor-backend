@@ -57,33 +57,3 @@ AUTHENTICATION_BACKENDS = ["api.auth.backends.GitHubBackend"]
 # https://docs.djangoproject.com/en/3.2/topics/http/sessions/
 
 SESSION_ENGINE = "api.models.session"
-
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "default": {
-            "format": json.dumps(
-                {
-                    "serviceName": SERVICE_NAME,
-                    "name": "%(name)s",
-                    "level": "%(levelname)s",
-                    "message": "%(message)s",
-                },
-                separators=(",", ":"),
-            ),
-            "style": "%",
-        },
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "default",
-        },
-    },
-    "root": {
-        "level": os.getenv("LOG_LEVEL", "INFO"),
-        "handlers": ["console"],
-    },
-}
