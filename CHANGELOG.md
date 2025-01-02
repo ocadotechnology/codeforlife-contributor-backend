@@ -1,3 +1,11 @@
+## [1.1.14](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.13...v1.1.14) (2025-01-02)
+
+
+### Bug Fixes
+
+* add service name ([b084703](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/b0847038e19bf52314712b4a7d4b0cbd5fad6583))
+* logging ([d661dcb](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/d661dcbf81bde7fd317b20b5599f1f9b41372aeb))
+
 ## [1.1.13](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.12...v1.1.13) (2024-12-31)
 
 
