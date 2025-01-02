@@ -66,6 +66,7 @@ LOGGING = {
         "default": {
             "format": json.dumps(
                 {
+                    "serviceName": SERVICE_NAME,
                     "name": "%(name)s",
                     "level": "%(levelname)s",
                     "message": "%(message)s",
