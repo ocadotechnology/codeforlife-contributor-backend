@@ -1,3 +1,10 @@
+## [1.1.16](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.15...v1.1.16) (2025-01-06)
+
+
+### Bug Fixes
+
+* delete deploy descriptors ([39c8d67](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/39c8d67d9317c7050c9f9d06f079f8688ffa953b))
+
 ## [1.1.15](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.14...v1.1.15) (2025-01-02)
 
 
