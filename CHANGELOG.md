@@ -1,3 +1,10 @@
+## [1.1.20](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.19...v1.1.20) (2025-01-10)
+
+
+### Bug Fixes
+
+* name is nullable ([2fd85e7](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/2fd85e70d142524f77918cc986d16dfe2f2ece1b))
+
 ## [1.1.19](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.18...v1.1.19) (2025-01-10)
 
 
