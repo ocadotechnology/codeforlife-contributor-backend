@@ -1,3 +1,10 @@
+## [1.1.17](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.16...v1.1.17) (2025-01-10)
+
+
+### Bug Fixes
+
+* test CSRF cookie settings ([79f973e](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/79f973e4af99b78ee20e8dd69e8e6609afa7d364))
+
 ## [1.1.16](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.15...v1.1.16) (2025-01-06)
 
 
