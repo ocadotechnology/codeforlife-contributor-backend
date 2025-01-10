@@ -1,3 +1,10 @@
+## [1.1.18](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.17...v1.1.18) (2025-01-10)
+
+
+### Bug Fixes
+
+* SESSION_COOKIE_DOMAIN ([9b16e4c](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/9b16e4c1752965ecc75e7f0d251748d807d318b6))
+
 ## [1.1.17](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.16...v1.1.17) (2025-01-10)
 
 
