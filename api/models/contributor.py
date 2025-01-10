@@ -40,7 +40,7 @@ class Contributor(AbstractBaseUser):
     id = models.IntegerField(
         primary_key=True, help_text=_("The contributor's GitHub user-ID.")
     )
-    name = models.TextField(_("name"))
+    name = models.TextField(_("name"), null=True)
     location = models.TextField(_("location"), null=True)
     html_url = models.TextField(_("html url"))
     avatar_url = models.TextField(_("avatar url"))
@@ -129,7 +129,7 @@ class Contributor(AbstractBaseUser):
         except Contributor.DoesNotExist:
             contributor = Contributor(id=github_user["id"])
 
-        contributor.name = github_user["name"]
+        contributor.name = github_user.get("name")
         contributor.location = github_user.get("location")
         contributor.html_url = github_user["html_url"]
         contributor.avatar_url = github_user["avatar_url"]
