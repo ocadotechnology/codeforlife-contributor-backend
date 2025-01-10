@@ -56,3 +56,11 @@ AUTHENTICATION_BACKENDS = ["api.auth.backends.GitHubBackend"]
 # https://docs.djangoproject.com/en/3.2/topics/http/sessions/
 
 SESSION_ENGINE = "api.models.session"
+
+# TODO: delete these test settings and/or transfer to py package
+# pylint: disable-next=wrong-import-order,wrong-import-position
+import json
+
+CSRF_COOKIE_DOMAIN = os.getenv("CSRF_COOKIE_DOMAIN")
+CSRF_COOKIE_SAMESITE = os.getenv("CSRF_COOKIE_SAMESITE", "Lax")
+CSRF_TRUSTED_ORIGINS = json.loads(os.getenv("CSRF_TRUSTED_ORIGINS", "[]"))
