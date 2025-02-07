@@ -1,3 +1,10 @@
+## [1.1.21](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.20...v1.1.21) (2025-02-07)
+
+
+### Bug Fixes
+
+* s3 storage ([7b666ac](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/7b666ac14e1c55a1a44af072e550a61422387a2e))
+
 ## [1.1.20](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.19...v1.1.20) (2025-01-10)
 
 
