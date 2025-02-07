@@ -14,5 +14,6 @@ from ._model_view_set import ModelViewSet
 class ContributorViewSet(ModelViewSet[Contributor]):
     http_method_names = ["get"]
     permission_classes = [AllowAny]
+    model_class = Contributor
     serializer_class = ContributorSerializer
     queryset = Contributor.objects.all()
