@@ -56,3 +56,34 @@ AUTHENTICATION_BACKENDS = ["api.auth.backends.GitHubBackend"]
 # https://docs.djangoproject.com/en/3.2/topics/http/sessions/
 
 SESSION_ENGINE = "api.models.session"
+
+# TODO: delete
+STORAGES: t.Dict[str, t.Any] = {  # type: ignore[no-redef]
+    "default": (
+        {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        }
+        if ENV == "local"
+        else {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
+            "OPTIONS": {
+                "bucket_name": os.getenv("S3_STORAGE_BUCKET_NAME"),
+                "default_acl": os.getenv("S3_STORAGE_DEFAULT_ACL"),
+                "location": os.getenv("S3_STORAGE_LOCATION", ""),
+                "region_name": os.getenv("S3_STORAGE_REGION_NAME"),
+                # "custom_domain": os.getenv("S3_STORAGE_CUSTOM_DOMAIN"),
+                "addressing_style": os.getenv("S3_STORAGE_ADDRESSING_STYLE"),
+                "querystring_auth": bool(
+                    int(os.getenv("S3_STORAGE_QUERYSTRING_AUTH", "1"))
+                ),
+                "querystring_expire": int(
+                    os.getenv("S3_STORAGE_QUERYSTRING_EXPIRE", "3600")
+                ),
+            },
+        }
+    ),
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
