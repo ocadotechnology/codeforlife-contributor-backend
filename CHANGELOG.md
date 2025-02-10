@@ -1,3 +1,10 @@
+## [1.1.23](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.22...v1.1.23) (2025-02-10)
+
+
+### Bug Fixes
+
+* storages test ([ac40f47](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/ac40f47f14a52164a9d893b3f5c0c4df59cb3bd4))
+
 ## [1.1.22](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.21...v1.1.22) (2025-02-07)
 
 
