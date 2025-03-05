@@ -16,22 +16,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from codeforlife.routers import default_router
 from codeforlife.urls import get_urlpatterns
 
 # pylint: disable-next=wildcard-import,unused-wildcard-import
 from codeforlife.urls.handlers import *
 from django.urls import path
-from rest_framework.routers import DefaultRouter
 
 from .views import AgreementSignatureViewSet, ContributorViewSet, LoginView
 
-router = DefaultRouter()
-router.register(
+default_router.register(
     "agreement-signatures",
     AgreementSignatureViewSet,
     basename="agreement-signature",
 )
-router.register(
+default_router.register(
     "contributors",
     ContributorViewSet,
     basename="contributor",
@@ -39,7 +38,7 @@ router.register(
 
 urlpatterns = get_urlpatterns(
     [
-        *router.urls,
+        *default_router.urls,
         path(
             "session/login/",
             LoginView.as_view(),

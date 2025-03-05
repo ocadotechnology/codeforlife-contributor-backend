@@ -14,6 +14,7 @@ from ._model_view_set import ModelViewSet
 # pylint: disable-next=missing-class-docstring,too-many-ancestors
 class AgreementSignatureViewSet(ModelViewSet[AgreementSignature]):
     http_method_names = ["get", "post"]
+    model_class = AgreementSignature
     serializer_class = AgreementSignatureSerializer
 
     def get_queryset(self):

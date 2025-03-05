@@ -1,3 +1,81 @@
+## [1.1.31](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.30...v1.1.31) (2025-03-04)
+
+
+### Bug Fixes
+
+* new cfl package ([6b9892e](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/6b9892ee171b454936c2f1bbd56a1d3f80f720e6))
+
+## [1.1.30](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.29...v1.1.30) (2025-03-03)
+
+
+### Bug Fixes
+
+* new cfl package ([5e503e2](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/5e503e2822839ad35956f973312c2090dfd57456))
+
+## [1.1.29](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.28...v1.1.29) (2025-03-03)
+
+
+### Bug Fixes
+
+* new cfl package ([291bc13](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/291bc13dcf8b14e28dc5d2a51e551b00321d6bcd))
+
+## [1.1.28](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.27...v1.1.28) (2025-02-25)
+
+
+### Bug Fixes
+
+* new cfl package ([c64db43](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/c64db432cc4f7df667817b6a48eb7b1a454db244))
+* new cfl package ([1d1f025](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/1d1f025d13bd64affe2ff54f0072bbbd6c627fde))
+
+## [1.1.27](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.26...v1.1.27) (2025-02-12)
+
+
+### Bug Fixes
+
+* install cfl package v0.25.1 ([18a1103](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/18a1103661668763637068f9ab77ca4694e1263a))
+
+## [1.1.26](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.25...v1.1.26) (2025-02-11)
+
+
+### Bug Fixes
+
+* static and media storages ([eb19119](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/eb19119a2baaa741ed24e88261c38b1831710378))
+
+## [1.1.25](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.24...v1.1.25) (2025-02-11)
+
+
+### Bug Fixes
+
+* new cfl package ([57bd9b7](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/57bd9b740b6830df973f09d15021e7dd96fd1fb4))
+
+## [1.1.24](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.23...v1.1.24) (2025-02-10)
+
+
+### Bug Fixes
+
+* staticfiles storage ([ea5c101](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/ea5c1018e089ad3219949aa8204339ff6f3295a4))
+
+## [1.1.23](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.22...v1.1.23) (2025-02-10)
+
+
+### Bug Fixes
+
+* storages test ([ac40f47](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/ac40f47f14a52164a9d893b3f5c0c4df59cb3bd4))
+
+## [1.1.22](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.21...v1.1.22) (2025-02-07)
+
+
+### Bug Fixes
+
+* new package version ([aa516d0](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/aa516d0a76233742e0841528d8e89295ccaf0a1b))
+
+## [1.1.21](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.20...v1.1.21) (2025-02-07)
+
+
+### Bug Fixes
+
+* s3 storage ([7b666ac](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/7b666ac14e1c55a1a44af072e550a61422387a2e))
+
 ## [1.1.20](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.19...v1.1.20) (2025-01-10)
 
 
