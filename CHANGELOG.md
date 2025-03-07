@@ -1,3 +1,10 @@
+## [1.1.32](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.31...v1.1.32) (2025-03-07)
+
+
+### Bug Fixes
+
+* snyk test ([#36](https://github.com/ocadotechnology/codeforlife-contributor-backend/issues/36)) ([4e805fd](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/4e805fdbcb4f6ef3a3cc5decee71b274388a2f39))
+
 ## [1.1.31](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.30...v1.1.31) (2025-03-04)
 
 
