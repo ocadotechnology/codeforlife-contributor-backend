@@ -63,7 +63,7 @@ SESSION_ENGINE = "api.models.session"
 
 CELERY_BEAT_SCHEDULE = {
     "clear-sessions-once-per-day-at-4pm": CeleryBeat(
-        task="contributor.api.tasks.session.clear",
+        task="api.tasks.session.clear",
         schedule=CeleryBeat.crontab(hour=16),
     ),
 }
