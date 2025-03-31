@@ -15,7 +15,6 @@ import os
 from pathlib import Path
 
 from codeforlife import set_up_settings
-from codeforlife.tasks import CeleryBeat
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
