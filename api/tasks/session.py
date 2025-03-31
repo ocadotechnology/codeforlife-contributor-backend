@@ -8,7 +8,7 @@ from django.core.management import call_command
 
 
 @shared_task
-def clear_sessions():
+def clear():
     """Clear expired django-sessions.
 
     https://docs.djangoproject.com/en/4.2/topics/http/sessions/#clearing-the-session-store
