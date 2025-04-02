@@ -9,6 +9,6 @@ from codeforlife.tests import CeleryTestCase
 
 
 class TestSession(CeleryTestCase):
-    def test_clear(self):
+    def test_clear_sessions(self):
         """Can clear all expired sessions."""
         self.apply_periodic_task("clear_sessions")
