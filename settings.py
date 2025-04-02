@@ -15,6 +15,7 @@ import os
 from pathlib import Path
 
 from codeforlife import set_up_settings
+from codeforlife.tasks import CeleryBeatScheduleBuilder
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
@@ -60,9 +61,9 @@ SESSION_ENGINE = "api.models.session"
 # Celery
 # https://docs.celeryq.dev/en/v5.4.0/userguide/configuration.html
 
-CELERY_BEAT_SCHEDULE = {
-    "clear-sessions": CeleryBeat(
-        task="api.tasks.session.clear",
-        schedule=CeleryBeat.crontab(hour=16),
-    ),
-}
+CELERY_BEAT_SCHEDULE = CeleryBeatScheduleBuilder(
+    clear_sessions={
+        "task": "api.tasks.session.clear",
+        "schedule": CeleryBeatScheduleBuilder.crontab(hour=16),
+    },
+)
