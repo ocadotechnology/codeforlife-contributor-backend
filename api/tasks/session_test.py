@@ -8,7 +8,7 @@ from codeforlife.tests import CeleryTestCase
 # pylint: disable=missing-class-docstring
 
 
-class TestInactivityReminder(CeleryTestCase):
+class TestSession(CeleryTestCase):
     def test_clear(self):
         """Can clear all expired sessions."""
         self.apply_periodic_task("clear_sessions")
