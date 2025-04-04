@@ -1,3 +1,10 @@
+## [1.1.35](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.34...v1.1.35) (2025-04-04)
+
+
+### Bug Fixes
+
+* Workspace 194 ([#43](https://github.com/ocadotechnology/codeforlife-contributor-backend/issues/43)) ([3837e76](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/3837e7647957673ac9a8982f5b59323438ddb12a))
+
 ## [1.1.34](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.33...v1.1.34) (2025-03-11)
 
 
