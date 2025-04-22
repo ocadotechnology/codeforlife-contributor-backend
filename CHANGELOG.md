@@ -1,3 +1,11 @@
+## [1.1.36](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.35...v1.1.36) (2025-04-22)
+
+
+### Bug Fixes
+
+* aws sqs ([#44](https://github.com/ocadotechnology/codeforlife-contributor-backend/issues/44)) ([5ac8b5e](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/5ac8b5e9cad898b1acd3b0c1dc0d1fb1e71dd1ed))
+* new cfl package ([d1b6dfc](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/d1b6dfc5de53391dc74af050a1041251f9acba5d))
+
 ## [1.1.35](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.34...v1.1.35) (2025-04-04)
 
 
