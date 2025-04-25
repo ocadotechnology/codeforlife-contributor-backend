@@ -1,6 +1,6 @@
 [
   {
-    "model": "api.repository",
+    "model": "src.repository",
     "pk": 1,
     "fields": {
       "contributor": 1,
@@ -9,7 +9,7 @@
     }
   },
   {
-    "model": "api.repository",
+    "model": "src.repository",
     "pk": 2,
     "fields": {
       "contributor": 2,
@@ -18,7 +18,7 @@
     }
   },
   {
-    "model": "api.repository",
+    "model": "src.repository",
     "pk": 3,
     "fields": {
       "contributor": 3,

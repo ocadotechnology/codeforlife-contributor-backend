@@ -66,10 +66,10 @@
   "python.defaultInterpreterPath": ".venv/bin/python",
   "python.testing.pytestArgs": [
     "-n=auto",
-    "--cov=api",
+    "--cov=src",
     "--cov-report=html",
     "-c=../configs/backend/pyproject.toml",
-    "api"
+    "src"
   ],
   "python.testing.pytestEnabled": true,
   "python.testing.unittestEnabled": false
