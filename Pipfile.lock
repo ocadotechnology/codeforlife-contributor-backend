@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c5aaa3e06ab74d448e8acf8188773a00aa6b00a1af3cd7d7e604244f23b62b68"
+            "sha256": "70a4bb93205b93e55ebcde3497a605df3ea27220ddd42bc63676a95a48f6e9f7"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -302,12 +302,12 @@
         },
         "codeforlife": {
             "hashes": [
-                "sha256:060f46f235d125b787e159732355a2522480765b8d1c57bfb0c9f6dfa21d9f52",
-                "sha256:3cf04310fbf534ca7ff879bfc66b853ec48ba6c44d2d176df945d596eb18a777"
+                "sha256:26d98bf1dd3c3d15144091ff383079143de39fbe68cff96ed20eba4aec834711",
+                "sha256:cb3ac03b443d66cface1c9da203fd02d97891976ced922b02e985464801ed511"
             ],
             "index": "pypi",
             "markers": "python_version == '3.12'",
-            "version": "==0.26.4"
+            "version": "==0.27.0"
         },
         "codeforlife-portal": {
             "hashes": [
@@ -1858,12 +1858,12 @@
         },
         "codeforlife": {
             "hashes": [
-                "sha256:060f46f235d125b787e159732355a2522480765b8d1c57bfb0c9f6dfa21d9f52",
-                "sha256:3cf04310fbf534ca7ff879bfc66b853ec48ba6c44d2d176df945d596eb18a777"
+                "sha256:26d98bf1dd3c3d15144091ff383079143de39fbe68cff96ed20eba4aec834711",
+                "sha256:cb3ac03b443d66cface1c9da203fd02d97891976ced922b02e985464801ed511"
             ],
             "index": "pypi",
             "markers": "python_version == '3.12'",
-            "version": "==0.26.4"
+            "version": "==0.27.0"
         },
         "codeforlife-portal": {
             "hashes": [

@@ -7,8 +7,8 @@ from django.apps import AppConfig
 
 
 # pylint: disable-next=missing-class-docstring
-class ApiConfig(AppConfig):
-    name = "api"
+class SrcConfig(AppConfig):
+    name = "src"
 
     def ready(self):
         # pylint: disable-next=import-outside-toplevel,unused-import

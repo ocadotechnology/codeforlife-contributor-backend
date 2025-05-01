@@ -1,6 +1,6 @@
 [
   {
-    "model": "api.contributoremail",
+    "model": "src.contributoremail",
     "pk": 1,
     "fields": {
       "contributor": 1,
@@ -10,7 +10,7 @@
     }
   },
   {
-    "model": "api.contributoremail",
+    "model": "src.contributoremail",
     "pk": 2,
     "fields": {
       "contributor": 2,
@@ -20,7 +20,7 @@
     }
   },
   {
-    "model": "api.contributoremail",
+    "model": "src.contributoremail",
     "pk": 3,
     "fields": {
       "contributor": 3,
@@ -30,7 +30,7 @@
     }
   },
   {
-    "model": "api.contributoremail",
+    "model": "src.contributoremail",
     "pk": 4,
     "fields": {
       "contributor": 4,
