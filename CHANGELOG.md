@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.37...v1.2.0) (2025-05-01)
+
+
+### Features
+
+* Workspace 220 ([#45](https://github.com/ocadotechnology/codeforlife-contributor-backend/issues/45)) ([a93cfaf](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/a93cfaf50fd7b6790603211c8eb928ed8901a9dc))
+
 ## [1.1.37](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.1.36...v1.1.37) (2025-04-22)
 
 
