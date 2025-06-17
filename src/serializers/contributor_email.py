@@ -22,20 +22,20 @@ class ContributorEmailCheckSignedLatestAgreementListSerializer(
     def to_representation(self, instance):
         representation = super().to_representation(instance)
 
-        email_indicies = {
+        email_indices = {
             t.cast(str, contributor_email["email"]).lower(): i
             for i, contributor_email in enumerate(representation)
         }
 
         signed_emails = ContributorEmail.objects.filter(
-            email__in=email_indicies.keys(),
+            email__in=email_indices.keys(),
             contributor__agreement_signatures__agreement_id=(
                 AgreementSignature.get_latest_sha_from_github()
             ),
         ).values_list("email", flat=True)
 
         for signed_email in signed_emails:
-            representation[email_indicies[signed_email]]["has_signed"] = True
+            representation[email_indices[signed_email]]["has_signed"] = True
 
         return representation
 
