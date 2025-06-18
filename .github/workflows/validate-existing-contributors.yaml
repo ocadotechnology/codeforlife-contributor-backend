@@ -1,8 +1,44 @@
 name: Validate Existing Contributors
 
 on:
-  pull_request:
-  workflow_call:
+  push:
+  # workflow_call:
+  #   inputs:
+  #     token:
+  #       description: "The token used to fetch the repositories."
+  #       type: string
+  #       required: true
+  #       default: "${{ github.token }}"
+  #     workspace-repo:
+  #       description: "The name of the workspace repository."
+  #       type: string
+  #       required: true
+  #       default: "${{ github.repository_owner }}/codeforlife-workspace"
+  #     workspace-ref:
+  #       description: "The SHA, branch or tag of the workspace repository."
+  #       type: string
+  #       required: true
+  #       default: "main"
+  #     submodule-repo:
+  #       description: "The name of the submodule repository."
+  #       type: string
+  #       required: true
+  #       default: "${{ github.repository }}"
+  #     submodule-ref:
+  #       description: "The SHA, branch or tag of the submodule repository."
+  #       type: string
+  #       required: true
+  #       default: "${{ github.sha }}"
+  #     submodule-path:
+  #       description: "The path of the submodule repository."
+  #       type: string
+  #       required: true
+  #       default: "${{ github.event.repository.name }}"
+  #     submodule-fetch-depth:
+  #       description: "The number of commits to fetch for the submodule repository."
+  #       type: string
+  #       required: true
+  #       default: "1"
 
 env:
   PYTHON_VERSION: 3.12
@@ -10,37 +46,49 @@ env:
 
 jobs:
   validate-existing-contributors:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: 🛫 Checkout Pull Request
         uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository_owner }}/codeforlife-workspace
+          ref: main
 
-      - name: 🔎 View Pull Request's Commits
-        id: view-pr
-        run: echo "PULL_REQUEST=$(gh pr view ${{ github.event.pull_request.number }} --json commits)" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: echo PWD workspace
+        run: echo "$(pwd)"
 
       - name: 🛫 Checkout Contributor Backend
         uses: actions/checkout@v4
         with:
-          repository: ocadotechnology/codeforlife-contributor-backend
-          ref: development
-          path: codeforlife-contributor-backend
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          ref: ${{ github.sha }}
+          path: ${{ github.event.repository.name }}
+          fetch-depth: 1
 
-      - name: 🐍 Set up Python ${{ env.PYTHON_VERSION }} Environment
-        uses: ocadotechnology/codeforlife-workspace/.github/actions/python/setup-environment@main
-        with:
-          checkout: "false"
-          python-version: ${{ env.PYTHON_VERSION }}
-          working-directory: ${{ env.WORKING_DIR }}
+      - name: echo PWD repo
+        run: echo "$(pwd)"
 
-      - name: 📦 Install Dependencies with Pipenv
-        working-directory: ${{ env.WORKING_DIR }}
-        run: pipenv install
+      # - name: 🔎 View Pull Request's Commits
+      #   id: view-pr
+      #   run: echo "PULL_REQUEST=$(gh pr view ${{ github.event.pull_request.number }} --json commits)" >> $GITHUB_OUTPUT
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🕵️ Validate Existing Contributors
-        working-directory: ${{ env.WORKING_DIR }}
-        run: pipenv run python .
-        env:
-          PULL_REQUEST: ${{ steps.view-pr.outputs.PULL_REQUEST }}
+      # - name: 🐍 Set up Python ${{ env.PYTHON_VERSION }} Environment
+      #   uses: ocadotechnology/codeforlife-workspace/.github/actions/python/setup-environment@main
+      #   with:
+      #     checkout: "false"
+      #     python-version: ${{ env.PYTHON_VERSION }}
+      #     working-directory: ${{ env.WORKING_DIR }}
+
+      # - name: 📦 Install Dependencies with Pipenv
+      #   working-directory: ${{ env.WORKING_DIR }}
+      #   run: pipenv install
+
+      # - name: 🕵️ Validate Existing Contributors
+      #   working-directory: ${{ env.WORKING_DIR }}
+      #   run: pipenv run python .
+      #   env:
+      #     PULL_REQUEST: ${{ steps.view-pr.outputs.PULL_REQUEST }}
