@@ -54,9 +54,13 @@ jobs:
           token: ${{ github.token }}
           repository: ${{ github.repository_owner }}/codeforlife-workspace
           ref: main
+          path: codeforlife-workspace
 
       - name: echo PWD workspace
-        run: echo "$(pwd)"
+        run: |
+          echo "$(pwd)"
+          cd codeforlife-workspace
+          echo "$(pwd)"
 
       - name: 🛫 Checkout Contributor Backend
         uses: actions/checkout@v4
@@ -68,7 +72,10 @@ jobs:
           fetch-depth: 1
 
       - name: echo PWD repo
-        run: echo "$(pwd)"
+        run: |
+          echo "$(pwd)"
+          cd ${{ github.event.repository.name }}
+          echo "$(pwd)"
 
       # - name: 🔎 View Pull Request's Commits
       #   id: view-pr
