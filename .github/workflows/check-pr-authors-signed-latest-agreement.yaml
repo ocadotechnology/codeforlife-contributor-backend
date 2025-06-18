@@ -1,0 +1,25 @@
+name: Check Pull Request Authors Signed Latest Agreement
+
+on:
+  push: # TODO: delete
+  workflow_call:
+
+jobs:
+  validate-existing-contributors:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: 🔎 Check Event Type
+        run: echo "${{ github.event_name }}"
+
+      - name: 🛫 Checkout Pull Request
+        uses: actions/checkout@v4
+
+      - name: 🔎 View Pull Request's Commit-Authors
+        env:
+          GH_TOKEN: ${{ github.token }} # TODO: use cfl bot gh token
+        run: |
+          gh pr view 50 \
+            --json=commits
+
+# ${{ github.event.pull_request.number }} \
+# echo "PULL_REQUEST=$(gh pr view ${{ github.event.pull_request.number }} --json commits)" >> $GITHUB_OUTPUT
