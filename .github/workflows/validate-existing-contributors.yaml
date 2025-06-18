@@ -68,13 +68,13 @@ jobs:
           token: ${{ github.token }}
           repository: ${{ github.repository }}
           ref: ${{ github.sha }}
-          path: ${{ github.event.repository.name }}
+          path: codeforlife-workspace/${{ github.event.repository.name }}
           fetch-depth: 1
 
       - name: echo PWD repo
         run: |
           echo "$(pwd)"
-          cd ${{ github.event.repository.name }}
+          cd codeforlife-workspace/${{ github.event.repository.name }}
           echo "$(pwd)"
           cat ./README.md
           echo "workspace"
