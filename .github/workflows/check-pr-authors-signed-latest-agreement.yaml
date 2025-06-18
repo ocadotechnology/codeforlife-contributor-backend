@@ -1,35 +1,64 @@
 name: Check Pull Request Authors Signed Latest Agreement
 
 on:
-  push: # TODO: delete
   workflow_call:
+    inputs:
+      pr-number:
+        description: "The number of the pull request."
+        type: number
+        required: true
 
 jobs:
-  validate-existing-contributors:
-    runs-on: ubuntu-22.04
+  check-pr-authors:
+    runs-on: ubuntu-latest
     steps:
-      - name: 🔎 Check Event Type
-        run: echo "${{ github.event_name }}"
-
-      - name: 🛫 Checkout Pull Request
-        uses: actions/checkout@v4
-
-      - name: 🔎 View Pull Request's Commit-Authors
+      - name: 🔎 Check Pull Request Authors Signed Latest Agreement
         env:
-          GH_TOKEN: ${{ github.token }} # TODO: use cfl bot gh token
+          GH_TOKEN: ${{ github.token }}
         run: |
           emails="$(
-            gh pr view 50 \
+            gh pr view ${{ inputs.pr-number }} \
+              --repo=${{ github.repository }} \
               --json=commits \
-              --jq='[.commits[].authors[].email | ascii_downcase] | unique'
+              --jq='
+                [.commits[].authors[].email | ascii_downcase] |
+                unique |
+                map({ email: . })
+              '
           )"
 
           echo "$emails"
+          echo "TODO: Fix when the contributor service comes online."
+          exit 1
 
-          # curl -X POST \
-          #   -H "Content-Type: application/json" \
-          #   -d "$emails" \
-          #   "CONTRIBUTOR_BACKEND_URL_HERE"
+          response="$(
+            curl --request=POST \
+              --header="Content-Type: application/json" \
+              --data="$emails" \
+              --silent \
+              --output=/dev/null \
+              --write-out="%{http_code}\n%{json}" \
+              "DOMAIN_HERE/contributors/emails/check-signed-latest-agreement" # TODO
+          )"
 
-# ${{ github.event.pull_request.number }} \
-# echo "PULL_REQUEST=$(gh pr view ${{ github.event.pull_request.number }} --json commits)" >> $GITHUB_OUTPUT
+          http_code=$(echo -e "$response" | head -n 1)
+          if [ "$http_code" -ne 200 ]; then
+            echo "Failed to check if the pull request's authors have" \
+              "signed the latest contributor agreement. Please reach out to" \
+              "support@codeforlife.education."
+
+            exit 1
+          fi
+
+          unsigned_emails = "$(
+            echo -e "$response" |
+            tail -n +2 |
+            jq 'map(select(.has_signed == false) | .email)'
+          )"
+          if [ "$(echo "$unsigned_emails" | jq 'length')" -ne 0 ]; then
+            echo "The following emails have not signed the latest contributor agreement:"
+            echo "$unsigned_emails"
+            echo "To sign, please go to: CONTRIBUTOR_URL_HERE." # TODO
+
+            exit 1
+          fi
