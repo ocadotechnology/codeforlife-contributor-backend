@@ -76,6 +76,9 @@ jobs:
           echo "$(pwd)"
           cd ${{ github.event.repository.name }}
           echo "$(pwd)"
+          cat ./README.md
+          echo "workspace"
+          cat ../README.md
 
       # - name: 🔎 View Pull Request's Commits
       #   id: view-pr
