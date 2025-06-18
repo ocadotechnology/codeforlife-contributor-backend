@@ -18,8 +18,18 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }} # TODO: use cfl bot gh token
         run: |
-          gh pr view 50 \
-            --json=commits
+          emails="$(
+            gh pr view 50 \
+              --json=commits \
+              --jq='[.commits[].authors[].email | ascii_downcase] | unique'
+          )"
+
+          echo "$emails"
+
+          # curl -X POST \
+          #   -H "Content-Type: application/json" \
+          #   -d "$emails" \
+          #   "CONTRIBUTOR_BACKEND_URL_HERE"
 
 # ${{ github.event.pull_request.number }} \
 # echo "PULL_REQUEST=$(gh pr view ${{ github.event.pull_request.number }} --json commits)" >> $GITHUB_OUTPUT
