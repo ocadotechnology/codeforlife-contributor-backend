@@ -23,12 +23,22 @@ from codeforlife.urls import get_urlpatterns
 from codeforlife.urls.handlers import *
 from django.urls import path
 
-from .views import AgreementSignatureViewSet, ContributorViewSet, LoginView
+from .views import (
+    AgreementSignatureViewSet,
+    ContributorEmailViewSet,
+    ContributorViewSet,
+    LoginView,
+)
 
 default_router.register(
     "agreement-signatures",
     AgreementSignatureViewSet,
     basename="agreement-signature",
+)
+default_router.register(
+    "contributors/emails",
+    ContributorEmailViewSet,
+    basename="contributor-email",
 )
 default_router.register(
     "contributors",

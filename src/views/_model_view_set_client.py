@@ -10,7 +10,6 @@ import typing as t
 from unittest.mock import ANY, call, patch
 
 import requests
-from codeforlife.request import BaseRequest
 from codeforlife.tests import BaseAPIRequestFactory, BaseModelViewSetClient
 from django.conf import settings
 from django.db.models import Model
@@ -18,7 +17,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from ..models import Contributor
-from ..models.session import SessionStore
+from ..request import Request
 
 AnyModel = t.TypeVar("AnyModel", bound=Model)
 
@@ -30,9 +29,7 @@ if t.TYPE_CHECKING:  # pragma: no cover
 class ModelViewSetClient(
     BaseModelViewSetClient[
         "ModelViewSetTestCase[AnyModel]",
-        BaseAPIRequestFactory[
-            BaseRequest[SessionStore, Contributor], Contributor
-        ],
+        BaseAPIRequestFactory[Request, Contributor],
     ],
     t.Generic[AnyModel],
 ):
