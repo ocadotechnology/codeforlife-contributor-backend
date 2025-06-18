@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.2.1...v1.3.0) (2025-06-18)
+
+
+### Features
+
+* check emails signed the latest agreement ([#48](https://github.com/ocadotechnology/codeforlife-contributor-backend/issues/48)) ([b8f053f](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/b8f053ffb9b6fc76e645a1286395a444432561e0))
+
 ## [1.2.1](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.2.0...v1.2.1) (2025-06-06)
 
 
