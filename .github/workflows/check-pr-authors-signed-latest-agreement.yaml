@@ -2,22 +2,18 @@ name: Check Pull Request Authors Signed Latest Agreement
 
 on:
   workflow_call:
-    inputs:
-      pr-number:
-        description: "The number of the pull request that triggered the original workflow."
-        type: number
-        required: true
 
 jobs:
   check-pr-authors:
     runs-on: ubuntu-22.04
+    if: github.event_name == 'pull_request'
     steps:
       - name: 🔎 Check Pull Request Authors Signed Latest Agreement
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           emails="$(
-            gh pr view ${{ inputs.pr-number }} \
+            gh pr view ${{ github.event.pull_request.number }} \
               --repo=${{ github.repository }} \
               --json=commits \
               --jq='
@@ -57,7 +53,7 @@ jobs:
           )"
           if [ "$(echo "$unsigned_emails" | jq 'length')" -ne 0 ]; then
             echo "The following emails have not signed the latest contributor agreement:"
-            echo "$unsigned_emails"
+            echo "$unsigned_emails" | jq --raw-output '.[]'
             echo "To sign, please go to: CONTRIBUTOR_URL_HERE." # TODO
 
             exit 1
