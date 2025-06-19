@@ -10,9 +10,9 @@ jobs:
     permissions:
       id-token: write
     env:
-      API_DOMAIN: REPLACE_ME # TODO
-      API_BASE_URL: https://$API_DOMAIN
-      API_ENDPOINT: $API_BASE_URL/contributors/emails/check-signed-latest-agreement
+      API_DOMAIN: euw2-cflbackend-con-dj.prd.cfl.otp.tech
+      API_URL: https://$API_DOMAIN/contributors/emails/check-signed-latest-agreement
+      SITE_URL: https://euw2-cflfrontend-con-ex.prd.cfl.otp.tech
     steps:
       # https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect
       - name: Get ID Token
@@ -62,7 +62,7 @@ jobs:
               --silent \
               --output /dev/null \
               --write-out "%{http_code}\n%{json}" \
-              "${{ env.API_ENDPOINT }}"
+              "${{ env.API_URL }}"
           )"
 
           http_code=$(echo -e "$response" | head -n 1)
@@ -81,6 +81,6 @@ jobs:
           if [ "$(echo "$unsigned_emails" | jq 'length')" -ne 0 ]; then
             echo "The following emails have not signed the latest contributor agreement:"
             echo "$unsigned_emails" | jq --raw-output '.[]'
-            echo "To sign, please go to: ${{ env.API_BASE_URL }}."
+            echo "To sign, please go to: ${{ env.SITE_URL }}."
             exit 1
           fi
