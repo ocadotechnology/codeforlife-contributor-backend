@@ -10,7 +10,7 @@ on:
 
 jobs:
   check-pr-authors:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: 🔎 Check Pull Request Authors Signed Latest Agreement
         env:
