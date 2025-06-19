@@ -7,7 +7,34 @@ jobs:
   check-pr-authors:
     runs-on: ubuntu-22.04
     if: github.event_name == 'pull_request'
+    permissions:
+      id-token: write
+    env:
+      API_DOMAIN: REPLACE_ME # TODO
+      API_BASE_URL: https://$API_DOMAIN
+      API_ENDPOINT: $API_BASE_URL/contributors/emails/check-signed-latest-agreement
     steps:
+      # https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect
+      - name: Get ID Token
+        id: get-id-token
+        run: |
+          id_token="$(
+            curl --request POST \
+              --silent \
+              --header "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+              --header "Content-Type: application/json" \
+              "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=${{ env.API_DOMAIN }}" |
+            jq --raw-output '.value'
+          )"
+
+          if [ -z "$id_token" ]; then
+            echo "Error: Failed to retrieve OIDC token."
+            exit 1
+          fi
+
+          echo "::add-mask::$id_token" # Mask the token in logs.
+          echo "id-token=$id_token" >> $GITHUB_OUTPUT
+
       - name: 🔎 Check Pull Request Authors Signed Latest Agreement
         env:
           GH_TOKEN: ${{ github.token }}
@@ -28,13 +55,14 @@ jobs:
           exit 1
 
           response="$(
-            curl --request=POST \
-              --header="Content-Type: application/json" \
-              --data="$emails" \
+            curl --request POST \
+              --header "Authorization: Bearer ${{ steps.get-id-token.outputs.id-token }}"
+              --header "Content-Type: application/json" \
+              --data "$emails" \
               --silent \
-              --output=/dev/null \
-              --write-out="%{http_code}\n%{json}" \
-              "DOMAIN_HERE/contributors/emails/check-signed-latest-agreement" # TODO
+              --output /dev/null \
+              --write-out "%{http_code}\n%{json}" \
+              "${{ env.API_ENDPOINT }}"
           )"
 
           http_code=$(echo -e "$response" | head -n 1)
@@ -42,7 +70,6 @@ jobs:
             echo "Failed to check if the pull request's authors have" \
               "signed the latest contributor agreement. Please reach out to" \
               "support@codeforlife.education."
-
             exit 1
           fi
 
@@ -54,7 +81,6 @@ jobs:
           if [ "$(echo "$unsigned_emails" | jq 'length')" -ne 0 ]; then
             echo "The following emails have not signed the latest contributor agreement:"
             echo "$unsigned_emails" | jq --raw-output '.[]'
-            echo "To sign, please go to: CONTRIBUTOR_URL_HERE." # TODO
-
+            echo "To sign, please go to: ${{ env.API_BASE_URL }}."
             exit 1
           fi
