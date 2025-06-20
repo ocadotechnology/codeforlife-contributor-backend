@@ -1,0 +1,86 @@
+name: Check Pull Request Authors Signed Latest Agreement
+
+on:
+  workflow_call:
+
+jobs:
+  check-pr-authors:
+    runs-on: ubuntu-22.04
+    if: github.event_name == 'pull_request'
+    permissions:
+      id-token: write
+    env:
+      API_DOMAIN: euw2-cflbackend-con-dj.prd.cfl.otp.tech
+      API_URL: https://$API_DOMAIN/contributors/emails/check-signed-latest-agreement
+      SITE_URL: https://euw2-cflfrontend-con-ex.prd.cfl.otp.tech
+    steps:
+      # https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect
+      - name: Get ID Token
+        id: get-id-token
+        run: |
+          id_token="$(
+            curl --request POST \
+              --silent \
+              --header "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+              --header "Content-Type: application/json" \
+              "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=${{ env.API_DOMAIN }}" |
+            jq --raw-output '.value'
+          )"
+
+          if [ -z "$id_token" ]; then
+            echo "Error: Failed to retrieve OIDC token."
+            exit 1
+          fi
+
+          echo "::add-mask::$id_token" # Mask the token in logs.
+          echo "id-token=$id_token" >> $GITHUB_OUTPUT
+
+      - name: 🔎 Check Pull Request Authors Signed Latest Agreement
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          emails="$(
+            gh pr view ${{ github.event.pull_request.number }} \
+              --repo=${{ github.repository }} \
+              --json=commits \
+              --jq='
+                [.commits[].authors[].email | ascii_downcase] |
+                unique |
+                map({ email: . })
+              '
+          )"
+
+          echo "$emails"
+          echo "TODO: Fix when the contributor service comes online."
+          exit 1
+
+          response="$(
+            curl --request POST \
+              --header "Authorization: Bearer ${{ steps.get-id-token.outputs.id-token }}"
+              --header "Content-Type: application/json" \
+              --data "$emails" \
+              --silent \
+              --output /dev/null \
+              --write-out "%{http_code}\n%{json}" \
+              "${{ env.API_URL }}"
+          )"
+
+          http_code=$(echo -e "$response" | head -n 1)
+          if [ "$http_code" -ne 200 ]; then
+            echo "Failed to check if the pull request's authors have" \
+              "signed the latest contributor agreement. Please reach out to" \
+              "support@codeforlife.education."
+            exit 1
+          fi
+
+          unsigned_emails = "$(
+            echo -e "$response" |
+            tail -n +2 |
+            jq 'map(select(.has_signed == false) | .email)'
+          )"
+          if [ "$(echo "$unsigned_emails" | jq 'length')" -ne 0 ]; then
+            echo "The following emails have not signed the latest contributor agreement:"
+            echo "$unsigned_emails" | jq --raw-output '.[]'
+            echo "To sign, please go to: ${{ env.SITE_URL }}."
+            exit 1
+          fi

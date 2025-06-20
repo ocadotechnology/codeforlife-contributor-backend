@@ -3,7 +3,7 @@
 Created on 15/07/2024 at 12:52:50(+01:00).
 """
 
-from codeforlife.permissions import AllowAny, AllowNone
+from codeforlife.permissions import AllowNone, AuthHeaderIsGitHubOidcToken
 from codeforlife.response import Response
 from codeforlife.views import action
 
@@ -20,7 +20,7 @@ class ContributorEmailViewSet(ModelViewSet[ContributorEmail]):
 
     def get_permissions(self):
         if self.action == "check_signed_latest_agreement":
-            return [AllowAny()]
+            return [AuthHeaderIsGitHubOidcToken()]
 
         return [AllowNone()]
 

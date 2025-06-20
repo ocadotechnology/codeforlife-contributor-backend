@@ -3,9 +3,9 @@
 Created on 16/07/2024 at 14:54:09(+01:00).
 """
 
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
-from codeforlife.permissions import AllowAny
+from codeforlife.permissions import AuthHeaderIsGitHubOidcToken
 
 from ..models import AgreementSignature, ContributorEmail
 from ..serializers import ContributorEmailCheckSignedLatestAgreementSerializer
@@ -64,10 +64,11 @@ class TestContributorEmailViewSet(ModelViewSetTestCase[ContributorEmail]):
 
     def test_get_permissions__check_signed_latest_agreement(self):
         """
-        Anyone can check if a list of emails have signed the latest agreement.
+        Only our GitHub pipelines can check if a list of emails have signed the
+        latest agreement.
         """
         self.assert_get_permissions(
-            permissions=[AllowAny()],
+            permissions=[AuthHeaderIsGitHubOidcToken()],
             action="check_signed_latest_agreement",
         )
 
@@ -85,7 +86,12 @@ class TestContributorEmailViewSet(ModelViewSetTestCase[ContributorEmail]):
 
     # test: actions
 
-    def test_check_signed_latest_agreement(self):
+    @patch.object(
+        AuthHeaderIsGitHubOidcToken, "has_permission", return_value=True
+    )
+    def test_check_signed_latest_agreement(
+        self, has_github_oidc_token__has_permission: Mock
+    ):
         """
         Check a list of contributor-email's have signed the latest agreement.
         """
@@ -93,7 +99,7 @@ class TestContributorEmailViewSet(ModelViewSetTestCase[ContributorEmail]):
             AgreementSignature,
             "get_latest_sha_from_github",
             return_value=self.latest_agreement_id,
-        ):
+        ) as agreement_signature__get_latest_sha_from_github:
             response = self.client.post(
                 self.reverse_action("check_signed_latest_agreement"),
                 data=[
@@ -102,6 +108,9 @@ class TestContributorEmailViewSet(ModelViewSetTestCase[ContributorEmail]):
                     {"email": self.email__no_agreement_signatures},
                 ],
             )
+
+            agreement_signature__get_latest_sha_from_github.assert_called_once()
+        has_github_oidc_token__has_permission.assert_called_once()
 
         self.assertListEqual(
             response.json(),

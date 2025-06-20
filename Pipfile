@@ -22,11 +22,11 @@ name = "pypi"
 # 5. Run `pipenv install --dev` in your terminal.
 
 [packages]
-codeforlife = "==0.27.10"
+codeforlife = {ref = "contributor-backend-49", git = "https://github.com/ocadotechnology/codeforlife-package-python.git"}
 # 🚫 Don't add [packages] below that are inherited from the CFL package.
 
 [dev-packages]
-codeforlife = {version = "==0.27.10", extras = ["dev"]}
+codeforlife = {ref = "contributor-backend-49", git = "https://github.com/ocadotechnology/codeforlife-package-python.git", extras = ["dev"]}
 # codeforlife = {file = "../codeforlife-package-python", editable = true, extras = ["dev"]}
 # 🚫 Don't add [dev-packages] below that are inherited from the CFL package.
 
