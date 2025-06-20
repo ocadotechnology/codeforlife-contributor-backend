@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4b46d45e60268a336fa7de1f74f28c71f82143f6693dc2d987ea2f768fa0e8ae"
+            "sha256": "a42650440eca713447069abee9263cf947b85e2d173e511da871d8edbe3af5c8"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -301,13 +301,9 @@
             "version": "==0.3.0"
         },
         "codeforlife": {
-            "hashes": [
-                "sha256:0799102ad82d3b3aa29add01c3f080411a9286c4863cc7f897164f98d7263834",
-                "sha256:44c5dfc3c31f9becaa7133849b0e641c9718c60ce2f38e56d9b5275a92c0d48b"
-            ],
-            "index": "pypi",
+            "git": "https://github.com/ocadotechnology/codeforlife-package-python.git",
             "markers": "python_version == '3.12'",
-            "version": "==0.27.14"
+            "ref": "1cb057ee10e34dc6f9a9807d8de9f2606051629c"
         },
         "codeforlife-portal": {
             "hashes": [
@@ -1166,7 +1162,6 @@
                 "sha256:69285c7e31fc44f68a1feb309e948e0df53259d579295e6cfe2b1792329f05fd",
                 "sha256:d83c3d892a77bbb74d3e1a2cfa90afaadb60945205d1095d9221f04466f64c14"
             ],
-            "index": "pypi",
             "markers": "python_version >= '3.7'",
             "version": "==2.6.0"
         },
@@ -1896,13 +1891,9 @@
             "version": "==0.3.0"
         },
         "codeforlife": {
-            "hashes": [
-                "sha256:0799102ad82d3b3aa29add01c3f080411a9286c4863cc7f897164f98d7263834",
-                "sha256:44c5dfc3c31f9becaa7133849b0e641c9718c60ce2f38e56d9b5275a92c0d48b"
-            ],
-            "index": "pypi",
+            "git": "https://github.com/ocadotechnology/codeforlife-package-python.git",
             "markers": "python_version == '3.12'",
-            "version": "==0.27.14"
+            "ref": "1cb057ee10e34dc6f9a9807d8de9f2606051629c"
         },
         "codeforlife-portal": {
             "hashes": [
@@ -3028,7 +3019,6 @@
                 "sha256:69285c7e31fc44f68a1feb309e948e0df53259d579295e6cfe2b1792329f05fd",
                 "sha256:d83c3d892a77bbb74d3e1a2cfa90afaadb60945205d1095d9221f04466f64c14"
             ],
-            "index": "pypi",
             "markers": "python_version >= '3.7'",
             "version": "==2.6.0"
         },

@@ -3,12 +3,11 @@
 Created on 15/07/2024 at 12:52:50(+01:00).
 """
 
-from codeforlife.permissions import AllowNone
+from codeforlife.permissions import AllowNone, AuthHeaderIsGitHubOidcToken
 from codeforlife.response import Response
 from codeforlife.views import action
 
 from ..models import ContributorEmail
-from ..permissions import HasGitHubOidcToken
 from ..request import Request
 from ..serializers import ContributorEmailCheckSignedLatestAgreementSerializer
 from ._model_view_set import ModelViewSet
@@ -21,7 +20,7 @@ class ContributorEmailViewSet(ModelViewSet[ContributorEmail]):
 
     def get_permissions(self):
         if self.action == "check_signed_latest_agreement":
-            return [HasGitHubOidcToken()]
+            return [AuthHeaderIsGitHubOidcToken()]
 
         return [AllowNone()]
 

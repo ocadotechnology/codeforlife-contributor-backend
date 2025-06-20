@@ -5,8 +5,9 @@ Created on 16/07/2024 at 14:54:09(+01:00).
 
 from unittest.mock import Mock, patch
 
+from codeforlife.permissions import AuthHeaderIsGitHubOidcToken
+
 from ..models import AgreementSignature, ContributorEmail
-from ..permissions import HasGitHubOidcToken
 from ..serializers import ContributorEmailCheckSignedLatestAgreementSerializer
 from ._model_view_set_test_case import ModelViewSetTestCase
 from .contributor_email import ContributorEmailViewSet
@@ -63,10 +64,11 @@ class TestContributorEmailViewSet(ModelViewSetTestCase[ContributorEmail]):
 
     def test_get_permissions__check_signed_latest_agreement(self):
         """
-        Anyone can check if a list of emails have signed the latest agreement.
+        Only our GitHub pipelines can check if a list of emails have signed the
+        latest agreement.
         """
         self.assert_get_permissions(
-            permissions=[HasGitHubOidcToken()],
+            permissions=[AuthHeaderIsGitHubOidcToken()],
             action="check_signed_latest_agreement",
         )
 
@@ -84,7 +86,9 @@ class TestContributorEmailViewSet(ModelViewSetTestCase[ContributorEmail]):
 
     # test: actions
 
-    @patch.object(HasGitHubOidcToken, "has_permission", return_value=True)
+    @patch.object(
+        AuthHeaderIsGitHubOidcToken, "has_permission", return_value=True
+    )
     def test_check_signed_latest_agreement(
         self, has_github_oidc_token__has_permission: Mock
     ):
