@@ -33,9 +33,11 @@ class HealthCheckView(_HealthCheckView):
         )
 
         if settings.DB_ENGINE == "postgresql":
-            host = request.get_host()
-            # if not host.endswith(":8080"):
-            site_exists = Site.objects.filter(domain=host).exists()
+            domain = settings.SERVICE_DOMAIN
+            if settings.ENV == "local":
+                domain += f":{settings.SERVICE_PORT}"
+
+            site_exists = Site.objects.filter(domain=domain).exists()
             health_check_details.append(
                 name="site_exists",
                 description=str(site_exists),
