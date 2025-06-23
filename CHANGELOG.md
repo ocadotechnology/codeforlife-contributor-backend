@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.0...v1.4.1) (2025-06-23)
+
+
+### Bug Fixes
+
+* get or create site ([8f7d001](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/8f7d0014c663ebbf39e267f4f07c5301bcccf039))
+
 # [1.4.0](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.3.0...v1.4.0) (2025-06-23)
 
 
