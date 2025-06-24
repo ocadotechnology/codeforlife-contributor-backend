@@ -29,7 +29,6 @@ from .views import (
     ContributorViewSet,
     LoginView,
 )
-from .views.health_check import HealthCheckView
 
 default_router.register(
     "agreement-signatures",
@@ -56,6 +55,5 @@ urlpatterns = get_urlpatterns(
             name="session-login",
         ),
     ],
-    health_check_view=HealthCheckView,
     include_user_urls=False,
 )

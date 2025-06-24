@@ -7,15 +7,4 @@ The entrypoint to our app.
 
 from codeforlife.server import Server
 
-server = Server()
-
-# pylint: disable=wrong-import-position
-from django.conf import settings
-from django.contrib.sites.models import Site
-
-Site.objects.get_or_create(
-    domain=settings.SERVICE_DOMAIN,
-    defaults={"name": settings.SERVICE_DOMAIN},
-)
-
-server.run()
+Server().run()
