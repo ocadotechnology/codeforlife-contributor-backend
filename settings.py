@@ -57,4 +57,6 @@ AUTHENTICATION_BACKENDS = ["src.auth.backends.GitHubBackend"]
 
 SESSION_ENGINE = "src.models.session"
 
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+# TODO: delete this.
+CSRF_COOKIE_SECURE = bool(int(os.getenv("CSRF_COOKIE_SECURE", "1")))
+CORS_ALLOW_ALL_ORIGINS = bool(int(os.getenv("CORS_ALLOW_ALL_ORIGINS", "0")))
