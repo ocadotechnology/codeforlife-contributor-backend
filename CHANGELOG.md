@@ -1,3 +1,10 @@
+## [1.4.5](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.4...v1.4.5) (2025-06-24)
+
+
+### Bug Fixes
+
+* tidy up ([ff66749](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/ff66749635ec3b27fe176e00e5558331f9c0f317))
+
 ## [1.4.4](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.3...v1.4.4) (2025-06-24)
 
 
