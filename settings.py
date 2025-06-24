@@ -56,3 +56,5 @@ AUTHENTICATION_BACKENDS = ["src.auth.backends.GitHubBackend"]
 # https://docs.djangoproject.com/en/4.2/topics/http/sessions/
 
 SESSION_ENGINE = "src.models.session"
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
