@@ -29,7 +29,6 @@ from .views import (
     ContributorViewSet,
     LoginView,
 )
-from .views.csrf import CsrfCookieView
 
 default_router.register(
     "agreement-signatures",
@@ -47,21 +46,14 @@ default_router.register(
     basename="contributor",
 )
 
-urlpatterns = [
-    path(
-        "csrf/cookie/",
-        CsrfCookieView.as_view(),
-        name="get-csrf-cookie-2",
-    ),
-    *get_urlpatterns(
-        [
-            *default_router.urls,
-            path(
-                "session/login/",
-                LoginView.as_view(),
-                name="session-login",
-            ),
-        ],
-        include_user_urls=False,
-    ),
-]
+urlpatterns = get_urlpatterns(
+    [
+        *default_router.urls,
+        path(
+            "session/login/",
+            LoginView.as_view(),
+            name="session-login",
+        ),
+    ],
+    include_user_urls=False,
+)
