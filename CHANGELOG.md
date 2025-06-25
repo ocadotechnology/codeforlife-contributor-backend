@@ -1,3 +1,10 @@
+## [1.4.8](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.7...v1.4.8) (2025-06-25)
+
+
+### Bug Fixes
+
+* new cfl package ([5ac06ca](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/5ac06ca3a8ea0cedaf535362e883c544db4d6cd5))
+
 ## [1.4.7](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.6...v1.4.7) (2025-06-25)
 
 
