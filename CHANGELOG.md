@@ -1,3 +1,10 @@
+## [1.4.6](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.5...v1.4.6) (2025-06-25)
+
+
+### Bug Fixes
+
+* log csrf errors ([90488ab](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/90488ab134982a50dcd641074000e8971133b1e4))
+
 ## [1.4.5](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.4...v1.4.5) (2025-06-24)
 
 
