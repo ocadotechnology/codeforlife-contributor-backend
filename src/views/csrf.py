@@ -7,15 +7,19 @@ import logging
 import traceback
 
 from codeforlife.permissions import AllowAny
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.middleware.csrf import get_token
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+# pylint: disable=broad-exception-caught
 
-@method_decorator(ensure_csrf_cookie, name="dispatch")
-@method_decorator(csrf_exempt, name="dispatch")
+# from django.utils.decorators import method_decorator
+# from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+
+
+# @method_decorator(ensure_csrf_cookie, name="dispatch")
+# @method_decorator(csrf_exempt, name="dispatch")
 class CsrfCookieView(APIView):
     """A view to get a CSRF cookie."""
 
@@ -26,7 +30,14 @@ class CsrfCookieView(APIView):
         """
         Return a response which Django will auto-insert a CSRF cookie into.
         """
-        return Response()
+        logging.info("before getting CSRF token")
+        try:
+            token = get_token(request)
+        except Exception as ex:
+            logging.exception(ex)
+            print(traceback.format_exc())
+        logging.info("after getting CSRF token")
+        return Response({"token": token})
 
     @classmethod
     def as_view(cls, **initkwargs):
@@ -35,7 +46,6 @@ class CsrfCookieView(APIView):
         def view_wrapper(request, *args, **kwargs):
             try:
                 return view(request, *args, **kwargs)
-            # pylint: disable-next=broad-exception-caught
             except Exception as ex:
                 logging.exception(ex)
                 print(ex)
