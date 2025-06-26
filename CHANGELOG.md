@@ -1,3 +1,10 @@
+## [1.4.9](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.8...v1.4.9) (2025-06-26)
+
+
+### Bug Fixes
+
+* test submodule job ([a92c46b](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/a92c46bce6173d860fc68e90368f9f1c370a7ccf))
+
 ## [1.4.8](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.7...v1.4.8) (2025-06-25)
 
 
