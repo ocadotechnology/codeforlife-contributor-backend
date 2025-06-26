@@ -1,3 +1,10 @@
+## [1.4.10](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.9...v1.4.10) (2025-06-26)
+
+
+### Bug Fixes
+
+* get latest commit of default branch ([e37430a](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/e37430aa696783fa87c9929844afab3b4178ae99))
+
 ## [1.4.9](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.8...v1.4.9) (2025-06-26)
 
 
