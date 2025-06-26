@@ -2,7 +2,6 @@
 url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
-
 ## ℹ️ HOW-TO: Make the python-package editable.
 #
 # 1. Comment out the non-editable codeforlife package under [packages].
