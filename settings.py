@@ -26,6 +26,9 @@ from codeforlife.settings import *
 
 SECRET_KEY = secrets.SECRET_KEY
 
+# TODO: remove this when cfl-common is not longer installed
+ENCRYPTION_KEY = SECRET_KEY
+
 # GitHub
 
 GH_ORG = "ocadotechnology"
