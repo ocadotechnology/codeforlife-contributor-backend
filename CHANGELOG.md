@@ -1,3 +1,10 @@
+## [1.4.12](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.11...v1.4.12) (2025-11-11)
+
+
+### Bug Fixes
+
+* Install latest package ([67809cd](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/67809cdce46bddacf9b8f8468f7eede7d0137fba))
+
 ## [1.4.11](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.10...v1.4.11) (2025-10-14)
 
 
