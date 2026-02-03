@@ -1,3 +1,10 @@
+## [1.4.15](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.14...v1.4.15) (2026-02-03)
+
+
+### Bug Fixes
+
+* Install latest package and upgrade mypy ([f10d4d6](https://github.com/ocadotechnology/codeforlife-contributor-backend/commit/f10d4d63646e70f6e8f1fc0a3ecc65c36455e62d))
+
 ## [1.4.14](https://github.com/ocadotechnology/codeforlife-contributor-backend/compare/v1.4.13...v1.4.14) (2025-12-10)
 
 
