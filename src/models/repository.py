@@ -25,6 +25,7 @@ class Repository(models.Model):
         on_delete=models.CASCADE,
         related_name="repositories",
     )
+    objects: models.Manager["Repository"]
 
     gh_id = models.IntegerField(
         _("GitHub ID"),

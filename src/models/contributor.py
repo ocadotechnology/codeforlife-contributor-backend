@@ -33,6 +33,7 @@ class Contributor(AbstractBaseUser):
     emails: QuerySet["ContributorEmail"]
     repositories: QuerySet["Repository"]
     session: "Session"
+    objects: models.Manager["Contributor"]
 
     # Contributors log in with their GitHub account.
     password = None  # type: ignore[assignment]

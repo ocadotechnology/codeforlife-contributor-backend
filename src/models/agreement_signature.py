@@ -30,6 +30,7 @@ class AgreementSignature(models.Model):
         on_delete=models.CASCADE,
         related_name="agreement_signatures",
     )
+    objects: models.Manager["AgreementSignature"]
 
     agreement_id = models.CharField(
         _("agreement id"),

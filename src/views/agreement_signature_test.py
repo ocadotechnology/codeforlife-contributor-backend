@@ -34,7 +34,8 @@ class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
         """Includes all of a contributor's agreement-signatures."""
         contributor = self.contributor1
         self.assert_get_queryset(
-            values=AgreementSignature.objects.filter(
+            # TODO: Remove the below mypy ignore after upgrading django-stubs
+            values=AgreementSignature.objects.filter(  # type: ignore[arg-type]
                 contributor=contributor
             ).order_by("signed_at"),
             action="retrieve",
@@ -45,7 +46,8 @@ class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
         """Includes all of a contributor's agreement-signatures."""
         contributor = self.contributor1
         self.assert_get_queryset(
-            values=AgreementSignature.objects.filter(
+            # TODO: Remove the below mypy ignore after upgrading django-stubs
+            values=AgreementSignature.objects.filter(  # type: ignore[arg-type]
                 contributor=contributor
             ).order_by("signed_at"),
             action="list",
@@ -59,7 +61,8 @@ class TestAgreementSignatureViewSet(ModelViewSetTestCase[AgreementSignature]):
         """
         contributor = self.contributor1
         self.assert_get_queryset(
-            values=AgreementSignature.objects.filter(
+            # TODO: Remove the below mypy ignore after upgrading django-stubs
+            values=AgreementSignature.objects.filter(  # type: ignore[arg-type]
                 contributor=contributor
             ).order_by("signed_at"),
             action="check_signed",

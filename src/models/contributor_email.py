@@ -29,6 +29,7 @@ class ContributorEmail(models.Model):
         on_delete=models.CASCADE,
         related_name="emails",
     )
+    objects: models.Manager["ContributorEmail"]
 
     email = models.EmailField(_("email"), unique=True)
     is_primary = models.BooleanField(_("is primary"))
